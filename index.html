@@ -79,8 +79,8 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 class="text-4xl font-bold text-gray-100 mb-8">Featured Games (25 Games)</h1>
 
-        <!-- Game Grid Container (Will be populated by JavaScript) -->
-        <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <!-- Game Grid Container (Optimized for iPad Landscape/Desktop) -->
+        <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
             <!-- Game Cards will be injected here -->
         </div>
     </main>
@@ -100,16 +100,17 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // NOTE: The getPlaceholder function is no longer used.
-        
-        // --- Game Data: Updated with new image URLs and file paths (dashes removed) ---
+        // FIX: Switched to raw.githack.com, which reliably serves raw GitHub HTML content with the correct Content-Type (text/html) for the browser to execute it, preventing the source code from being displayed as plain text.
+        const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
+
+        // --- Game Data: Updated to use ABSOLUTE URLs from the external GitHub Pages repository ---
         const games = [
             { 
                 id: 1, 
                 title: "Retro Bowl", 
                 description: "Manage your American football team and call the shots on the field in glorious 8-bit style.", 
                 category: "Sports", 
-                gameUrl: "games/retrobowl/index.html", 
+                gameUrl: GITHUB_BASE_URL + "retrobowl/index.html", 
                 imgUrl: "https://tse4.mm.bing.net/th/id/OIP.RdiwuvPRzrZQdqrhJdnEegHaEK?cb=12&pid=Api" 
             },
             { 
@@ -117,7 +118,7 @@
                 title: "Subway Surfers", 
                 description: "Run, dash, and dodge oncoming trains in this fast-paced, endless runner adventure.", 
                 category: "Endless Runner", 
-                gameUrl: "games/subwaysurfers/index.html", 
+                gameUrl: GITHUB_BASE_URL + "subwaysurfers/index.html", 
                 imgUrl: "https://s3.amazonaws.com/subwaysurfers/wp-content/gallery/desktop/cache/Subway-Surfers-Wallpapers-HD.jpg-nggid016-ngg0dyn-370x220x100-00f0w010c011r110f110r010t010.jpg" 
             },
             { 
@@ -125,7 +126,7 @@
                 title: "Flappy Bird", 
                 description: "Test your skill and patience by tapping to guide the bird through the challenging pipes.", 
                 category: "Arcade", 
-                gameUrl: "games/flappybird/index.html", 
+                gameUrl: GITHUB_BASE_URL + "flappybird/index.html", 
                 imgUrl: "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/flappybird_cover.jpg" 
             },
             { 
@@ -133,7 +134,7 @@
                 title: "Geometry Dash", 
                 description: "Jump and fly your way through geometric worlds, synced to an electrifying beat.", 
                 category: "Rhythm", 
-                gameUrl: "games/geometrydash/index.html", 
+                gameUrl: GITHUB_BASE_URL + "geometrydash/index.html", 
                 imgUrl: "https://static.wikia.nocookie.net/geometry_dash/images/f/f0/G-Dash.jpeg/revision/latest?cb=20200324180333" 
             },
             { 
@@ -141,7 +142,7 @@
                 title: "Tetris", 
                 description: "The timeless puzzle game! Fit the falling blocks together to clear lines and score points.", 
                 category: "Puzzle", 
-                gameUrl: "games/tetris/index.html", 
+                gameUrl: GITHUB_BASE_URL + "tetris/index.html", 
                 imgUrl: "https://www.nestetris.com/assets/images/tetrisco.webp" 
             },
             { 
@@ -149,7 +150,7 @@
                 title: "2048", 
                 description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", 
                 category: "Puzzle", 
-                gameUrl: "games/2048/index.html", 
+                gameUrl: GITHUB_BASE_URL + "2048/index.html", 
                 imgUrl: "https://m.media-amazon.com/images/I/71Jxkpq9jbL.png" 
             },
             { 
@@ -157,7 +158,7 @@
                 title: "Fruit Ninja", 
                 description: "Swipe your blade across the screen to slice juicy fruits, but watch out for the bombs!", 
                 category: "Skill", 
-                gameUrl: "games/fruitninja/index.html", 
+                gameUrl: GITHUB_BASE_URL + "fruitninja/index.html", 
                 imgUrl: "https://wallpapercave.com/wp/wp7567383.jpg" 
             },
             { 
@@ -165,7 +166,7 @@
                 title: "Doodle Jump", 
                 description: "Leap from platform to platform, picking up power-ups and blasting foes.", 
                 category: "Arcade", 
-                gameUrl: "games/doodlejump/index.html", 
+                gameUrl: GITHUB_BASE_URL + "doodlejump/index.html", 
                 imgUrl: "https://img.gamepix.com/games/doodle-jump/cover/doodle-jump.png?w=320&ar=16:10" 
             },
             { 
@@ -173,7 +174,7 @@
                 title: "BitLife", 
                 description: "Live a virtual life simulation, making choices that determine your career, relationships, and death.", 
                 category: "Simulation", 
-                gameUrl: "games/bitlife/index.html", 
+                gameUrl: GITHUB_BASE_URL + "bitlife/index.html", 
                 imgUrl: "https://play-lh.googleusercontent.com/fUM-UyywXxjC8soxAZdIlxJrlRRXmql8wkE426SHzft4lJycSKVd2jCYQQX1BEG9Xw=w480-h960-rw" 
             },
             { 
@@ -181,7 +182,7 @@
                 title: "BTD4", 
                 description: "Bloons TD 4: strategically place towers to defend against waves of colorful balloons.", 
                 category: "Tower Defense", 
-                gameUrl: "games/btd4/index.html", 
+                gameUrl: GITHUB_BASE_URL + "btd4/index.html", 
                 imgUrl: "https://cdn.nkstatic.com/thumbs/large/Bloons-Tower-Defense4-lg.jpg" 
             },
             { 
@@ -189,7 +190,7 @@
                 title: "Chess", 
                 description: "The classic board game of strategy and tactics. Outwit your opponent to deliver checkmate.", 
                 category: "Strategy", 
-                gameUrl: "games/chess/index.html", 
+                gameUrl: GITHUB_BASE_URL + "chess/index.html", 
                 imgUrl: "https://t3.ftcdn.net/jpg/15/82/08/42/360_F_1582084263_CT62L3LWuew07xgfeadhBBGEl0hrR10G.jpg" 
             },
             { 
@@ -197,7 +198,7 @@
                 title: "Cookie Clicker", 
                 description: "A highly addictive incremental game where you click a cookie to generate more cookies.", 
                 category: "Idle Clicker", 
-                gameUrl: "games/cookieclicker/index.html", 
+                gameUrl: GITHUB_BASE_URL + "cookieclicker/index.html", 
                 imgUrl: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/06/mixcollage-13-jun-2025-05-35-pm-3608.jpg?q=49&fit=crop&w=360&h=240&dpr=2" 
             },
             { 
@@ -205,7 +206,7 @@
                 title: "Crossy Road", 
                 description: "Help the chicken cross busy roads, rivers, and train tracks without getting splatted.", 
                 category: "Arcade", 
-                gameUrl: "games/crossyroad/index.html", 
+                gameUrl: GITHUB_BASE_URL + "crossyroad/index.html", 
                 imgUrl: "https://assets-prd.ignimgs.com/2023/03/04/crossyroad-1677896516603.jpg?crop=1:1,smart&format=jpg&auto=webp&quality=80" 
             },
             { 
@@ -213,7 +214,7 @@
                 title: "Death Run 3D", 
                 description: "A frantic, high-speed endless runner where you navigate a neon tunnel.", 
                 category: "Endless Runner", 
-                gameUrl: "games/deathrun3d/index.html", 
+                gameUrl: GITHUB_BASE_URL + "deathrun3d/index.html", 
                 imgUrl: "https://slope-play.com/data/image/death-run-3d-game.jpg" 
             },
             { 
@@ -221,7 +222,7 @@
                 title: "Drift", 
                 description: "Test your driving skills by chaining together long drifts on winding tracks.", 
                 category: "Racing", 
-                gameUrl: "games/drift/index.html", 
+                gameUrl: GITHUB_BASE_URL + "drift/index.html", 
                 imgUrl: "https://m.media-amazon.com/images/I/81Bib5CE83L.png" 
             },
             
@@ -231,7 +232,7 @@
                 title: "Drive Mad", 
                 description: "Drive huge monster trucks and try not to flip over in this physics-based driving game.", 
                 category: "Racing", 
-                gameUrl: "games/drivemad/index.html", 
+                gameUrl: GITHUB_BASE_URL + "drivemad/index.html", 
                 imgUrl: "https://www.speedrun.com/static/game/46w2m496/cover.jpg?v=1f514bb" 
             },
             { 
@@ -239,7 +240,7 @@
                 title: "Eggcar", 
                 description: "Control a fragile egg-shaped car and navigate crazy tracks without breaking your shell.", 
                 category: "Arcade", 
-                gameUrl: "games/eggcar/index.html", 
+                gameUrl: GITHUB_BASE_URL + "eggcar/index.html", 
                 imgUrl: "https://unblocked-games.s3.amazonaws.com/media/posts/593/egg-car-racing.webp" 
             },
             { 
@@ -247,7 +248,7 @@
                 title: "Let's Surf", 
                 description: "Catch the perfect wave and perform stunts as you glide across the ocean.", 
                 category: "Skill", 
-                gameUrl: "games/letssurf/index.html", 
+                gameUrl: GITHUB_BASE_URL + "letssurf/index.html", 
                 imgUrl: "https://www.marketjs.com/item/lets-surf/lets-surf.jpg" 
             },
             { 
@@ -255,7 +256,7 @@
                 title: "Monkey Mart", 
                 description: "Run your own supermarket with the help of busy monkeys! Harvest and stock shelves.", 
                 category: "Simulation", 
-                gameUrl: "games/monkeymart/index.html", 
+                gameUrl: GITHUB_BASE_URL + "monkeymart/index.html", 
                 imgUrl: "https://monkeymartgame.org/data/image/posts/monkey-mart-game1.jpg" 
             },
             { 
@@ -263,7 +264,7 @@
                 title: "Pacman", 
                 description: "The arcade classic! Eat all the dots, avoid the ghosts, and grab the power pellets.", 
                 category: "Arcade", 
-                gameUrl: "games/pacman/index.html", 
+                gameUrl: GITHUB_BASE_URL + "pacman/index.html", 
                 imgUrl: "https://thumbs.dreamstime.com/b/pac-man-his-enemies-vintage-game-theme-vector-illustration-retro-computer-pinky-blinky-inky-clyde-characters-260772007.jpg" 
             },
             { 
@@ -271,7 +272,7 @@
                 title: "Racer", 
                 description: "A top-down arcade racing game featuring fast cars and tight turns.", 
                 category: "Racing", 
-                gameUrl: "games/racer/index.html", 
+                gameUrl: GITHUB_BASE_URL + "racer/index.html", 
                 // Uses a placeholder image with the requested race car emoji on a dark background
                 imgUrl: "https://placehold.co/400x220/4f46e5/ffffff?text=🏎️" 
             },
@@ -280,7 +281,7 @@
                 title: "Slope", 
                 description: "Navigate a steep, endless slope, avoiding obstacles and trying to stay on the track.", 
                 category: "Endless Runner", 
-                gameUrl: "games/slope/index.html", 
+                gameUrl: GITHUB_BASE_URL + "slope/index.html", 
                 imgUrl: "https://slopegame.lol/imgs/slope.png" 
             },
             { 
@@ -288,7 +289,7 @@
                 title: "Slither.io", 
                 description: "Grow your snake by eating dots and try to trap and defeat other players.", 
                 category: "Multiplayer", 
-                gameUrl: "games/slitherio/index.html", 
+                gameUrl: GITHUB_BASE_URL + "slitherio/index.html", 
                 imgUrl: "https://www.meme-arsenal.com/memes/827732e699a6fecad94e258b5693bb04.jpg" 
             },
             { 
@@ -296,7 +297,7 @@
                 title: "Snake", 
                 description: "The timeless retro game: move the snake to eat the food and grow longer without hitting walls.", 
                 category: "Arcade", 
-                gameUrl: "games/snake/index.html", 
+                gameUrl: GITHUB_BASE_URL + "snake/index.html", 
                 imgUrl: "https://www.snake.fr/images/google-snake-jeu.png" 
             },
             { 
@@ -304,7 +305,7 @@
                 title: "Tiny Fishing", 
                 description: "A relaxing skill game where you cast your line deep and try to reel in valuable fish.", 
                 category: "Skill", 
-                gameUrl: "games/tinyfishing/index.html", 
+                gameUrl: GITHUB_BASE_URL + "tinyfishing/index.html", 
                 imgUrl: "https://tinyfishing2.io/data/image/game/play-tiny-fishing-game.jpg" 
             }
         ];
