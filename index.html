@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNM Game Hub - Your HTML5 Games Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Dark Mode Base Styles - Purplish Tone */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Deep Indigo/Purple background */
+            color: #e2e8f0; /* Light text */
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568; /* Darker scrollbar */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096;
+        }
+        .game-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            background-color: #33334d; /* Dark card background */
+        }
+        .game-card:hover {
+            transform: translateY(-4px);
+            /* Purplish shadow hover effect */
+            box-shadow: 0 10px 15px -3px rgba(126, 34, 206, 0.4), 0 4px 6px -2px rgba(126, 34, 206, 0.2); 
+        }
+        .launch-modal {
+            display: none;
+            z-index: 1000;
+        }
+        .launch-modal.open {
+            display: flex;
+        }
+        .modal-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* Ensure the search input background matches the card/modal background for consistency */
+        #search-input {
+            background-color: #33334d;
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-100">
+
+    <!-- Header / Navigation Bar (Dark Purple Background) -->
+    <header class="bg-[#2a2a3e] shadow-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center">
+            <!-- Website Name: CNM Game Hub -->
+            <a href="#" class="text-3xl font-extrabold text-white tracking-tight mb-4 md:mb-0">
+                <span class="text-purple-400">🎮</span> CNM <span class="text-indigo-400">Game Hub</span>
+            </a>
+            <div class="w-full md:w-96">
+                <!-- Search Input with functional ID (Dark mode styled) -->
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Search games by title, category, or description..." class="w-full py-2 pl-10 pr-4 border border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition duration-150 bg-[#33334d] text-gray-200">
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </div>
+            <!-- Removed the Sign In button as requested -->
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-4xl font-bold text-gray-100 mb-8">Featured Games (25 Games)</h1>
+
+        <!-- Game Grid Container (Will be populated by JavaScript) -->
+        <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <!-- Game Cards will be injected here -->
+        </div>
+    </main>
+
+    <!-- Game Launch Modal (Dark mode adjusted) -->
+    <div id="game-modal" class="launch-modal fixed inset-0 bg-gray-900 bg-opacity-90 items-center justify-center p-2">
+        <div class="w-full h-full relative">
+            <!-- Close Button (Red remains for high contrast action) -->
+            <button id="close-modal-btn" class="absolute top-4 right-4 z-10 bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700 transition duration-150">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <!-- Game Iframe Placeholder -->
+            <iframe id="game-iframe" src="" class="modal-iframe rounded-lg shadow-2xl"></iframe>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // NOTE: The getPlaceholder function is no longer used.
+        
+        // --- Game Data: Updated with new image URLs and file paths (dashes removed) ---
+        const games = [
+            { 
+                id: 1, 
+                title: "Retro Bowl", 
+                description: "Manage your American football team and call the shots on the field in glorious 8-bit style.", 
+                category: "Sports", 
+                gameUrl: "games/retrobowl/index.html", 
+                imgUrl: "https://tse4.mm.bing.net/th/id/OIP.RdiwuvPRzrZQdqrhJdnEegHaEK?cb=12&pid=Api" 
+            },
+            { 
+                id: 2, 
+                title: "Subway Surfers", 
+                description: "Run, dash, and dodge oncoming trains in this fast-paced, endless runner adventure.", 
+                category: "Endless Runner", 
+                gameUrl: "games/subwaysurfers/index.html", 
+                imgUrl: "https://s3.amazonaws.com/subwaysurfers/wp-content/gallery/desktop/cache/Subway-Surfers-Wallpapers-HD.jpg-nggid016-ngg0dyn-370x220x100-00f0w010c011r110f110r010t010.jpg" 
+            },
+            { 
+                id: 3, 
+                title: "Flappy Bird", 
+                description: "Test your skill and patience by tapping to guide the bird through the challenging pipes.", 
+                category: "Arcade", 
+                gameUrl: "games/flappybird/index.html", 
+                imgUrl: "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/flappybird_cover.jpg" 
+            },
+            { 
+                id: 4, 
+                title: "Geometry Dash", 
+                description: "Jump and fly your way through geometric worlds, synced to an electrifying beat.", 
+                category: "Rhythm", 
+                gameUrl: "games/geometrydash/index.html", 
+                imgUrl: "https://static.wikia.nocookie.net/geometry_dash/images/f/f0/G-Dash.jpeg/revision/latest?cb=20200324180333" 
+            },
+            { 
+                id: 5, 
+                title: "Tetris", 
+                description: "The timeless puzzle game! Fit the falling blocks together to clear lines and score points.", 
+                category: "Puzzle", 
+                gameUrl: "games/tetris/index.html", 
+                imgUrl: "https://www.nestetris.com/assets/images/tetrisco.webp" 
+            },
+            { 
+                id: 6, 
+                title: "2048", 
+                description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", 
+                category: "Puzzle", 
+                gameUrl: "games/2048/index.html", 
+                imgUrl: "https://m.media-amazon.com/images/I/71Jxkpq9jbL.png" 
+            },
+            { 
+                id: 7, 
+                title: "Fruit Ninja", 
+                description: "Swipe your blade across the screen to slice juicy fruits, but watch out for the bombs!", 
+                category: "Skill", 
+                gameUrl: "games/fruitninja/index.html", 
+                imgUrl: "https://wallpapercave.com/wp/wp7567383.jpg" 
+            },
+            { 
+                id: 8, 
+                title: "Doodle Jump", 
+                description: "Leap from platform to platform, picking up power-ups and blasting foes.", 
+                category: "Arcade", 
+                gameUrl: "games/doodlejump/index.html", 
+                imgUrl: "https://img.gamepix.com/games/doodle-jump/cover/doodle-jump.png?w=320&ar=16:10" 
+            },
+            { 
+                id: 9, 
+                title: "BitLife", 
+                description: "Live a virtual life simulation, making choices that determine your career, relationships, and death.", 
+                category: "Simulation", 
+                gameUrl: "games/bitlife/index.html", 
+                imgUrl: "https://play-lh.googleusercontent.com/fUM-UyywXxjC8soxAZdIlxJrlRRXmql8wkE426SHzft4lJycSKVd2jCYQQX1BEG9Xw=w480-h960-rw" 
+            },
+            { 
+                id: 10, 
+                title: "BTD4", 
+                description: "Bloons TD 4: strategically place towers to defend against waves of colorful balloons.", 
+                category: "Tower Defense", 
+                gameUrl: "games/btd4/index.html", 
+                imgUrl: "https://cdn.nkstatic.com/thumbs/large/Bloons-Tower-Defense4-lg.jpg" 
+            },
+            { 
+                id: 11, 
+                title: "Chess", 
+                description: "The classic board game of strategy and tactics. Outwit your opponent to deliver checkmate.", 
+                category: "Strategy", 
+                gameUrl: "games/chess/index.html", 
+                imgUrl: "https://t3.ftcdn.net/jpg/15/82/08/42/360_F_1582084263_CT62L3LWuew07xgfeadhBBGEl0hrR10G.jpg" 
+            },
+            { 
+                id: 12, 
+                title: "Cookie Clicker", 
+                description: "A highly addictive incremental game where you click a cookie to generate more cookies.", 
+                category: "Idle Clicker", 
+                gameUrl: "games/cookieclicker/index.html", 
+                imgUrl: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/06/mixcollage-13-jun-2025-05-35-pm-3608.jpg?q=49&fit=crop&w=360&h=240&dpr=2" 
+            },
+            { 
+                id: 13, 
+                title: "Crossy Road", 
+                description: "Help the chicken cross busy roads, rivers, and train tracks without getting splatted.", 
+                category: "Arcade", 
+                gameUrl: "games/crossyroad/index.html", 
+                imgUrl: "https://assets-prd.ignimgs.com/2023/03/04/crossyroad-1677896516603.jpg?crop=1:1,smart&format=jpg&auto=webp&quality=80" 
+            },
+            { 
+                id: 14, 
+                title: "Death Run 3D", 
+                description: "A frantic, high-speed endless runner where you navigate a neon tunnel.", 
+                category: "Endless Runner", 
+                gameUrl: "games/deathrun3d/index.html", 
+                imgUrl: "https://slope-play.com/data/image/death-run-3d-game.jpg" 
+            },
+            { 
+                id: 15, 
+                title: "Drift", 
+                description: "Test your driving skills by chaining together long drifts on winding tracks.", 
+                category: "Racing", 
+                gameUrl: "games/drift/index.html", 
+                imgUrl: "https://m.media-amazon.com/images/I/81Bib5CE83L.png" 
+            },
+            
+            // --- NEW GAMES ADDED ---
+            { 
+                id: 16, 
+                title: "Drive Mad", 
+                description: "Drive huge monster trucks and try not to flip over in this physics-based driving game.", 
+                category: "Racing", 
+                gameUrl: "games/drivemad/index.html", 
+                imgUrl: "https://www.speedrun.com/static/game/46w2m496/cover.jpg?v=1f514bb" 
+            },
+            { 
+                id: 17, 
+                title: "Eggcar", 
+                description: "Control a fragile egg-shaped car and navigate crazy tracks without breaking your shell.", 
+                category: "Arcade", 
+                gameUrl: "games/eggcar/index.html", 
+                imgUrl: "https://unblocked-games.s3.amazonaws.com/media/posts/593/egg-car-racing.webp" 
+            },
+            { 
+                id: 18, 
+                title: "Let's Surf", 
+                description: "Catch the perfect wave and perform stunts as you glide across the ocean.", 
+                category: "Skill", 
+                gameUrl: "games/letssurf/index.html", 
+                imgUrl: "https://www.marketjs.com/item/lets-surf/lets-surf.jpg" 
+            },
+            { 
+                id: 19, 
+                title: "Monkey Mart", 
+                description: "Run your own supermarket with the help of busy monkeys! Harvest and stock shelves.", 
+                category: "Simulation", 
+                gameUrl: "games/monkeymart/index.html", 
+                imgUrl: "https://monkeymartgame.org/data/image/posts/monkey-mart-game1.jpg" 
+            },
+            { 
+                id: 20, 
+                title: "Pacman", 
+                description: "The arcade classic! Eat all the dots, avoid the ghosts, and grab the power pellets.", 
+                category: "Arcade", 
+                gameUrl: "games/pacman/index.html", 
+                imgUrl: "https://thumbs.dreamstime.com/b/pac-man-his-enemies-vintage-game-theme-vector-illustration-retro-computer-pinky-blinky-inky-clyde-characters-260772007.jpg" 
+            },
+            { 
+                id: 21, 
+                title: "Racer", 
+                description: "A top-down arcade racing game featuring fast cars and tight turns.", 
+                category: "Racing", 
+                gameUrl: "games/racer/index.html", 
+                // Uses a placeholder image with the requested race car emoji on a dark background
+                imgUrl: "https://placehold.co/400x220/4f46e5/ffffff?text=🏎️" 
+            },
+            { 
+                id: 22, 
+                title: "Slope", 
+                description: "Navigate a steep, endless slope, avoiding obstacles and trying to stay on the track.", 
+                category: "Endless Runner", 
+                gameUrl: "games/slope/index.html", 
+                imgUrl: "https://slopegame.lol/imgs/slope.png" 
+            },
+            { 
+                id: 23, 
+                title: "Slither.io", 
+                description: "Grow your snake by eating dots and try to trap and defeat other players.", 
+                category: "Multiplayer", 
+                gameUrl: "games/slitherio/index.html", 
+                imgUrl: "https://www.meme-arsenal.com/memes/827732e699a6fecad94e258b5693bb04.jpg" 
+            },
+            { 
+                id: 24, 
+                title: "Snake", 
+                description: "The timeless retro game: move the snake to eat the food and grow longer without hitting walls.", 
+                category: "Arcade", 
+                gameUrl: "games/snake/index.html", 
+                imgUrl: "https://www.snake.fr/images/google-snake-jeu.png" 
+            },
+            { 
+                id: 25, 
+                title: "Tiny Fishing", 
+                description: "A relaxing skill game where you cast your line deep and try to reel in valuable fish.", 
+                category: "Skill", 
+                gameUrl: "games/tinyfishing/index.html", 
+                imgUrl: "https://tinyfishing2.io/data/image/game/play-tiny-fishing-game.jpg" 
+            }
+        ];
+
+        const gameGrid = document.getElementById('game-grid');
+        const gameModal = document.getElementById('game-modal');
+        const gameIframe = document.getElementById('game-iframe');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const searchInput = document.getElementById('search-input'); 
+
+        // Function to open the game modal
+        function openGame(gameUrl) {
+            gameIframe.src = gameUrl;
+            gameModal.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling while modal is open
+        }
+
+        // Function to close the game modal
+        function closeGame() {
+            gameIframe.src = ""; // Clear the iframe content
+            gameModal.classList.remove('open');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Function to create and append a single game card
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            // Updated card class for dark mode background
+            card.className = 'game-card bg-[#33334d] rounded-xl shadow-lg overflow-hidden';
+            card.setAttribute('data-game-url', game.gameUrl);
+            card.onclick = () => openGame(game.gameUrl);
+
+            // Since game.imgUrl is now always populated, we use the image tag directly.
+            const imageContent = `
+                <img 
+                    src="${game.imgUrl}" 
+                    alt="${game.title} Thumbnail" 
+                    class="w-full h-full object-cover" 
+                    /* The onerror attribute replaces the image with a Game Controller emoji (🎮) on a dark background if the URL fails to load. */
+                    onerror="this.onerror=null;this.src='https://placehold.co/400x220/33334d/d1d5db?text=🎮';"
+                >`;
+
+            card.innerHTML = `
+                <!-- Game Thumbnail Area -->
+                <div class="h-36 bg-[#33334d] overflow-hidden relative">
+                    ${imageContent}
+                    <!-- Category tag adjusted to purple for consistency -->
+                    <span class="absolute top-2 right-2 text-xs font-semibold px-2 py-1 rounded-full bg-purple-500 text-white">${game.category}</span>
+                </div>
+                <!-- Game Info -->
+                <div class="p-4">
+                    <!-- Text colors adjusted for dark mode -->
+                    <h2 class="text-lg font-bold text-gray-100 truncate">${game.title}</h2>
+                    <p class="text-sm text-gray-400 mt-1 line-clamp-2">${game.description}</p>
+                    <!-- Button color adjusted to purple for consistency -->
+                    <button class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-purple-700 transition duration-150">
+                        Play Now
+                    </button>
+                </div>
+            `;
+
+            gameGrid.appendChild(card);
+        }
+
+        // Function to filter and render games based on search term
+        function renderGames(searchTerm = '') {
+            // 1. Clear the grid
+            gameGrid.innerHTML = '';
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+            // 2. Filter games by matching title, category, or description
+            const filteredGames = games.filter(game =>
+                game.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+                game.category.toLowerCase().includes(lowerCaseSearchTerm) ||
+                game.description.toLowerCase().includes(lowerCaseSearchTerm)
+            );
+
+            // 3. Render filtered games or a "not found" message
+            if (filteredGames.length > 0) {
+                filteredGames.forEach(createGameCard);
+            } else {
+                gameGrid.innerHTML = '<p class="text-xl text-gray-400 col-span-full text-center py-10">No games found matching your search. Try a different title or category!</p>';
+            }
+        }
+
+        // --- Event Listeners ---
+        closeModalBtn.addEventListener('click', closeGame);
+
+        // Close modal when pressing the ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && gameModal.classList.contains('open')) {
+                closeGame();
+            }
+        });
+
+        // Search input event listener to trigger filtering
+        searchInput.addEventListener('input', (e) => {
+            renderGames(e.target.value);
+        });
+
+        // Initial load: Render all games
+        window.onload = () => {
+            renderGames();
+        };
+    </script>
+
+</body>
+</html>
