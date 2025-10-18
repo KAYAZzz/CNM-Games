@@ -3,13 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- START: PWA/iOS Fullscreen Configuration -->
-    <!-- This tells iOS devices to launch the web app in fullscreen mode when added to the home screen -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- This sets the style of the status bar at the top (time, battery). 'black-translucent' is great for dark themes. -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- END: PWA/iOS Fullscreen Configuration -->
-    
     <title>CNM Game Hub - Your HTML5 Games Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -109,7 +102,6 @@
     <script>
         // FIX: Switched to raw.githack.com, which reliably serves raw GitHub HTML content with the correct Content-Type (text/html) for the browser to execute it, preventing the source code from being displayed as plain text.
         const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
-        const GITHUB_BASE_URL2 = "https://raw.githack.com/KAYAZzz/CNM-Games/tree/main/";
 
         // --- Game Data: Updated to use ABSOLUTE URLs from the external GitHub Pages repository ---
         const games = [
@@ -126,7 +118,7 @@
                 title: "Subway Surfers", 
                 description: "Run, dash, and dodge oncoming trains in this fast-paced, endless runner adventure.", 
                 category: "Endless Runner", 
-                gameUrl: GITHUB_BASE_URL2 "subwaysurfersny/game.html", 
+                gameUrl: GITHUB_BASE_URL + "subwaysurfersnyc/index.html", 
                 imgUrl: "https://s3.amazonaws.com/subwaysurfers/wp-content/gallery/desktop/cache/Subway-Surfers-Wallpapers-HD.jpg-nggid016-ngg0dyn-370x220x100-00f0w010c011r110f110r010t010.jpg" 
             },
             { 
@@ -351,9 +343,9 @@
                 <img 
                     src="${game.imgUrl}" 
                     alt="${game.title} Thumbnail" 
-                    class="w-full h-36 object-cover" 
+                    class="w-full h-full object-cover" 
                     /* The onerror attribute replaces the image with a Game Controller emoji (🎮) on a dark background if the URL fails to load. */
-                    onerror="this.onerror=null;this.src='https://placehold.co/400x144/33334d/d1d5db?text=🎮';"
+                    onerror="this.onerror=null;this.src='https://placehold.co/400x220/33334d/d1d5db?text=🎮';"
                 >`;
 
             card.innerHTML = `
@@ -422,10 +414,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
