@@ -10,11 +10,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- END: PWA/iOS Fullscreen Configuration -->
     
-    <title>CNM Game Hub</title>
+    <title>CNM Game Hub - Your HTML5 Games Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-
         /* Dark Mode Base Styles - Purplish Tone */
         body {
             font-family: 'Inter', sans-serif;
@@ -95,26 +94,14 @@
 
     <!-- Game Launch Modal (Dark mode adjusted) -->
     <div id="game-modal" class="launch-modal fixed inset-0 bg-gray-900 bg-opacity-90 items-center justify-center p-2">
-        <!-- MODIFICATION: Added 'flex items-center justify-center' to ensure vertical and horizontal centering. -->
-         <div class="w-full h-full relative md:max-w-4xl md:max-h-[95vh flex items-center justify-center">
-            
-            <!-- NEW: Loading Spinner/Indicator -->
-            <div id="loading-indicator" class="absolute inset-0 z-50 bg-[#33334d] bg-opacity-90 flex flex-col items-center justify-center rounded-xl" style="display: none;">
-                <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-t-4 border-purple-400 mb-4"></div>
-                <p class="text-white text-xl font-semibold">Loading Game...</p>
-                <p class="text-gray-300 text-sm mt-1">Please wait for the game files to load.</p>
-            </div>
-            <!-- END NEW: Loading Spinner/Indicator -->
-            
-            <!-- Close Button (Kept high z-index to overlay the loader) -->
-            <button id="close-modal-btn" class="absolute top-4 right-4 z-[60] bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700 transition duration-150">
+        <div class="w-full h-full relative">
+            <!-- Close Button (Red remains for high contrast action) -->
+            <button id="close-modal-btn" class="absolute top-4 right-4 z-10 bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700 transition duration-150">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
             <!-- Game Iframe Placeholder -->
-            <iframe id="
-game-iframe" src="" class="
-modal-iframe rounded-lg shadow-2x1"></iframe>
+            <iframe id="game-iframe" src="" class="modal-iframe rounded-lg shadow-2xl"></iframe>
         </div>
     </div>
 
@@ -122,6 +109,7 @@ modal-iframe rounded-lg shadow-2x1"></iframe>
     <script>
         // FIX: Switched to raw.githack.com, which reliably serves raw GitHub HTML content with the correct Content-Type (text/html) for the browser to execute it, preventing the source code from being displayed as plain text.
         const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
+        const GITHUB_BASE_URL2 = "https://raw.githack.com/KAYAZzz/CNM-Games/tree/main/";
 
         // --- Game Data: Updated to use ABSOLUTE URLs from the external GitHub Pages repository ---
         const games = [
@@ -138,7 +126,7 @@ modal-iframe rounded-lg shadow-2x1"></iframe>
                 title: "Subway Surfers", 
                 description: "Run, dash, and dodge oncoming trains in this fast-paced, endless runner adventure.", 
                 category: "Endless Runner", 
-                gameUrl: GITHUB_BASE_URL + "subwaysurfersny/index.html", 
+                gameUrl: GITHUB_BASE_URL2 "subwaysurfersny/game.html", 
                 imgUrl: "https://s3.amazonaws.com/subwaysurfers/wp-content/gallery/desktop/cache/Subway-Surfers-Wallpapers-HD.jpg-nggid016-ngg0dyn-370x220x100-00f0w010c011r110f110r010t010.jpg" 
             },
             { 
@@ -335,14 +323,9 @@ modal-iframe rounded-lg shadow-2x1"></iframe>
         const gameIframe = document.getElementById('game-iframe');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const searchInput = document.getElementById('search-input'); 
-        // NEW: Get the loading indicator element
-        const loadingIndicator = document.getElementById('loading-indicator');
 
         // Function to open the game modal
         function openGame(gameUrl) {
-            // NEW: Show the loading indicator immediately
-            loadingIndicator.style.display = 'flex';
-            
             gameIframe.src = gameUrl;
             gameModal.classList.add('open');
             document.body.style.overflow = 'hidden'; // Prevent scrolling while modal is open
@@ -353,17 +336,7 @@ modal-iframe rounded-lg shadow-2x1"></iframe>
             gameIframe.src = ""; // Clear the iframe content
             gameModal.classList.remove('open');
             document.body.style.overflow = 'auto'; // Restore scrolling
-            // NEW: Ensure loading indicator is hidden when closing
-            loadingIndicator.style.display = 'none';
         }
-
-        // NEW: Event listener to hide the loader when the iframe content finishes loading
-        gameIframe.onload = function() {
-            // Give a small moment for the iframe content to render visually before hiding the loader
-            setTimeout(() => {
-                loadingIndicator.style.display = 'none';
-            }, 500); // 500ms delay for smoother transition
-        };
 
         // Function to create and append a single game card
         function createGameCard(game) {
