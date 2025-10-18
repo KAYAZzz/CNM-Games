@@ -18,7 +18,7 @@
 
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Use Inter Font -->
+    <!-- Use Inter Font and Custom Styles -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
@@ -72,13 +72,12 @@
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
 
-    <!-- Header/Nav Bar (Scrolls normally) -->
+    <!-- Header/Nav Bar -->
     <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl z-50 w-full">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
             
             <!-- Title -->
             <div class="mb-4 md:mb-0 flex items-center">
-                <!-- Using a generic clock icon here, since the main logo is now set in the head -->
                 <svg class="w-10 h-10 mr-3 text-pink-400 transform rotate-[-15deg]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     <circle cx="12" cy="12" r="8" stroke-width="2" />
@@ -226,7 +225,14 @@
             },
             // --- NEW GAMES ADDED BELOW ---
             { id: 19, title: "Baldi's Basics", description: "Collect notebooks while avoiding the terrifying teacher, Baldi, in this survival horror parody.", category: "Horror/Educational", gameUrl: GITHUB_BASE_URL + "baldisbasics/index.html", imgUrl: THUMBNAILS_DIR + "BaldisBasics.webp" },
-            { id: 20, title: "Dino Runner", description: "The classic offline runner. Jump over cacti and duck under pterodactyls to survive.", category: "Endless Runner", gameUrl: GITHUB_BASE_URL + "dino/index.html", imgUrl: THUMBNAILS_DIR + "Dino.jpg" },
+            { 
+                id: 20, 
+                title: "Dino Runner", 
+                description: "The classic offline runner. Jump over cacti and duck under pterodactyls to survive.", 
+                category: "Endless Runner", 
+                gameUrl: GITHUB_BASE_URL + "chromedino/index.html", // UPDATED URL
+                imgUrl: THUMBNAILS_DIR + "Dino.jpg" 
+            },
             { 
                 id: 21, 
                 title: "Stickman Hook", 
@@ -250,6 +256,15 @@
                 category: "Puzzle", 
                 gameUrl: "https://raw.githack.com/ubg420/MergeRot/main/index.html", 
                 imgUrl: THUMBNAILS_DIR + "merge-rot.png" // Updated to use the provided thumbnail
+            },
+            // --- NEW GAME: PAPER.IO ---
+            {
+                id: 25,
+                title: "Paper.io",
+                description: "Claim territory and surround opponents in this addictive multiplayer strategy game.",
+                category: "Strategy/IO",
+                gameUrl: GITHUB_BASE_URL + "paperio/index.html",
+                imgUrl: THUMBNAILS_DIR + "paper-io.png"
             },
         ];
 
