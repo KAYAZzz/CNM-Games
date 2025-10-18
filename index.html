@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CNM Game Hub</title>
 
-    <!-- --- Logo and Favicon Configuration (for Bookmarks and Home Screen) --- -->
+    <!-- --- Logo and Fullscreen Configuration (for iOS Home Screen) --- -->
     
-    <!-- Fix 1: Enable Fullscreen Launch Mode on iOS (The missing piece!) -->
+    <!-- Enable Fullscreen Launch Mode on iOS (The fix for standalone mode) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Optional: Status bar style -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="CNM Games">
     
-    <!-- Fix 2: Apple Touch Icon (Used when added to iOS Home Screen) -->
-    <!-- Base64 SVG: Pink Lightning Bolt for high-res home screen icon -->
+    <!-- Apple Touch Icon (Base64 SVG: Pink Lightning Bolt for high-res home screen icon) -->
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
     
     <!-- Standard Favicon -->
@@ -89,7 +87,7 @@
     <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
             
-            <!-- Shiny Text Title with Logo (This is the logo shown in the header) -->
+            <!-- Shiny Text Title with Logo -->
             <div class="mb-4 md:mb-0 flex items-center">
                 <!-- Inline SVG Logo -->
                 <svg class="w-10 h-10 mr-3 text-pink-400 transform rotate-[-15deg]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -103,8 +101,11 @@
                 </h1>
             </div>
 
+            <!-- User ID Display (Crucial for multi-user/data saving integrity) -->
+            <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Initializing...</span></p>
+
             <!-- Search Input -->
-            <div class="w-full md:w-80 lg:w-96">
+            <div class="w-full md:w-80 lg:w-96 mt-4 md:mt-0">
                 <div class="relative">
                     <input 
                         type="text" 
@@ -136,11 +137,9 @@
     </main>
 
     <!-- Game Launch Modal (Hidden by default) -->
-    <!-- Modal container now takes full screen without padding -->
     <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
-        <!-- Content wrapper is also full screen and relative -->
         <div class="w-full h-full relative">
-            <!-- Close Button (still visible and functional) -->
+            <!-- Close Button -->
             <button 
                 id="close-modal-btn"
                 class="absolute top-0 right-0 z-[1050] bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"
@@ -149,7 +148,7 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <!-- Loading/Error Overlay - Now full screen and borderless -->
+            <!-- Loading/Error Overlay -->
             <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-50">
                 <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
                 <p id="loading-text" class="text-xl text-gray-400">Loading game...</p>
@@ -164,7 +163,6 @@
                 </div>
             </div>
 
-
             <!-- Game Iframe - Full screen, borderless -->
             <iframe 
                 id="game-iframe"
@@ -178,12 +176,27 @@
     </div>
 
 
-    <script>
-        // --- Game Data ---
-        // Using Githack for reliable raw file serving from general game archives
+    <script type="module">
+        // --- Firebase Imports ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, doc, getDoc, setDoc, serverTimestamp, setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Global Firebase & State Vars ---
+        let db;
+        let auth;
+        let userId = 'loading';
+        let currentGameId = null; 
+
+        // Environment variables for Firebase config
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+
+        // --- Game Data (No Change) ---
         const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
         
-        // Racer game (ID 13) has been removed.
         const initialGames = [
             { id: 1, title: "Retro Bowl", description: "Manage your American football team and call the shots on the field in glorious 8-bit style.", category: "Sports", gameUrl: GITHUB_BASE_URL + "retrobowl/index.html", imgUrl: "https://tse4.mm.bing.net/th/id/OIP.RdiwuvPRzrZQdqrhJdnEegHaEK?cb=12&pid=Api" },
             { id: 2, title: "Flappy Bird", description: "Test your skill and patience by tapping to guide the bird through the challenging pipes.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "flappybird/index.html", imgUrl: "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/flappybird_cover.jpg" },
@@ -215,6 +228,7 @@
         const gameGrid = document.getElementById('game-grid');
         const searchInput = document.getElementById('search-input');
         const gameCountDisplay = document.getElementById('game-count');
+        const userIdDisplay = document.getElementById('user-id-display'); // New element
         const gameModal = document.getElementById('game-modal');
         const gameIframe = document.getElementById('game-iframe');
         const closeModalBtn = document.getElementById('close-modal-btn');
@@ -230,15 +244,164 @@
         let searchTerm = '';
         let loadTimeout;
 
-        // --- Core Functions ---
+
+        // =========================================================================
+        // === FIREBASE INITIALIZATION & DATA SAVING LOGIC (New) ===================
+        // =========================================================================
+
+        /**
+         * Initializes Firebase and authenticates the user.
+         */
+        async function initializeFirebase() {
+            if (Object.keys(firebaseConfig).length === 0) {
+                 console.warn("Firebase config is empty. Data persistence disabled.");
+                 userIdDisplay.textContent = "Persistence Disabled";
+                 return;
+            }
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                setLogLevel('debug'); 
+                
+                await new Promise((resolve) => {
+                    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                        if (!user) {
+                            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        }
+                        userId = auth.currentUser?.uid || crypto.randomUUID();
+                        userIdDisplay.textContent = userId;
+                        console.log(`Firebase Initialized. User ID: ${userId}`);
+                        unsubscribe();
+                        resolve();
+                    });
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+                userIdDisplay.textContent = `Error: ${error.message.substring(0, 20)}...`;
+            }
+        }
+
+        /**
+         * Constructs the Firestore document path for game progress.
+         */
+        function getGameDocRef(gameId) {
+            if (!db || !userId || !gameId) {
+                console.error("Cannot get doc ref: Firebase or IDs missing.");
+                return null;
+            }
+            // Path: /artifacts/{appId}/users/{userId}/game_saves/{gameId}
+            const path = `/artifacts/${appId}/users/${userId}/game_saves`;
+            return doc(db, path, String(gameId));
+        }
+
+        /**
+         * Saves game data to Firestore (Called by postMessage listener).
+         * @param {number} gameId - The ID of the game being saved.
+         * @param {object} data - The payload data from the iframe.
+         */
+        async function saveGameProgress(gameId, data) {
+            const docRef = getGameDocRef(gameId);
+            if (!docRef) return { success: false, error: "Database not ready." };
+            
+            try {
+                // Use JSON.stringify to safely store complex objects/arrays in a single Firestore field
+                await setDoc(docRef, { 
+                    gameId: String(gameId), 
+                    timestamp: serverTimestamp(),
+                    data: JSON.stringify(data) 
+                });
+                console.log(`[Save Success] Progress saved for ID ${gameId}.`);
+                return { success: true };
+            } catch (error) {
+                console.error(`[Save Error] Error saving progress for ${gameId}:`, error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        /**
+         * Loads game data from Firestore (Called by postMessage listener).
+         * @param {number} gameId - The ID of the game to load.
+         */
+        async function loadGameProgress(gameId) {
+            const docRef = getGameDocRef(gameId);
+            if (!docRef) return { data: null, success: false, error: "Database not ready." };
+
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const { data } = docSnap.data();
+                    // Parse the JSON string back into a JavaScript object
+                    const loadedData = JSON.parse(data);
+                    console.log(`[Load Success] Progress loaded for ID ${gameId}.`);
+                    return { data: loadedData, success: true };
+                } else {
+                    console.log(`[Load Info] No saved data found for ID ${gameId}.`);
+                    return { data: null, success: true }; // Return null data but successful status
+                }
+            } catch (error) {
+                console.error(`[Load Error] Error loading progress for ${gameId}:`, error);
+                return { data: null, success: false, error: error.message };
+            }
+        }
+
+        /**
+         * PostMessage listener to handle SAVE/LOAD requests from the iframe.
+         */
+        function handleIframeMessage(event) {
+            // Check if the message is from the currently active game iframe
+            if (event.source !== gameIframe.contentWindow) {
+                return; 
+            }
+            
+            const message = event.data;
+            const iframeWindow = gameIframe.contentWindow;
+
+            // Simple validation on message structure and current game context
+            if (typeof message !== 'object' || !message.type || message.gameId !== currentGameId) {
+                return; 
+            }
+
+            switch (message.type) {
+                case 'LOAD_DATA':
+                    console.log(`[API Call] Received LOAD_DATA request for ID ${message.gameId}`);
+                    loadGameProgress(message.gameId).then(result => {
+                        // Respond directly to the iframe
+                        iframeWindow.postMessage({ type: 'LOAD_RESPONSE', data: result.data }, '*');
+                    });
+                    break;
+                case 'SAVE_DATA':
+                    console.log(`[API Call] Received SAVE_DATA request for ID ${message.gameId}`);
+                    saveGameProgress(message.gameId, message.payload).then(result => {
+                        // Respond directly to the iframe
+                        iframeWindow.postMessage({ type: 'SAVE_RESPONSE', success: result.success }, '*');
+                    });
+                    break;
+                default:
+                    // Ignore other message types
+                    break;
+            }
+        }
+
+        // =========================================================================
+        // === UI AND GAME LOGIC (Updated to pass gameId) ==========================
+        // =========================================================================
+
 
         /**
          * Simulates the count-up text animation.
          */
         function countUp(targetElement, finalNumber) {
             let count = 0;
-            const duration = 1000; // milliseconds
-            const interval = 30; // milliseconds
+            const duration = 1000;
+            const interval = 30;
             const totalSteps = duration / interval;
             const increment = finalNumber === 0 ? 0 : finalNumber / totalSteps; 
 
@@ -251,7 +414,6 @@
                     targetElement.textContent = finalNumber;
                 }
             }
-            // Clear any previous animations and start
             if (targetElement.dataset.interval) {
                  clearTimeout(targetElement.dataset.interval);
             }
@@ -259,34 +421,38 @@
         }
 
         /**
-         * Opens the game modal with the specified URL, including loading and error handling.
+         * Opens the game modal with the specified URL and ID.
          */
-        function openGameModal(url) {
+        window.openGameModal = function(url, gameId) {
+            // Set the current game context
+            currentGameId = gameId; 
+
             // 1. Reset and Show Loading State
             gameIframe.src = url;
             errorMessage.classList.add('hidden');
             loadingOverlay.classList.remove('hidden');
-            loadingSpinner.classList.remove('hidden'); // Show spinner
+            loadingSpinner.classList.remove('hidden'); 
             loadingText.textContent = 'Loading game...';
-            openInNewTabLink.href = url; // Set the external link for the button
+            openInNewTabLink.href = url;
 
             // 2. Display modal
             gameModal.classList.remove('hidden');
             gameModal.classList.add('flex');
             
             // 3. Set a timeout to show the error message if loading is blocked
-            // Most external sites are blocked within 5 seconds.
             loadTimeout = setTimeout(() => {
                 loadingText.textContent = 'Loading failed. The game source might be blocking embeds.';
                 errorMessage.classList.remove('hidden');
-                loadingSpinner.classList.add('hidden'); // Hide spinner on failure
+                loadingSpinner.classList.add('hidden'); 
             }, 5000); 
 
             // 4. Try to listen for successful load
             gameIframe.onload = function() {
-                // If it loads quickly, clear the timeout and hide the overlay
                 clearTimeout(loadTimeout);
                 loadingOverlay.classList.add('hidden');
+                
+                // CRITICAL: Now that the iframe is loaded, it can start communicating
+                console.log(`Game ${gameId} loaded. Ready for postMessage communication.`);
             };
         }
 
@@ -294,26 +460,27 @@
          * Closes the game modal and stops the game from running.
          */
         function closeGameModal() {
-            clearTimeout(loadTimeout); // Important: clear any pending timeouts
-            gameIframe.onload = null; // Remove the load handler
+            clearTimeout(loadTimeout);
+            gameIframe.onload = null;
             
             gameModal.classList.add('hidden');
             gameModal.classList.remove('flex');
             gameIframe.src = ''; // Stop the iframe content
+            currentGameId = null; // Clear game context
         }
 
         /**
          * Generates the HTML string for a single game card.
          */
         function createGameCardHTML(game) {
-            // Escape single quotes in the URL for the onclick attribute
+            // Pass the game ID into the openGameModal call
             const safeUrl = game.gameUrl.replace(/'/g, "\\'");
             
             return `
                 <div 
                     class="bg-gray-800 rounded-xl shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-indigo-500/50"
                     data-url="${game.gameUrl}"
-                    onclick="openGameModal('${safeUrl}')"
+                    onclick="openGameModal('${safeUrl}', ${game.id})"
                 >
                     <!-- Thumbnail Area -->
                     <div class="h-40 bg-gray-900 relative overflow-hidden">
@@ -374,20 +541,26 @@
 
         // --- Event Listeners and Initialization ---
 
-        window.onload = function() {
-            // Initial render
+        window.onload = async function() {
+            // 1. Initialize Firebase and authenticate the user first
+            await initializeFirebase();
+            
+            // 2. Set up the postMessage listener for game saving
+            window.addEventListener('message', handleIframeMessage);
+
+            // 3. Initial render
             renderGameCards();
 
-            // Search input listener
+            // 4. Search input listener
             searchInput.addEventListener('input', (e) => {
                 searchTerm = e.target.value;
                 renderGameCards();
             });
 
-            // Modal listeners
+            // 5. Modal listeners
             closeModalBtn.addEventListener('click', closeGameModal);
 
-            // Global ESC key listener to close the modal
+            // 6. Global ESC key listener to close the modal
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !gameModal.classList.contains('hidden')) {
                     closeGameModal();
