@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CNM Game Hub</title>
+
+    <!-- --- Logo and Favicon Configuration (for Bookmarks and Home Screen) --- -->
+    <!-- Standard Favicon (Base64 SVG: Pink Lightning Bolt) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
+    <!-- Apple Touch Icon (Used when added to iOS Home Screen) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
+    <!-- --- End Logo Configuration --- -->
+
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Use Inter Font -->
@@ -72,14 +80,18 @@
     <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
             
-            <!-- Shiny Text Title -->
-            <div class="mb-4 md:mb-0">
+            <!-- Shiny Text Title with Logo (This is the logo shown in the header) -->
+            <div class="mb-4 md:mb-0 flex items-center">
+                <!-- Inline SVG Logo -->
+                <svg class="w-10 h-10 mr-3 text-pink-400 transform rotate-[-15deg]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <circle cx="12" cy="12" r="8" stroke-width="2" />
+                    <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" />
+                    <line x1="12" y1="12" x2="15" y2="15" stroke-width="2" />
+                </svg>
                 <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
                     <span class="shiny-text">CNM Game Hub</span>
                 </h1>
-                <p class="text-sm text-gray-400 mt-1">
-                    A curated collection of top HTML5 games.
-                </p>
             </div>
 
             <!-- Search Input -->
@@ -115,9 +127,9 @@
     </main>
 
     <!-- Game Launch Modal (Hidden by default) -->
-    <!-- Removed p-2 padding here to allow full screen takeover -->
+    <!-- Modal container now takes full screen without padding -->
     <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
-        <!-- Removed p-4 and max-width/height constraints here to allow full screen takeover -->
+        <!-- Content wrapper is also full screen and relative -->
         <div class="w-full h-full relative">
             <!-- Close Button (still visible and functional) -->
             <button 
@@ -128,8 +140,7 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <!-- Loading/Error Overlay - Shows over the iframe until content loads or times out -->
-            <!-- Updated styles for loading overlay to be borderless and full-screen -->
+            <!-- Loading/Error Overlay - Now full screen and borderless -->
             <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-50">
                 <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
                 <p id="loading-text" class="text-xl text-gray-400">Loading game...</p>
@@ -145,7 +156,7 @@
             </div>
 
 
-            <!-- Game Iframe - Removed rounded-xl and border classes for full screen -->
+            <!-- Game Iframe - Full screen, borderless -->
             <iframe 
                 id="game-iframe"
                 src="" 
@@ -163,6 +174,7 @@
         // Using Githack for reliable raw file serving from general game archives
         const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
         
+        // Racer game (ID 13) has been removed.
         const initialGames = [
             { id: 1, title: "Retro Bowl", description: "Manage your American football team and call the shots on the field in glorious 8-bit style.", category: "Sports", gameUrl: GITHUB_BASE_URL + "retrobowl/index.html", imgUrl: "https://tse4.mm.bing.net/th/id/OIP.RdiwuvPRzrZQdqrhJdnEegHaEK?cb=12&pid=Api" },
             { id: 2, title: "Flappy Bird", description: "Test your skill and patience by tapping to guide the bird through the challenging pipes.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "flappybird/index.html", imgUrl: "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/flappybird_cover.jpg" },
@@ -176,20 +188,17 @@
             { id: 10, title: "Drive Mad", description: "Drive huge monster trucks and try not to flip over in this physics-based driving game.", category: "Racing", gameUrl: GITHUB_BASE_URL + "drivemad/index.html", imgUrl: "https://www.speedrun.com/static/game/46w2m496/cover.jpg?v=1f514bb" },
             { id: 11, title: "Monkey Mart", description: "Run your own supermarket with the help of busy monkeys! Harvest and stock shelves.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "monkeymart/index.html", imgUrl: "https://monkeymartgame.org/data/image/posts/monkey-mart-game1.jpg" },
             { id: 12, title: "Pacman", description: "The arcade classic! Eat all the dots, avoid the ghosts, and grab the power pellets.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "pacman/index.html", imgUrl: "https://thumbs.dreamstime.com/b/pac-man-his-enemies-vintage-game-theme-vector-illustration-retro-computer-pinky-blinky-inky-clyde-characters-260772007.jpg" },
-            { id: 13, title: "Racer", description: "A top-down arcade racing game featuring fast cars and tight turns.", category: "Racing", gameUrl: GITHUB_BASE_URL + "racer/index.html", imgUrl: "https://placehold.co/400x220/4f46e5/ffffff?text=🏎️" },
             { id: 14, title: "Slope", description: "Navigate a steep, endless slope, avoiding obstacles and trying to stay on the track.", category: "Endless Runner", gameUrl: GITHUB_BASE_URL + "slope/index.html", imgUrl: "https://slopegame.lol/imgs/slope.png" },
             { id: 15, title: "Google Snake", description: "The classic arcade Snake game with a clean, modern twist. Eat apples and grow long!", category: "Arcade", gameUrl: GITHUB_BASE_URL + "googlesnake/index.html", imgUrl: "https://i.ytimg.com/vi/Vg2hMPbaQpM/maxresdefault.jpg" },
             { id: 16, title: "Snow Battle", description: "Throw snowballs at your enemies and duck behind cover in this fun, tactical winter battle game.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "snowbattle/index.html", imgUrl: "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/snowbattle/img/logo.png" },
             { id: 17, title: "Stack", description: "A fast-paced reflex game where you try to stack blocks perfectly to build the tallest tower.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "stack/index.html", imgUrl: "https://play-lh.googleusercontent.com/XRFD1qb5qxrEjhCF3rHb8p2TPf7xgoOeX4Y9ED5BYKYZ34aLiTaKJh_GRSAxwcQ5sBY=w526-h296-rw" },
-            // UPDATED ENTRY with the user's latest requested URL and explicit instruction.
             { 
                 id: 18, 
                 title: "Subway Surfers", 
                 description: "HOST BLOCKED: You **MUST** click 'Open in New Tab' below to play this game.", 
                 category: "Endless Runner", 
-                // This is the correct Githack URL for the raw file linked by the user
                 gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html", 
-                imgUrl: "https://play-lh.googleusercontent.com/8-l6F8099G27x772o_kH9Q4-B2N_3wD55i_S8J96G78G3OQ4w3N_3n_6t1w6w83o=w526-h296-rw" 
+                imgUrl: "https://s3.amazonaws.com/subwaysurfers/wp-content/gallery/desktop/cache/Subway-Surfers-Wallpapers-HD.jpg-nggid016-ngg0dyn-370x220x100-00f0w010c011r110f110r010t010.jpg" 
             },
         ];
 
