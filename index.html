@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CNM Game Hub</title>
 
-    <!-- --- Logo and Fullscreen Configuration (UPDATED) --- -->
+    <!-- --- Logo and Fullscreen Configuration --- -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="CNM Games">
@@ -125,6 +125,17 @@
         </div>
     </main>
 
+    <!-- Panic Button (Fixed Position) -->
+    <button 
+        id="panic-button"
+        class="fixed bottom-4 right-4 z-[2000] p-4 text-white bg-red-600 rounded-full shadow-2xl hover:bg-red-700 transition transform hover:scale-[1.05] focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-75 flex items-center space-x-2 font-bold text-lg"
+        title="Quick Escape (Press ESC)"
+    >
+        <!-- Lightning Bolt Icon -->
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <span>PANIC</span>
+    </button>
+    
     <!-- Game Launch Modal (Hidden by default) -->
     <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
         <div id="modal-content" class="w-full h-full relative">
@@ -222,6 +233,7 @@
         const gameModal = document.getElementById('game-modal');
         const gameIframe = document.getElementById('game-iframe');
         const closeModalBtn = document.getElementById('close-modal-btn');
+        const panicButton = document.getElementById('panic-button'); // NEW: Panic Button
 
         // Modal Elements for Iframe Games
         const loadingOverlay = document.getElementById('loading-overlay');
@@ -233,6 +245,19 @@
         // --- State ---
         let searchTerm = '';
         let loadTimeout;
+        const PANIC_URL = "https://member.foodvillage.ie/login"; // Target URL
+
+        // =========================================================================
+        // === UTILITY FUNCTIONS ===================================================
+        // =========================================================================
+
+        /**
+         * Redirects the user to the panic URL immediately.
+         */
+        function handlePanic() {
+            console.warn("PANIC TRIGGERED. Redirecting to safe URL...");
+            window.location.href = PANIC_URL;
+        }
 
 
         // =========================================================================
@@ -532,10 +557,18 @@
             });
 
             closeModalBtn.addEventListener('click', closeGameModal);
+            panicButton.addEventListener('click', handlePanic); // NEW: Panic Button Click Handler
 
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !gameModal.classList.contains('hidden')) {
-                    closeGameModal();
+                // If the game modal is open, ESC closes the modal.
+                // Otherwise, ESC triggers the panic function.
+                if (e.key === 'Escape') {
+                    if (gameModal.classList.contains('flex')) {
+                        closeGameModal();
+                        e.preventDefault(); // Prevent accidental panic redirect if modal is closing
+                    } else {
+                        handlePanic(); // Panic button keyboard shortcut
+                    }
                 }
             });
         };
