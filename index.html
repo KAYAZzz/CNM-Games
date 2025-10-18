@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CNM Game Hub</title>
 
-    <!-- --- Logo and Fullscreen Configuration (for iOS Home Screen) --- -->
-    
-    <!-- Enable Fullscreen Launch Mode on iOS (The fix for standalone mode) -->
+    <!-- --- Logo and Fullscreen Configuration (UPDATED) --- -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="CNM Games">
     
-    <!-- Apple Touch Icon (Base64 SVG: Pink Lightning Bolt for high-res home screen icon) -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
-    
+    <!-- Apple Touch Icon (for Add to Home Screen) -->
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png">
     <!-- Standard Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png">
     <!-- --- End Logo Configuration --- -->
 
     <!-- Load Tailwind CSS -->
@@ -26,16 +23,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a1a2e; /* Fallback color */
+            background-color: #1a1a2e;
         }
         
-        /* --- Custom CSS Block for Aesthetics --- */
-
-        /* Plasma Background Concept - Using a radial gradient and pulsing animation */
+        /* Plasma Background Concept */
         .plasma-background {
             background: radial-gradient(circle at 10% 20%, rgba(200, 20, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
                         radial-gradient(circle at 90% 80%, rgba(100, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
-                        #1a1a2e; /* Deep Indigo/Purple base */
+                        #1a1a2e;
             background-size: 200% 200%;
             animation: movePlasma 40s ease-in-out infinite alternate;
         }
@@ -49,47 +44,41 @@
         .shiny-text {
             background-image: linear-gradient(
                 90deg,
-                #6d28d9 0%, /* Violet-700 */
-                #f87171 20%, /* Red-400 */
-                #a78bfa 40%, /* Violet-400 */
-                #f87171 60%, /* Red-400 */
-                #6d28d9 80% /* Violet-700 */
+                #6d28d9 0%,
+                #f87171 20%,
+                #a78bfa 40%,
+                #f87171 60%,
+                #6d28d9 80%
             );
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
             animation: shine 4s linear infinite;
-            display: inline-block; /* Essential for text clipping */
+            display: inline-block;
         }
 
         @keyframes shine {
             to { background-position: 200% center; }
         }
         
-        /* Utility for line clamping in JS rendering */
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-box-orient: vertical;
             overflow: hidden;
             -webkit-line-clamp: 2;
         }
-
-        /* Ensure iframe is always visible in the modal when active */
-        #game-iframe {
-            display: block;
-        }
     </style>
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
 
-    <!-- Header/Nav Bar -->
-    <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl sticky top-0 z-50">
+    <!-- Header/Nav Bar (Scrolls normally) -->
+    <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl z-50 w-full">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
             
-            <!-- Shiny Text Title with Logo -->
+            <!-- Title -->
             <div class="mb-4 md:mb-0 flex items-center">
-                <!-- Inline SVG Logo -->
+                <!-- Using a generic clock icon here, since the main logo is now set in the head -->
                 <svg class="w-10 h-10 mr-3 text-pink-400 transform rotate-[-15deg]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     <circle cx="12" cy="12" r="8" stroke-width="2" />
@@ -101,7 +90,7 @@
                 </h1>
             </div>
 
-            <!-- User ID Display (Crucial for multi-user/data saving integrity) -->
+            <!-- User ID Display -->
             <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Authenticating...</span></p>
 
             <!-- Search Input -->
@@ -138,32 +127,31 @@
 
     <!-- Game Launch Modal (Hidden by default) -->
     <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
-        <div class="w-full h-full relative">
+        <div id="modal-content" class="w-full h-full relative">
             <!-- Close Button -->
             <button 
                 id="close-modal-btn"
-                class="absolute top-0 right-0 z-[1050] bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"
+                class="absolute top-0 right-0 z-50 bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"
                 title="Close Game (Esc Key)"
             >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
             <!-- Loading/Error Overlay -->
-            <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-50">
+            <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-40">
                 <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
-                <p id="loading-text" class="text-xl text-gray-400">Loading game...</p>
+                <p id="loading-text" class="text-xl text-gray-400">Loading external game...</p>
                 
-                <!-- Error message will appear here on timeout/failure -->
                 <div id="error-message" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-red-900/50 shadow-2xl border-t-4 border-red-500">
                     <p class="text-lg font-bold text-red-300 mb-3">⚠️ External Game Restriction</p>
-                    <p class="text-sm text-gray-300 mb-4 font-semibold">The host site (GitHub) is blocking the embed. The only way to play is to click the button below.</p>
+                    <p class="text-sm text-gray-300 mb-4 font-semibold">The host site is blocking the embed. The only way to play is to click the button below.</p>
                     <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-red-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-red-700 transition transform hover:scale-[1.05] shadow-lg">
                         Click to Open Game in New Tab
                     </a>
                 </div>
             </div>
 
-            <!-- Game Iframe - Full screen, borderless -->
+            <!-- Game Iframe -->
             <iframe 
                 id="game-iframe"
                 src="" 
@@ -172,6 +160,7 @@
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
             ></iframe>
+
         </div>
     </div>
 
@@ -188,7 +177,6 @@
         let db;
         let auth;
         let userId = 'loading'; 
-
         let currentGameId = null; 
 
         // Environment variables for Firebase config
@@ -197,11 +185,9 @@
 
         // --- Game Data (FIXED TO USE ABSOLUTE GITHUB RAW PATHS) ---
         const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
-        // CRITICAL: Use the ABSOLUTE RAW content URL for the thumbnails folder
         const THUMBNAILS_DIR = "https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/";
 
         const initialGames = [
-            // FILENAME/EXTENSION FIXES APPLIED - MUST MATCH GitHub file system EXACTLY
             { id: 5, title: "2048", description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "2048/index.html", imgUrl: THUMBNAILS_DIR + "2048.png" },
             { id: 7, title: "BTD4", description: "Bloons TD 4: strategically place towers to defend against waves of colorful balloons.", category: "Tower Defense", gameUrl: GITHUB_BASE_URL + "btd4/index.html", imgUrl: THUMBNAILS_DIR + "BTD4.jpg" },
             { id: 6, title: "Bitlife", description: "Live a virtual life simulation, making choices that determine your career, relationships, and death.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "bitlife/index.html", imgUrl: THUMBNAILS_DIR + "Bitlife.webp" },
@@ -224,7 +210,7 @@
                 description: "HOST BLOCKED: You **MUST** click 'Open in New Tab' below to play this game.", 
                 category: "Endless Runner", 
                 gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html", 
-                imgUrl: THUMBNAILS_DIR + "Subway-Surfers.jpg" // Corrected filename
+                imgUrl: THUMBNAILS_DIR + "Subway-Surfers.jpg" 
             },
         ];
 
@@ -237,7 +223,7 @@
         const gameIframe = document.getElementById('game-iframe');
         const closeModalBtn = document.getElementById('close-modal-btn');
 
-        // New Modal Elements
+        // Modal Elements for Iframe Games
         const loadingOverlay = document.getElementById('loading-overlay');
         const loadingSpinner = document.getElementById('loading-spinner');
         const loadingText = document.getElementById('loading-text');
@@ -250,23 +236,20 @@
 
 
         // =========================================================================
-        // === FIREBASE INITIALIZATION & DATA SAVING LOGIC (UPDATED) ===============
+        // === FIREBASE INITIALIZATION & DATA SAVING LOGIC =========================
         // =========================================================================
 
         /**
          * Initializes Firebase and authenticates the user, guaranteeing a defined userId.
-         * Now includes a fallback for missing Firebase config.
          */
         async function initializeFirebase() {
-            // Check 1: If config is missing, we cannot use Firebase, but we need a local ID.
             if (Object.keys(firebaseConfig).length === 0) {
                  console.warn("Firebase config is empty. Data persistence disabled.");
                  userId = crypto.randomUUID(); 
-                 userIdDisplay.textContent = userId + " (Persistence Disabled)"; // Show a local ID with status
-                 return; // Cannot proceed with database connection
+                 userIdDisplay.textContent = userId + " (Persistence Disabled)";
+                 return;
             }
             
-            // If config exists, proceed with actual Firebase initialization
             try {
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
@@ -274,25 +257,18 @@
                 
                 setLogLevel('debug'); 
                 
-                // Use a promise to wait for the authentication state to be finalized
                 await new Promise((resolve) => {
                     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-                        // Sign the user in if they aren't already authenticated
                         if (!user) {
                             const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
                             if (initialAuthToken) {
-                                // Attempt to sign in with provided token
                                 await signInWithCustomToken(auth, initialAuthToken);
                             } else {
-                                // Fallback to anonymous sign-in
                                 await signInAnonymously(auth);
                             }
                         }
                         
-                        // Set the definitive user ID (using the authenticated UID)
                         userId = auth.currentUser?.uid || crypto.randomUUID();
-                        
-                        // Update the UI with the *real* persistent ID
                         userIdDisplay.textContent = userId;
                         console.log(`Firebase Initialized. User ID: ${userId}`);
                         
@@ -303,7 +279,6 @@
 
             } catch (error) {
                 console.error("Error initializing Firebase or during sign-in:", error);
-                // If an auth error occurs (e.g., bad config fields), display the error and use a fallback ID
                 userId = crypto.randomUUID(); 
                 userIdDisplay.textContent = `Auth Failed: ${userId.substring(0, 8)}... (No Persistence)`;
             }
@@ -333,7 +308,6 @@
             }
             
             try {
-                // Use JSON.stringify to safely store complex objects/arrays
                 await setDoc(docRef, { 
                     gameId: String(gameId), 
                     timestamp: serverTimestamp(),
@@ -360,13 +334,12 @@
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const { data } = docSnap.data();
-                    // Parse the JSON string back into a JavaScript object
                     const loadedData = JSON.parse(data);
                     console.log(`[Load Success] Progress loaded for ID ${gameId}.`);
                     return { data: loadedData, success: true };
                 } else {
                     console.log(`[Load Info] No saved data found for ID ${gameId}.`);
-                    return { data: null, success: true }; // Return null data but successful status
+                    return { data: null, success: true };
                 }
             } catch (error) {
                 console.error(`[Load Error] Error loading progress for ${gameId}:`, error);
@@ -378,7 +351,7 @@
          * PostMessage listener to handle SAVE/LOAD requests from the iframe.
          */
         function handleIframeMessage(event) {
-            // Check if the message is from the currently active game iframe
+            // Only accept messages from the currently active iframe source
             if (event.source !== gameIframe.contentWindow) {
                 return; 
             }
@@ -386,36 +359,73 @@
             const message = event.data;
             const iframeWindow = gameIframe.contentWindow;
 
-            // Simple validation on message structure and current game context
             if (typeof message !== 'object' || !message.type || message.gameId !== currentGameId) {
                 return; 
             }
 
             switch (message.type) {
                 case 'LOAD_DATA':
-                    console.log(`[API Call] Received LOAD_DATA request for ID ${message.gameId}`);
                     loadGameProgress(message.gameId).then(result => {
-                        // Respond directly to the iframe
                         iframeWindow.postMessage({ type: 'LOAD_RESPONSE', data: result.data }, '*');
                     });
                     break;
                 case 'SAVE_DATA':
-                    console.log(`[API Call] Received SAVE_DATA request for ID ${message.gameId}`);
                     saveGameProgress(message.gameId, message.payload).then(result => {
-                        // Respond directly to the iframe
                         iframeWindow.postMessage({ type: 'SAVE_RESPONSE', success: result.success }, '*');
                     });
                     break;
                 default:
-                    // Ignore other message types
                     break;
             }
         }
 
         // =========================================================================
-        // === UI AND GAME LOGIC ===================================================
+        // === UI AND GAME LAUNCH LOGIC ============================================
         // =========================================================================
 
+        /**
+         * Opens the game modal with the specified URL and ID.
+         */
+        window.openGameModal = function(url, gameId) {
+            currentGameId = gameId; 
+            gameModal.classList.remove('hidden');
+            gameModal.classList.add('flex');
+
+            // 1. Reset and Show Loading State
+            gameIframe.src = url;
+            errorMessage.classList.add('hidden');
+            loadingOverlay.classList.remove('hidden');
+            loadingSpinner.classList.remove('hidden'); 
+            loadingText.textContent = 'Loading external game...';
+            openInNewTabLink.href = url;
+
+            // 2. Set a timeout to show the error message if loading is blocked (5s)
+            loadTimeout = setTimeout(() => {
+                loadingText.textContent = 'Loading failed. The game source might be blocking embeds.';
+                errorMessage.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden'); 
+            }, 5000); 
+
+            // 3. Try to listen for successful load
+            gameIframe.onload = function() {
+                clearTimeout(loadTimeout);
+                loadingOverlay.classList.add('hidden');
+                console.log(`External game ${gameId} loaded. Ready for postMessage communication.`);
+            };
+        }
+
+        /**
+         * Closes the game modal and stops the iframe content.
+         */
+        function closeGameModal() {
+            clearTimeout(loadTimeout);
+            gameIframe.onload = null;
+            
+            gameModal.classList.add('hidden');
+            gameModal.classList.remove('flex');
+            gameIframe.src = ''; // Stop the iframe content
+            currentGameId = null; // Clear game context
+        }
 
         /**
          * Simulates the count-up text animation.
@@ -443,59 +453,9 @@
         }
 
         /**
-         * Opens the game modal with the specified URL and ID.
-         */
-        window.openGameModal = function(url, gameId) {
-            // Set the current game context
-            currentGameId = gameId; 
-
-            // 1. Reset and Show Loading State
-            gameIframe.src = url;
-            errorMessage.classList.add('hidden');
-            loadingOverlay.classList.remove('hidden');
-            loadingSpinner.classList.remove('hidden'); 
-            loadingText.textContent = 'Loading game...';
-            openInNewTabLink.href = url;
-
-            // 2. Display modal
-            gameModal.classList.remove('hidden');
-            gameModal.classList.add('flex');
-            
-            // 3. Set a timeout to show the error message if loading is blocked
-            loadTimeout = setTimeout(() => {
-                loadingText.textContent = 'Loading failed. The game source might be blocking embeds.';
-                errorMessage.classList.remove('hidden');
-                loadingSpinner.classList.add('hidden'); 
-            }, 5000); 
-
-            // 4. Try to listen for successful load
-            gameIframe.onload = function() {
-                clearTimeout(loadTimeout);
-                loadingOverlay.classList.add('hidden');
-                
-                // CRITICAL: Now that the iframe is loaded, it can start communicating
-                console.log(`Game ${gameId} loaded. Ready for postMessage communication.`);
-            };
-        }
-
-        /**
-         * Closes the game modal and stops the game from running.
-         */
-        function closeGameModal() {
-            clearTimeout(loadTimeout);
-            gameIframe.onload = null;
-            
-            gameModal.classList.add('hidden');
-            gameModal.classList.remove('flex');
-            gameIframe.src = ''; // Stop the iframe content
-            currentGameId = null; // Clear game context
-        }
-
-        /**
          * Generates the HTML string for a single game card.
          */
         function createGameCardHTML(game) {
-            // Pass the game ID into the openGameModal call
             const safeUrl = game.gameUrl.replace(/'/g, "\\'");
             
             return `
@@ -506,7 +466,6 @@
                 >
                     <!-- Thumbnail Area -->
                     <div class="h-40 bg-gray-900 relative overflow-hidden">
-                        <!-- Image URL is now an absolute raw GitHub link -->
                         <img 
                             src="${game.imgUrl}" 
                             alt="${game.title} Thumbnail" 
@@ -524,7 +483,6 @@
                         <h2 class="text-xl font-bold text-gray-50 truncate mb-1">${game.title}</h2>
                         <p class="text-sm text-gray-400 line-clamp-2">${game.description}</p>
                         
-                        <!-- Launch Button - pointer-events-none ensures only the card click works -->
                         <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.01] shadow-lg shadow-indigo-500/50 pointer-events-none">
                             Launch Game
                         </button>
@@ -545,10 +503,8 @@
                 game.description.toLowerCase().includes(term)
             );
 
-            // Update the count display
             countUp(gameCountDisplay, filteredGames.length);
-
-            // Generate HTML for the grid
+            
             if (filteredGames.length > 0) {
                 gameGrid.innerHTML = filteredGames.map(createGameCardHTML).join('');
             } else {
@@ -565,25 +521,18 @@
         // --- Event Listeners and Initialization ---
 
         window.onload = async function() {
-            // 1. Initialize Firebase and authenticate the user first. We WAIT for this.
             await initializeFirebase();
             
-            // 2. Set up the postMessage listener for game saving
             window.addEventListener('message', handleIframeMessage);
-
-            // 3. Initial render (now that everything is initialized)
             renderGameCards();
 
-            // 4. Search input listener
             searchInput.addEventListener('input', (e) => {
                 searchTerm = e.target.value;
                 renderGameCards();
             });
 
-            // 5. Modal listeners
             closeModalBtn.addEventListener('click', closeGameModal);
 
-            // 6. Global ESC key listener to close the modal
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !gameModal.classList.contains('hidden')) {
                     closeGameModal();
