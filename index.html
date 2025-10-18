@@ -148,16 +148,17 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <!-- Loading/Error Overlay -->
+            <!-- Loading/Timeout Overlay - Simplified -->
             <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-40">
                 <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
+                
                 <p id="loading-text" class="text-xl text-gray-400">Loading external game...</p>
                 
-                <div id="error-message" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-red-900/50 shadow-2xl border-t-4 border-red-500">
-                    <p class="text-lg font-bold text-red-300 mb-3">⚠️ External Game Restriction</p>
-                    <p class="text-sm text-gray-300 mb-4 font-semibold">The host site is blocking the embed. The only way to play is to click the button below.</p>
-                    <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-red-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-red-700 transition transform hover:scale-[1.05] shadow-lg">
-                        Click to Open Game in New Tab
+                <!-- Fallback link area, initially hidden on timeout -->
+                <div id="link-fallback" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-gray-800/50 shadow-2xl border-t-4 border-indigo-500">
+                    <p class="text-sm text-gray-300 mb-4 font-semibold">The game didn't load inside the hub. This usually means the host site blocks embedding.</p>
+                    <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-indigo-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-indigo-700 transition transform hover:scale-[1.05] shadow-lg">
+                        Open Game in New Tab
                     </a>
                 </div>
             </div>
@@ -218,7 +219,7 @@
             { 
                 id: 18, 
                 title: "Subway Surfers", 
-                description: "HOST BLOCKED: You **MUST** click 'Open in New Tab' below to play this game.", 
+                description: "Hosted externally. May require opening in a new tab.", 
                 category: "Endless Runner", 
                 gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html", 
                 imgUrl: THUMBNAILS_DIR + "Subway-Surfers.jpg" 
@@ -231,18 +232,17 @@
                 title: "Stickman Hook", 
                 description: "Swing like Spider-Man using your hook to navigate levels without falling.", 
                 category: "Arcade/Physics", 
-                // FIX: Updated to the correct Githack version of the user-provided URL:
                 gameUrl: "https://raw.githack.com/StickmanHook/StickmanHook.github.io/main/index.html", 
                 imgUrl: THUMBNAILS_DIR + "stickman-hook.png" 
             },
             { 
-                id: 22, 
-                title: "Merge Fellas", 
-                // FIX: Retaining this message as this game is known to block embeds
-                description: "HOST BLOCKED: Click 'Open in New Tab' below to play this game.", 
+                id: 23, 
+                title: "Block Blast", 
+                description: "Drag and drop colorful blocks to complete lines and squares in this challenging puzzle game.", 
                 category: "Puzzle", 
-                gameUrl: "https://raw.githack.com/wyong32/Merge-Fellas/main/index.html", 
-                imgUrl: THUMBNAILS_DIR + "merge-fellas.png" 
+                // *** UPDATED URL TO USE THE RAW GITHACK LINK ***
+                gameUrl: "https://raw.githack.com/futzumi/block-blast/main/index.html", 
+                imgUrl: THUMBNAILS_DIR + "block-blast.jpeg" 
             },
         ];
 
@@ -260,7 +260,7 @@
         const loadingOverlay = document.getElementById('loading-overlay');
         const loadingSpinner = document.getElementById('loading-spinner');
         const loadingText = document.getElementById('loading-text');
-        const errorMessage = document.getElementById('error-message');
+        const linkFallback = document.getElementById('link-fallback');
         const openInNewTabLink = document.getElementById('open-in-new-tab');
 
         // --- State ---
@@ -438,21 +438,24 @@
             gameModal.classList.add('flex');
 
             // 1. Reset and Show Loading State
-            gameIframe.src = url;
-            errorMessage.classList.add('hidden');
+            linkFallback.classList.add('hidden'); // Hide fallback link initially
             loadingOverlay.classList.remove('hidden');
             loadingSpinner.classList.remove('hidden'); 
             loadingText.textContent = 'Loading external game...';
             openInNewTabLink.href = url;
+            gameIframe.src = ''; // Clear iframe source initially
 
-            // 2. Set a timeout to show the error message if loading is blocked (5s)
+            // Set the game URL and start the loading process
+            gameIframe.src = url;
+
+            // 2. Set a timeout (5s) to suggest manual launch if loading fails/blocks
             loadTimeout = setTimeout(() => {
-                loadingText.textContent = 'Loading failed. The game source might be blocking embeds.';
-                errorMessage.classList.remove('hidden');
+                loadingText.textContent = 'Loading took longer than expected. The host site might be blocking embeds.';
                 loadingSpinner.classList.add('hidden'); 
+                linkFallback.classList.remove('hidden'); // Show the manual link
             }, 5000); 
 
-            // 3. Try to listen for successful load
+            // 3. Listen for successful load
             gameIframe.onload = function() {
                 clearTimeout(loadTimeout);
                 loadingOverlay.classList.add('hidden');
