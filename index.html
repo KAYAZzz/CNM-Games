@@ -115,22 +115,41 @@
     </main>
 
     <!-- Game Launch Modal (Hidden by default) -->
-    <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center p-2 transition-opacity duration-300 hidden z-[1000]">
-        <div class="w-full h-full relative p-4 max-w-screen-2xl max-h-screen-2xl">
-            <!-- Close Button -->
+    <!-- Removed p-2 padding here to allow full screen takeover -->
+    <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
+        <!-- Removed p-4 and max-width/height constraints here to allow full screen takeover -->
+        <div class="w-full h-full relative">
+            <!-- Close Button (still visible and functional) -->
             <button 
                 id="close-modal-btn"
-                class="absolute top-0 right-0 z-10 bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"
+                class="absolute top-0 right-0 z-[1050] bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"
                 title="Close Game (Esc Key)"
             >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <!-- Game Iframe -->
+            <!-- Loading/Error Overlay - Shows over the iframe until content loads or times out -->
+            <!-- Updated styles for loading overlay to be borderless and full-screen -->
+            <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-50">
+                <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
+                <p id="loading-text" class="text-xl text-gray-400">Loading game...</p>
+                
+                <!-- Error message will appear here on timeout/failure -->
+                <div id="error-message" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-red-900/50 shadow-2xl border-t-4 border-red-500">
+                    <p class="text-lg font-bold text-red-300 mb-3">⚠️ External Game Restriction</p>
+                    <p class="text-sm text-gray-300 mb-4 font-semibold">The host site (GitHub) is blocking the embed. The only way to play is to click the button below.</p>
+                    <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-red-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-red-700 transition transform hover:scale-[1.05] shadow-lg">
+                        Click to Open Game in New Tab
+                    </a>
+                </div>
+            </div>
+
+
+            <!-- Game Iframe - Removed rounded-xl and border classes for full screen -->
             <iframe 
                 id="game-iframe"
                 src="" 
-                class="w-full h-full rounded-xl shadow-2xl bg-gray-900 border-4 border-indigo-500" 
+                class="w-full h-full shadow-2xl bg-gray-900" 
                 title="Game Player"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
@@ -141,6 +160,7 @@
 
     <script>
         // --- Game Data ---
+        // Using Githack for reliable raw file serving from general game archives
         const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
         
         const initialGames = [
@@ -160,7 +180,17 @@
             { id: 14, title: "Slope", description: "Navigate a steep, endless slope, avoiding obstacles and trying to stay on the track.", category: "Endless Runner", gameUrl: GITHUB_BASE_URL + "slope/index.html", imgUrl: "https://slopegame.lol/imgs/slope.png" },
             { id: 15, title: "Google Snake", description: "The classic arcade Snake game with a clean, modern twist. Eat apples and grow long!", category: "Arcade", gameUrl: GITHUB_BASE_URL + "googlesnake/index.html", imgUrl: "https://i.ytimg.com/vi/Vg2hMPbaQpM/maxresdefault.jpg" },
             { id: 16, title: "Snow Battle", description: "Throw snowballs at your enemies and duck behind cover in this fun, tactical winter battle game.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "snowbattle/index.html", imgUrl: "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/snowbattle/img/logo.png" },
-            { id: 17, title: "Stack", description: "A fast-paced reflex game where you try to stack blocks perfectly to build the tallest tower.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "stack/index.html", imgUrl: "https://play-lh.googleusercontent.com/XRFD1qb5qxrEjhCF3rHb8p2TPf7xgoOeX4Y9ED5BYKYZ34aLiTaKJh_GRSAxwcQ5sBY=w526-h296-rw" }
+            { id: 17, title: "Stack", description: "A fast-paced reflex game where you try to stack blocks perfectly to build the tallest tower.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "stack/index.html", imgUrl: "https://play-lh.googleusercontent.com/XRFD1qb5qxrEjhCF3rHb8p2TPf7xgoOeX4Y9ED5BYKYZ34aLiTaKJh_GRSAxwcQ5sBY=w526-h296-rw" },
+            // UPDATED ENTRY with the user's latest requested URL and explicit instruction.
+            { 
+                id: 18, 
+                title: "Subway Surfers", 
+                description: "HOST BLOCKED: You **MUST** click 'Open in New Tab' below to play this game.", 
+                category: "Endless Runner", 
+                // This is the correct Githack URL for the raw file linked by the user
+                gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html", 
+                imgUrl: "https://play-lh.googleusercontent.com/8-l6F8099G27x772o_kH9Q4-B2N_3wD55i_S8J96G78G3OQ4w3N_3n_6t1w6w83o=w526-h296-rw" 
+            },
         ];
 
         // --- DOM Elements ---
@@ -171,8 +201,16 @@
         const gameIframe = document.getElementById('game-iframe');
         const closeModalBtn = document.getElementById('close-modal-btn');
 
+        // New Modal Elements
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const loadingText = document.getElementById('loading-text');
+        const errorMessage = document.getElementById('error-message');
+        const openInNewTabLink = document.getElementById('open-in-new-tab');
+
         // --- State ---
         let searchTerm = '';
+        let loadTimeout;
 
         // --- Core Functions ---
 
@@ -181,11 +219,10 @@
          */
         function countUp(targetElement, finalNumber) {
             let count = 0;
-            const step = 1;
             const duration = 1000; // milliseconds
             const interval = 30; // milliseconds
             const totalSteps = duration / interval;
-            const increment = finalNumber / totalSteps;
+            const increment = finalNumber === 0 ? 0 : finalNumber / totalSteps; 
 
             function updateCount() {
                 if (count < finalNumber) {
@@ -196,22 +233,52 @@
                     targetElement.textContent = finalNumber;
                 }
             }
-            updateCount();
+            // Clear any previous animations and start
+            if (targetElement.dataset.interval) {
+                 clearTimeout(targetElement.dataset.interval);
+            }
+            targetElement.dataset.interval = setTimeout(updateCount, interval);
         }
 
         /**
-         * Opens the game modal with the specified URL.
+         * Opens the game modal with the specified URL, including loading and error handling.
          */
         function openGameModal(url) {
+            // 1. Reset and Show Loading State
             gameIframe.src = url;
+            errorMessage.classList.add('hidden');
+            loadingOverlay.classList.remove('hidden');
+            loadingSpinner.classList.remove('hidden'); // Show spinner
+            loadingText.textContent = 'Loading game...';
+            openInNewTabLink.href = url; // Set the external link for the button
+
+            // 2. Display modal
             gameModal.classList.remove('hidden');
             gameModal.classList.add('flex');
+            
+            // 3. Set a timeout to show the error message if loading is blocked
+            // Most external sites are blocked within 5 seconds.
+            loadTimeout = setTimeout(() => {
+                loadingText.textContent = 'Loading failed. The game source might be blocking embeds.';
+                errorMessage.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden'); // Hide spinner on failure
+            }, 5000); 
+
+            // 4. Try to listen for successful load
+            gameIframe.onload = function() {
+                // If it loads quickly, clear the timeout and hide the overlay
+                clearTimeout(loadTimeout);
+                loadingOverlay.classList.add('hidden');
+            };
         }
 
         /**
          * Closes the game modal and stops the game from running.
          */
         function closeGameModal() {
+            clearTimeout(loadTimeout); // Important: clear any pending timeouts
+            gameIframe.onload = null; // Remove the load handler
+            
             gameModal.classList.add('hidden');
             gameModal.classList.remove('flex');
             gameIframe.src = ''; // Stop the iframe content
@@ -221,11 +288,14 @@
          * Generates the HTML string for a single game card.
          */
         function createGameCardHTML(game) {
+            // Escape single quotes in the URL for the onclick attribute
+            const safeUrl = game.gameUrl.replace(/'/g, "\\'");
+            
             return `
                 <div 
                     class="bg-gray-800 rounded-xl shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-indigo-500/50"
                     data-url="${game.gameUrl}"
-                    onclick="openGameModal('${game.gameUrl.replace(/'/g, "\\'")}')"
+                    onclick="openGameModal('${safeUrl}')"
                 >
                     <!-- Thumbnail Area -->
                     <div class="h-40 bg-gray-900 relative overflow-hidden">
@@ -246,7 +316,7 @@
                         <h2 class="text-xl font-bold text-gray-50 truncate mb-1">${game.title}</h2>
                         <p class="text-sm text-gray-400 line-clamp-2">${game.description}</p>
                         
-                        <!-- Launch Button -->
+                        <!-- Launch Button - pointer-events-none ensures only the card click works -->
                         <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.01] shadow-lg shadow-indigo-500/50 pointer-events-none">
                             Launch Game
                         </button>
