@@ -6,10 +6,19 @@
     <title>CNM Game Hub</title>
 
     <!-- --- Logo and Favicon Configuration (for Bookmarks and Home Screen) --- -->
-    <!-- Standard Favicon (Base64 SVG: Pink Lightning Bolt) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
-    <!-- Apple Touch Icon (Used when added to iOS Home Screen) -->
+    
+    <!-- Fix 1: Enable Fullscreen Launch Mode on iOS (The missing piece!) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Optional: Status bar style -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CNM Games">
+    
+    <!-- Fix 2: Apple Touch Icon (Used when added to iOS Home Screen) -->
+    <!-- Base64 SVG: Pink Lightning Bolt for high-res home screen icon -->
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
+    
+    <!-- Standard Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWM0ODk5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgPHBhdGggZD0iTTEzIDJMMyAxNGg5bC0xIDggMTAtMTJoLTlsMS04eiIvPgogIDwvcmF2Zz4=">
     <!-- --- End Logo Configuration --- -->
 
     <!-- Load Tailwind CSS -->
