@@ -102,7 +102,7 @@
             </div>
 
             <!-- User ID Display (Crucial for multi-user/data saving integrity) -->
-            <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Initializing...</span></p>
+            <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Authenticating...</span></p>
 
             <!-- Search Input -->
             <div class="w-full md:w-80 lg:w-96 mt-4 md:mt-0">
@@ -187,40 +187,45 @@
         // --- Global Firebase & State Vars ---
         let db;
         let auth;
-        let userId = 'loading';
+        let userId = 'loading'; 
+
         let currentGameId = null; 
 
         // Environment variables for Firebase config
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
 
-        // --- Game Data (No Change) ---
+        // --- Game Data (FIXED TO USE ABSOLUTE GITHUB RAW PATHS) ---
         const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
-        
+        // CRITICAL FIX: Use the ABSOLUTE RAW content URL for the thumbnails folder
+        const THUMBNAILS_DIR = "https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/";
+
         const initialGames = [
-            { id: 1, title: "Retro Bowl", description: "Manage your American football team and call the shots on the field in glorious 8-bit style.", category: "Sports", gameUrl: GITHUB_BASE_URL + "retrobowl/index.html", imgUrl: "https://tse4.mm.bing.net/th/id/OIP.RdiwuvPRzrZQdqrhJdnEegHaEK?cb=12&pid=Api" },
-            { id: 2, title: "Flappy Bird", description: "Test your skill and patience by tapping to guide the bird through the challenging pipes.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "flappybird/index.html", imgUrl: "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/flappybird_cover.jpg" },
-            { id: 3, title: "Geometry Dash", description: "Jump and fly your way through geometric worlds, synced to an electrifying beat.", category: "Rhythm", gameUrl: GITHUB_BASE_URL + "geometrydash/index.html", imgUrl: "https://static.wikia.nocookie.net/geometry_dash/images/f/f0/G-Dash.jpeg/revision/latest?cb=20200324180333" },
-            { id: 4, title: "Tetris", description: "The timeless puzzle game! Fit the falling blocks together to clear lines and score points.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "tetris/index.html", imgUrl: "https://www.nestetris.com/assets/images/tetrisco.webp" },
-            { id: 5, title: "2048", description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "2048/index.html", imgUrl: "https://m.media-amazon.com/images/I/71Jxkpq9jbL.png" },
-            { id: 6, title: "BitLife", description: "Live a virtual life simulation, making choices that determine your career, relationships, and death.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "bitlife/index.html", imgUrl: "https://play-lh.googleusercontent.com/fUM-UyywXxjC8soxAZdIlxJrlRRXmql8wkE426SHzft4lJycSKVd2jCYQQX1BEG9Xw=w480-h960-rw" },
-            { id: 7, title: "BTD4", description: "Bloons TD 4: strategically place towers to defend against waves of colorful balloons.", category: "Tower Defense", gameUrl: GITHUB_BASE_URL + "btd4/index.html", imgUrl: "https://cdn.nkstatic.com/thumbs/large/Bloons-Tower-Defense4-lg.jpg" },
-            { id: 8, title: "Chess", description: "The classic board game of strategy and tactics. Outwit your opponent to deliver checkmate.", category: "Strategy", gameUrl: GITHUB_BASE_URL + "chess/index.html", imgUrl: "https://t3.ftcdn.net/jpg/15/82/08/42/360_F_1582084263_CT62L3LWuew07xgfeadhBBGEl0hrR10G.jpg" },
-            { id: 9, title: "Cookie Clicker", description: "A highly addictive incremental game where you click a cookie to generate more cookies.", category: "Idle Clicker", gameUrl: GITHUB_BASE_URL + "cookieclicker/index.html", imgUrl: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/06/mixcollage-13-jun-2025-05-35-pm-3608.jpg?q=49&fit=crop&w=360&h=240&dpr=2" },
-            { id: 10, title: "Drive Mad", description: "Drive huge monster trucks and try not to flip over in this physics-based driving game.", category: "Racing", gameUrl: GITHUB_BASE_URL + "drivemad/index.html", imgUrl: "https://www.speedrun.com/static/game/46w2m496/cover.jpg?v=1f514bb" },
-            { id: 11, title: "Monkey Mart", description: "Run your own supermarket with the help of busy monkeys! Harvest and stock shelves.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "monkeymart/index.html", imgUrl: "https://monkeymartgame.org/data/image/posts/monkey-mart-game1.jpg" },
-            { id: 12, title: "Pacman", description: "The arcade classic! Eat all the dots, avoid the ghosts, and grab the power pellets.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "pacman/index.html", imgUrl: "https://thumbs.dreamstime.com/b/pac-man-his-enemies-vintage-game-theme-vector-illustration-retro-computer-pinky-blinky-inky-clyde-characters-260772007.jpg" },
-            { id: 14, title: "Slope", description: "Navigate a steep, endless slope, avoiding obstacles and trying to stay on the track.", category: "Endless Runner", gameUrl: GITHUB_BASE_URL + "slope/index.html", imgUrl: "https://slopegame.lol/imgs/slope.png" },
-            { id: 15, title: "Google Snake", description: "The classic arcade Snake game with a clean, modern twist. Eat apples and grow long!", category: "Arcade", gameUrl: GITHUB_BASE_URL + "googlesnake/index.html", imgUrl: "https://i.ytimg.com/vi/Vg2hMPbaQpM/maxresdefault.jpg" },
-            { id: 16, title: "Snow Battle", description: "Throw snowballs at your enemies and duck behind cover in this fun, tactical winter battle game.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "snowbattle/index.html", imgUrl: "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/snowbattle/img/logo.png" },
-            { id: 17, title: "Stack", description: "A fast-paced reflex game where you try to stack blocks perfectly to build the tallest tower.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "stack/index.html", imgUrl: "https://play-lh.googleusercontent.com/XRFD1qb5qxrEjhCF3rHb8p2TPf7xgoOeX4Y9ED5BYKYZ34aLiTaKJh_GRSAxwcQ5sBY=w526-h296-rw" },
+            // FILENAME/EXTENSION FIXES APPLIED - MUST MATCH GitHub file system EXACTLY
+            { id: 5, title: "2048", description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "2048/index.html", imgUrl: THUMBNAILS_DIR + "2048.png" },
+            { id: 7, title: "BTD4", description: "Bloons TD 4: strategically place towers to defend against waves of colorful balloons.", category: "Tower Defense", gameUrl: GITHUB_BASE_URL + "btd4/index.html", imgUrl: THUMBNAILS_DIR + "BTD4.jpg" },
+            { id: 6, title: "Bitlife", description: "Live a virtual life simulation, making choices that determine your career, relationships, and death.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "bitlife/index.html", imgUrl: THUMBNAILS_DIR + "Bitlife.webp" },
+            { id: 8, title: "Chess", description: "The classic board game of strategy and tactics. Outwit your opponent to deliver checkmate.", category: "Strategy", gameUrl: GITHUB_BASE_URL + "chess/index.html", imgUrl: THUMBNAILS_DIR + "chess.jpg" }, 
+            { id: 9, title: "Cookie Clicker", description: "A highly addictive incremental game where you click a cookie to generate more cookies.", category: "Idle Clicker", gameUrl: GITHUB_BASE_URL + "cookieclicker/index.html", imgUrl: THUMBNAILS_DIR + "Cookie-Clicker.jpg" }, 
+            { id: 10, title: "Drive Mad", description: "Drive huge monster trucks and try not to flip over in this physics-based driving game.", category: "Racing", gameUrl: GITHUB_BASE_URL + "drivemad/index.html", imgUrl: THUMBNAILS_DIR + "Drive-Mad.jpg" }, 
+            { id: 2, title: "Flappy Bird", description: "Test your skill and patience by tapping to guide the bird through the challenging pipes.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "flappybird/index.html", imgUrl: THUMBNAILS_DIR + "Flappy-Bird.jpg" }, 
+            { id: 3, title: "Geo Dash", description: "Jump and fly your way through geometric worlds, synced to an electrifying beat.", category: "Rhythm", gameUrl: GITHUB_BASE_URL + "geometrydash/index.html", imgUrl: THUMBNAILS_DIR + "Geometry-Dash.webp" }, 
+            { id: 15, title: "Google Snake", description: "The classic arcade Snake game with a clean, modern twist. Eat apples and grow long!", category: "Arcade", gameUrl: GITHUB_BASE_URL + "googlesnake/index.html", imgUrl: THUMBNAILS_DIR + "Google-Snake.jpg" }, 
+            { id: 11, title: "Monkey Mart", description: "Run your own supermarket with the help of busy monkeys! Harvest and stock shelves.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "monkeymart/index.html", imgUrl: THUMBNAILS_DIR + "Monkey-Mart.jpg" }, 
+            { id: 12, title: "PacMan", description: "The arcade classic! Eat all the dots, avoid the ghosts, and grab the power pellets.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "pacman/index.html", imgUrl: THUMBNAILS_DIR + "Pacman.jpg" }, 
+            { id: 1, title: "Retro Ball", description: "Manage your American football team and call the shots on the field in glorious 8-bit style.", category: "Sports", gameUrl: GITHUB_BASE_URL + "retrobowl/index.html", imgUrl: THUMBNAILS_DIR + "Retro-Ball.webp" }, 
+            { id: 14, title: "Slope", description: "Navigate a steep, endless slope, avoiding obstacles and trying to stay on the track.", category: "Endless Runner", gameUrl: GITHUB_BASE_URL + "slope/index.html", imgUrl: THUMBNAILS_DIR + "slope.png" }, 
+            { id: 16, title: "Snow Battle", description: "Throw snowballs at your enemies and duck behind cover in this fun, tactical winter battle game.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "snowbattle/index.html", imgUrl: THUMBNAILS_DIR + "Snow-Battle.png" }, 
+            { id: 17, title: "Stack", description: "A fast-paced reflex game where you try to stack blocks perfectly to build the tallest tower.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "stack/index.html", imgUrl: THUMBNAILS_DIR + "Stack.webp" },
+            { id: 4, title: "Tetris", description: "The timeless puzzle game! Fit the falling blocks together to clear lines and score points.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "tetris/index.html", imgUrl: THUMBNAILS_DIR + "Tetris.webp" },
             { 
                 id: 18, 
                 title: "Subway Surfers", 
-                description: "HOST BLOCKED: You **MUST** click 'Open in New Tab' below to play this game.", 
+                description: "Subway Surfers is an endless runner game where players dodge trains and collect coins.", 
                 category: "Endless Runner", 
                 gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html", 
-                imgUrl: "https://s3.amazonaws.com/subwaysurfers/wp-content/gallery/desktop/cache/Subway-Surfers-Wallpapers-HD.jpg-nggid016-ngg0dyn-370x220x100-00f0w010c011r110f110r010t010.jpg" 
+                // CRITICAL FIX: Changed from SubwaySurfers.png to Subway-Surfers.jpg
+                imgUrl: THUMBNAILS_DIR + "Subway-Surfers.jpg" 
             },
         ];
 
@@ -228,7 +233,7 @@
         const gameGrid = document.getElementById('game-grid');
         const searchInput = document.getElementById('search-input');
         const gameCountDisplay = document.getElementById('game-count');
-        const userIdDisplay = document.getElementById('user-id-display'); // New element
+        const userIdDisplay = document.getElementById('user-id-display'); 
         const gameModal = document.getElementById('game-modal');
         const gameIframe = document.getElementById('game-iframe');
         const closeModalBtn = document.getElementById('close-modal-btn');
@@ -246,11 +251,11 @@
 
 
         // =========================================================================
-        // === FIREBASE INITIALIZATION & DATA SAVING LOGIC (New) ===================
+        // === FIREBASE INITIALIZATION & DATA SAVING LOGIC =========================
         // =========================================================================
 
         /**
-         * Initializes Firebase and authenticates the user.
+         * Initializes Firebase and authenticates the user, guaranteeing a defined userId.
          */
         async function initializeFirebase() {
             if (Object.keys(firebaseConfig).length === 0) {
@@ -265,19 +270,27 @@
                 
                 setLogLevel('debug'); 
                 
+                // Use a promise to wait for the authentication state to be finalized
                 await new Promise((resolve) => {
                     const unsubscribe = onAuthStateChanged(auth, async (user) => {
                         if (!user) {
                             const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
                             if (initialAuthToken) {
+                                // Attempt to sign in with provided token
                                 await signInWithCustomToken(auth, initialAuthToken);
                             } else {
+                                // Fallback to anonymous sign-in
                                 await signInAnonymously(auth);
                             }
                         }
+                        
+                        // Set the definitive user ID (using the authenticated UID or a UUID fallback)
                         userId = auth.currentUser?.uid || crypto.randomUUID();
+                        
+                        // FIX: Update the DOM only when the userId is final
                         userIdDisplay.textContent = userId;
                         console.log(`Firebase Initialized. User ID: ${userId}`);
+                        
                         unsubscribe();
                         resolve();
                     });
@@ -285,7 +298,8 @@
 
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
-                userIdDisplay.textContent = `Error: ${error.message.substring(0, 20)}...`;
+                // Update display to show error if initialization fails completely
+                userIdDisplay.textContent = `Auth Error: ${error.message.substring(0, 20)}...`;
             }
         }
 
@@ -304,15 +318,13 @@
 
         /**
          * Saves game data to Firestore (Called by postMessage listener).
-         * @param {number} gameId - The ID of the game being saved.
-         * @param {object} data - The payload data from the iframe.
          */
         async function saveGameProgress(gameId, data) {
             const docRef = getGameDocRef(gameId);
             if (!docRef) return { success: false, error: "Database not ready." };
             
             try {
-                // Use JSON.stringify to safely store complex objects/arrays in a single Firestore field
+                // Use JSON.stringify to safely store complex objects/arrays
                 await setDoc(docRef, { 
                     gameId: String(gameId), 
                     timestamp: serverTimestamp(),
@@ -328,7 +340,6 @@
 
         /**
          * Loads game data from Firestore (Called by postMessage listener).
-         * @param {number} gameId - The ID of the game to load.
          */
         async function loadGameProgress(gameId) {
             const docRef = getGameDocRef(gameId);
@@ -391,7 +402,7 @@
         }
 
         // =========================================================================
-        // === UI AND GAME LOGIC (Updated to pass gameId) ==========================
+        // === UI AND GAME LOGIC ===================================================
         // =========================================================================
 
 
@@ -484,11 +495,12 @@
                 >
                     <!-- Thumbnail Area -->
                     <div class="h-40 bg-gray-900 relative overflow-hidden">
+                        <!-- Image URL is now an absolute raw GitHub link -->
                         <img 
                             src="${game.imgUrl}" 
                             alt="${game.title} Thumbnail" 
                             class="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110" 
-                            onerror="this.onerror=null; this.src='https://placehold.co/400x220/33334d/d1d5db?text=🎮';"
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x220/DC2626/ffffff?text=Image+Load+FAIL+CHECK+CONSOLE';"
                         />
                         <!-- Category tag -->
                         <span class="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full bg-purple-600 text-white shadow-md">
@@ -542,13 +554,13 @@
         // --- Event Listeners and Initialization ---
 
         window.onload = async function() {
-            // 1. Initialize Firebase and authenticate the user first
+            // 1. Initialize Firebase and authenticate the user first. We WAIT for this.
             await initializeFirebase();
             
             // 2. Set up the postMessage listener for game saving
             window.addEventListener('message', handleIframeMessage);
 
-            // 3. Initial render
+            // 3. Initial render (now that everything is initialized)
             renderGameCards();
 
             // 4. Search input listener
