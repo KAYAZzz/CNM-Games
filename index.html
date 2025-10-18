@@ -223,6 +223,27 @@
                 gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html", 
                 imgUrl: THUMBNAILS_DIR + "Subway-Surfers.jpg" 
             },
+            // --- NEW GAMES ADDED BELOW ---
+            { id: 19, title: "Baldi's Basics", description: "Collect notebooks while avoiding the terrifying teacher, Baldi, in this survival horror parody.", category: "Horror/Educational", gameUrl: GITHUB_BASE_URL + "baldisbasics/index.html", imgUrl: THUMBNAILS_DIR + "BaldisBasics.webp" },
+            { id: 20, title: "Dino Runner", description: "The classic offline runner. Jump over cacti and duck under pterodactyls to survive.", category: "Endless Runner", gameUrl: GITHUB_BASE_URL + "dino/index.html", imgUrl: THUMBNAILS_DIR + "Dino.jpg" },
+            { 
+                id: 21, 
+                title: "Stickman Hook", 
+                description: "Swing like Spider-Man using your hook to navigate levels without falling.", 
+                category: "Arcade/Physics", 
+                // FIX: Updated to the correct Githack version of the user-provided URL:
+                gameUrl: "https://raw.githack.com/StickmanHook/StickmanHook.github.io/main/index.html", 
+                imgUrl: THUMBNAILS_DIR + "stickman-hook.png" 
+            },
+            { 
+                id: 22, 
+                title: "Merge Fellas", 
+                // FIX: Retaining this message as this game is known to block embeds
+                description: "HOST BLOCKED: Click 'Open in New Tab' below to play this game.", 
+                category: "Puzzle", 
+                gameUrl: "https://raw.githack.com/wyong32/Merge-Fellas/main/index.html", 
+                imgUrl: THUMBNAILS_DIR + "merge-fellas.png" 
+            },
         ];
 
         // --- DOM Elements ---
@@ -233,7 +254,7 @@
         const gameModal = document.getElementById('game-modal');
         const gameIframe = document.getElementById('game-iframe');
         const closeModalBtn = document.getElementById('close-modal-btn');
-        const panicButton = document.getElementById('panic-button'); // NEW: Panic Button
+        const panicButton = document.getElementById('panic-button'); 
 
         // Modal Elements for Iframe Games
         const loadingOverlay = document.getElementById('loading-overlay');
@@ -245,7 +266,7 @@
         // --- State ---
         let searchTerm = '';
         let loadTimeout;
-        const PANIC_URL = "https://member.foodvillage.ie/login"; // Target URL
+        const PANIC_URL = "https://member.foodvillage.ie/login"; 
 
         // =========================================================================
         // === UTILITY FUNCTIONS ===================================================
@@ -557,7 +578,7 @@
             });
 
             closeModalBtn.addEventListener('click', closeGameModal);
-            panicButton.addEventListener('click', handlePanic); // NEW: Panic Button Click Handler
+            panicButton.addEventListener('click', handlePanic); 
 
             document.addEventListener('keydown', (e) => {
                 // If the game modal is open, ESC closes the modal.
@@ -565,7 +586,7 @@
                 if (e.key === 'Escape') {
                     if (gameModal.classList.contains('flex')) {
                         closeGameModal();
-                        e.preventDefault(); // Prevent accidental panic redirect if modal is closing
+                        e.preventDefault(); 
                     } else {
                         handlePanic(); // Panic button keyboard shortcut
                     }
