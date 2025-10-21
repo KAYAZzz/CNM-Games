@@ -68,6 +68,15 @@
             overflow: hidden;
             -webkit-line-clamp: 2;
         }
+        @keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
     </style>
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
@@ -107,6 +116,9 @@
                 </div>
             </div>
         </div>
+        
+        
+        
     </header>
 
     <!-- Main Content Area -->
@@ -722,10 +734,49 @@
                 }
             });
         };
+        // === CHANGELOG POPUP LOGIC ===
+window.addEventListener('load', () => {
+    const popup = document.getElementById('changelog-popup');
+    const closeBtn = document.getElementById('close-changelog');
+
+    // Show popup 1 second after load
+    setTimeout(() => popup.classList.remove('hidden'), 1000);
+
+    // Close popup when clicking X
+    closeBtn.addEventListener('click', () => {
+        popup.classList.add('hidden');
+    });
+
+    // Optional: close if background clicked
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) popup.classList.add('hidden');
+    });
+});
+
 
     </script>
+<!-- === CHANGELOG POPUP === -->
+<div id="changelog-popup" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[3000] hidden">
+  <div class="relative bg-gray-900 border-2 border-purple-600 rounded-2xl shadow-2xl p-8 max-w-lg w-[90%] text-gray-100 animate-fadeIn">
+    <h2 class="text-3xl font-extrabold text-purple-400 mb-4">🚀 CNM Games Updates</h2>
+
+    <!-- Manual changelog content -->
+    <div id="changelog-content" class="space-y-3 text-gray-300">
+      <p>🕹️ <strong>October 21, 2025:</strong> Added <span class="text-purple-400">Ballistic</span> and improved game thumbnails!</p>
+      <p>🔥 <strong>October 20, 2025:</strong> Optimized loading times and fixed broken embeds.</p>
+      <p>🎮 <strong>October 18, 2025:</strong> Added <span class="text-purple-400">Monkey Mart</span> & <span class="text-purple-400">Slope</span>.</p>
+    </div>
+
+    <!-- Close button -->
+    <button id="close-changelog" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white rounded-full p-2 transition">
+      ✕
+    </button>
+  </div>
+</div>
+
 </body>
 </html>
+
 
 
 
