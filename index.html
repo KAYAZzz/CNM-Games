@@ -106,9 +106,39 @@
           background: rgba(125, 85, 255, 0.18);
           border-radius: 10px;
         }
+
+        /* Splash Intro */
+#splash {
+    background-color: rgba(26,26,46,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+}
+
+#splash img {
+    width: 128px;
+    height: 128px;
+    object-fit: contain;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+
     </style>
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
+    
+    <!-- Splash Intro -->
+<div id="splash" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-[5000]">
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" alt="CNM Games Logo" class="w-32 h-32 animate-bounce">
+</div>
+
 
     <!-- Header/Nav Bar -->
     <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl z-50 w-full">
@@ -888,8 +918,22 @@
         };
     </script>
 
+    <script>
+  // Hide splash after 2.5 seconds
+  window.addEventListener('load', () => {
+      setTimeout(() => {
+          const splash = document.getElementById('splash');
+          splash.style.transition = 'opacity 0.6s';
+          splash.style.opacity = 0;
+          setTimeout(() => splash.remove(), 600);
+      }, 2500);
+  });
+</script>
+
+
 </body>
 </html>
+
 
 
 
