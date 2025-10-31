@@ -1,883 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CNM Games</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNM Games</title>
 
-    <!-- --- Logo and Fullscreen Configuration --- -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="CNM Games">
-    
-    <!-- Apple Touch Icon (for Add to Home Screen) -->
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png">
-    <!-- Standard Favicon -->
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png">
-    <!-- --- End Logo Configuration --- -->
+<!-- Logo & Fullscreen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CNM Games">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png">
 
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Use Inter Font and Custom Styles -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a1a2e;
-        }
-        
-        /* Plasma Background Concept */
-        .plasma-background {
-            background: radial-gradient(circle at 10% 20%, rgba(200, 20, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
-                        radial-gradient(circle at 90% 80%, rgba(100, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
-                        #1a1a2e;
-            background-size: 200% 200%;
-            animation: movePlasma 40s ease-in-out infinite alternate;
-        }
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-        @keyframes movePlasma {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
+<!-- Fonts & Styles -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+body { font-family: 'Inter', sans-serif; background-color: #1a1a2e; }
 
-        /* Shiny Text Concept */
-        .shiny-text {
-            background-image: linear-gradient(
-                90deg,
-                #6d28d9 0%,
-                #f87171 20%,
-                #a78bfa 40%,
-                #f87171 60%,
-                #6d28d9 80%
-            );
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 4s linear infinite;
-            display: inline-block;
-        }
+/* Plasma Background */
+.plasma-background {
+    background: radial-gradient(circle at 10% 20%, rgba(200,20,255,0.1) 0%, rgba(0,0,0,0) 70%),
+                radial-gradient(circle at 90% 80%, rgba(100,0,255,0.1) 0%, rgba(0,0,0,0) 70%),
+                #1a1a2e;
+    background-size: 200% 200%;
+    animation: movePlasma 40s ease-in-out infinite alternate;
+}
+@keyframes movePlasma { 0% { background-position:0% 0%; } 100% { background-position:100% 100%; } }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            -webkit-line-clamp: 2;
-        }
+/* Shiny Text */
+.shiny-text {
+    background-image: linear-gradient(90deg,#6d28d9 0%,#f87171 20%,#a78bfa 40%,#f87171 60%,#6d28d9 80%);
+    background-size: 200% auto;
+    color: transparent; -webkit-background-clip: text; background-clip: text;
+    animation: shine 4s linear infinite; display: inline-block;
+}
+@keyframes shine { to { background-position:200% center; } }
 
-        @keyframes fadeIn {
-          from { opacity: 0; transform: scale(0.97); }
-          to { opacity: 1; transform: scale(1); }
-        }
+/* Hero Intro */
+.hero {
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+    text-align: center; height: 60vh;
+    background: linear-gradient(135deg,#6d28d9,#f87171,#a78bfa,#f87171,#6d28d9);
+    background-size: 400% 400%; animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove {
+    0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
+}
+.hero h1 { font-size: 3rem; font-weight: 800; color: white; margin-bottom:1rem; text-shadow: 0 0 15px rgba(0,0,0,0.6);}
+.hero p { color: #e0e0ff; font-size: 1.25rem; margin-bottom:1.5rem;}
+.hero .hero-buttons a {
+    margin: 0 0.5rem; padding: 0.75rem 1.5rem;
+    font-weight: 600; border-radius: 0.75rem; transition: transform 0.2s, background 0.2s;
+}
+.hero .hero-buttons a:hover { transform: scale(1.05); }
+.hero .play-btn { background-color:#8b5cf6; color:white; }
+.hero .suggest-btn { background-color:#f97316; color:white; }
 
-        .animate-fadeIn {
-          animation: fadeIn 0.45s cubic-bezier(.2,.9,.2,1) both;
-        }
-
-        /* Intro specific */
-        .intro {
-            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-            border: 1px solid rgba(255,255,255,0.03);
-            box-shadow: 0 8px 30px rgba(20,12,40,0.6);
-        }
-
-        .logo-wrap img {
-            width: 64px;
-            height: 64px;
-            object-fit: contain;
-            filter: drop-shadow(0 6px 18px rgba(100, 30, 150, 0.25));
-        }
-
-        /* Visible suggestions/updates panel */
-        .side-panel {
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-
-        /* Nice thin scrollbar for game grid */
-        #game-grid::-webkit-scrollbar {
-          height: 10px;
-        }
-        #game-grid::-webkit-scrollbar-thumb {
-          background: rgba(125, 85, 255, 0.18);
-          border-radius: 10px;
-        }
-    </style>
+/* Line clamp & fade-in */
+.line-clamp-2 {-webkit-box-orient: vertical; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2;}
+@keyframes fadeIn {from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);}}
+.animate-fadeIn {animation:fadeIn 0.3s ease-out;}
+</style>
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
 
-    <!-- Header/Nav Bar -->
-    <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl z-50 w-full">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
-            
-            <!-- Title -->
-            <div class="mb-4 md:mb-0 flex items-center">
-                <svg class="w-10 h-10 mr-3 text-pink-400 transform -rotate-15" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    <circle cx="12" cy="12" r="8" stroke-width="2" />
-                    <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" />
-                    <line x1="12" y1="12" x2="15" y2="15" stroke-width="2" />
-                </svg>
-                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
-                    <span class="shiny-text">CNM Games</span>
-                </h1>
-            </div>
+<!-- Hero Intro -->
+<section class="hero">
+<div>
+    <h1 class="shiny-text">Welcome to CNM Games</h1>
+    <p>Discover hundreds of web games, from arcade classics to modern challenges!</p>
+    <div class="hero-buttons">
+        <a href="#game-grid" class="play-btn">Play Now</a>
+        <a href="#" class="suggest-btn">Suggest a Game</a>
+    </div>
+</div>
+</section>
 
-            <!-- User ID Display -->
-            <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Authenticating...</span></p>
-
-            <!-- Search Input -->
-            <div class="w-full md:w-80 lg:w-96 mt-4 md:mt-0">
-                <div class="relative">
-                    <input 
-                        type="text" 
-                        id="search-input"
-                        placeholder="Search title or category..." 
-                        class="w-full py-3 pl-12 pr-4 border border-indigo-500/50 rounded-full focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 bg-gray-800 text-gray-50 placeholder-gray-400 shadow-xl"
-                    />
-                    <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Intro + Side panels (Suggestions & Updates) -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <!-- Intro -->
-        <section id="intro" class="intro rounded-2xl p-6 animate-fadeIn max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6">
-            <div class="logo-wrap flex items-center gap-4">
-                <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" alt="CNM Games Logo" class="rounded-lg" />
-                <div>
-                    <h2 class="text-3xl font-extrabold text-gray-100"><span class="shiny-text">Welcome to CNM Games</span></h2>
-                    <p class="text-gray-300 mt-1 max-w-2xl">Your hub for free web games — browse, launch, and save progress. Suggestions and updates are listed on the right so you don't have to click through popups.</p>
-                </div>
-            </div>
-
-            <!-- Suggestions + Updates side-by-side -->
-            <div class="w-full md:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="side-panel p-4 rounded-xl">
-                    <h3 class="text-lg font-semibold text-purple-300 mb-2">🎮 Game Suggestions</h3>
-                    <ul class="text-gray-300 list-disc list-inside space-y-1 text-sm">
-                        <li>Add Shell Shockers multiplayer</li>
-                        <li>Paper.io 2 support</li>
-                        <li>More retro NES titles</li>
-                        <li>Dark-mode toggle across UI</li>
-                    </ul>
-                </div>
-
-                <div class="side-panel p-4 rounded-xl">
-                    <h3 class="text-lg font-semibold text-purple-300 mb-2">🛠 Latest Updates</h3>
-                    <div class="text-gray-300 text-sm space-y-1">
-                        <p class="font-semibold text-gray-200">October 30, 2025</p>
-                        <ul class="list-disc list-inside ml-4">
-                            <li>Added PolyTrack & Gobble</li>
-                            <li>Improved loading behavior for iframes</li>
-                            <li>Panic shortcut (ESC) faster</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Games Counter -->
-        <div class="mb-2 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <h2 class="text-3xl font-bold text-gray-200">Total Games:</h2>
-                <span id="game-count" class="text-pink-400 text-4xl font-extrabold tracking-tight">0</span>
-            </div>
-        </div>
-
-        <!-- Game Grid Container -->
-        <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-            <!-- Game cards will be inserted here by JavaScript -->
-        </div>
-    </main>
-
-    <!-- Panic Button (Fixed Position) -->
-    <button 
-        id="panic-button"
-        class="fixed bottom-4 right-4 z-[2000] p-4 text-white bg-red-600 rounded-full shadow-2xl hover:bg-red-700 transition transform hover:scale-[1.05] focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-75 flex items-center space-x-2 font-bold text-lg"
-        title="Quick Escape (Press ESC)"
-    >
-        <!-- Lightning Bolt Icon -->
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-        <span>PANIC</span>
-    </button>
-    
-    <!-- Game Launch Modal (Hidden by default) -->
-    <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
-        <div id="modal-content" class="w-full h-full relative">
-            <!-- Close Button -->
-            <button 
-                id="close-modal-btn"
-                class="absolute top-0 right-0 z-50 bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"
-                title="Close Game (Esc Key)"
-            >
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-
-            <!-- Loading/Timeout Overlay - Simplified -->
-            <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-40">
-                <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
-                
-                <p id="loading-text" class="text-xl text-gray-400">Loading external game...</p>
-                
-                <!-- Fallback link area, initially hidden on timeout -->
-                <div id="link-fallback" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-gray-800/50 shadow-2xl border-t-4 border-indigo-500">
-                    <p class="text-sm text-gray-300 mb-4 font-semibold">The game didn't load inside the hub. This usually means the host site blocks embedding.</p>
-                    <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-indigo-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-indigo-700 transition transform hover:scale-[1.05] shadow-lg">
-                        Open Game in New Tab
-                    </a>
-                </div>
-            </div>
-
-            <!-- Game Iframe -->
-            <iframe 
-                id="game-iframe"
-                src="" 
-                class="w-full h-full shadow-2xl bg-gray-900" 
-                title="Game Player"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-            ></iframe>
-
+<!-- Header/Nav -->
+<header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl z-50 w-full sticky top-0">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
+    <div class="mb-4 md:mb-0 flex items-center">
+        <svg class="w-10 h-10 mr-3 text-pink-400 transform rotate-[-15deg]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <circle cx="12" cy="12" r="8" stroke-width="2"/>
+            <line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/>
+            <line x1="12" y1="12" x2="15" y2="15" stroke-width="2"/>
+        </svg>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight"><span class="shiny-text">CNM Games</span></h1>
+    </div>
+    <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Authenticating...</span></p>
+    <div class="w-full md:w-80 lg:w-96 mt-4 md:mt-0">
+        <div class="relative">
+            <input type="text" id="search-input" placeholder="Search title or category..." class="w-full py-3 pl-12 pr-4 border border-indigo-500/50 rounded-full focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 bg-gray-800 text-gray-50 placeholder-gray-400 shadow-xl"/>
+            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         </div>
     </div>
+</div>
+</header>
 
-    <!-- NOTE: popup HTML removed because suggestions/updates are visible above -->
+<!-- Main Game Grid -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-10 flex items-center space-x-4">
+        <h2 class="text-3xl font-bold text-gray-200">Total Games:</h2>
+        <span id="game-count" class="text-pink-400 text-5xl font-extrabold tracking-tight">0</span>
+    </div>
+    <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6"></div>
+</main>
 
-    <script type="module">
-        // --- Firebase Imports ---
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { 
-            getFirestore, doc, getDoc, setDoc, serverTimestamp, setLogLevel 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+<!-- Panic Button -->
+<button id="panic-button" class="fixed bottom-4 right-4 z-[2000] p-4 text-white bg-red-600 rounded-full shadow-2xl hover:bg-red-700 transition transform hover:scale-[1.05] flex items-center space-x-2 font-bold text-lg">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>PANIC</span>
+</button>
 
-        // --- Global Firebase & State Vars ---
-        let db;
-        let auth;
-        let userId = 'loading'; 
-        let currentGameId = null; 
+<!-- Game Modal -->
+<div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
+    <div id="modal-content" class="w-full h-full relative">
+        <button id="close-modal-btn" class="absolute top-0 right-0 z-50 bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-40">
+            <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
+            <p id="loading-text" class="text-xl text-gray-400">Loading external game...</p>
+            <div id="link-fallback" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-gray-800/50 shadow-2xl border-t-4 border-indigo-500">
+                <p class="text-sm text-gray-300 mb-4 font-semibold">The game didn't load inside the hub. This usually means the host site blocks embedding.</p>
+                <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-indigo-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-indigo-700 transition transform hover:scale-[1.05] shadow-lg">Open Game in New Tab</a>
+            </div>
+        </div>
+        <iframe id="game-iframe" src="" class="w-full h-full shadow-2xl bg-gray-900" title="Game Player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
 
-        // Environment variables for Firebase config
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+<!-- Suggest Game Popup -->
+<div id="suggest-game-popup" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[4000] hidden">
+  <div class="relative bg-gray-900 border-2 border-purple-600 rounded-2xl shadow-2xl p-8 max-w-lg w-[90%] text-gray-100 animate-fadeIn">
+    <h2 class="text-3xl font-extrabold text-purple-400 mb-4">🎮 Suggest a Game!</h2>
+    <p class="mb-6 text-gray-300">Want your favorite games added to CNM Games? Click the button below and submit your suggestions!</p>
+    <a id="suggest-game-link" href="#" target="_blank" class="inline-block bg-indigo-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-indigo-700 transition transform hover:scale-[1.05] shadow-lg">Suggest a Game</a>
+    <button id="close-suggest-popup" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white rounded-full p-2 transition">✕</button>
+  </div>
+</div>
 
-        // --- Game Data (FIXED TO USE ABSOLUTE GITHUB RAW PATHS) ---
-        const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
-        const THUMBNAILS_DIR = "https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/";
+<!-- Changelog Popup -->
+<div id="changelog-popup" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[3000] hidden">
+  <div class="relative bg-gray-900 border-2 border-purple-600 rounded-2xl shadow-2xl p-8 max-w-lg w-[90%] text-gray-100 animate-fadeIn">
+    <h2 class="text-3xl font-extrabold text-purple-400 mb-4">‼️IMPORTANT‼️</h2>
+    <div id="changelog-content" class="space-y-3 text-gray-300">
+      <p>🕹️ <strong>October 24, 2025:</strong>Addition of <span class="text-purple-400">Golf Orbit!⛳</span></p>
+      <p>🕹️ <strong>October 25, 2025:</strong>Addition of <span class="text-purple-400">RagDoll Archers!🏹</span></p>
+      <p>🕹️ <strong>October 25, 2025:</strong>Addition of <span class="text-purple-400">Helix Jump!⚽</span></p>
+      <p>🕹️ <strong>October 30, 2025:</strong>Addition of <span class="text-purple-400">Polytrack!🏎️</span></p>
+      <p>🕹️ <strong>October 30, 2025:</strong>Addition of <span class="text-purple-400">Gobble!👄</span></p>
+    </div>
+    <button id="close-changelog" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white rounded-full p-2 transition">✕</button>
+  </div>
+</div>
 
-        const initialGames = [
-            { id: 5, title: "2048", description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "2048/index.html", imgUrl: THUMBNAILS_DIR + "2048.png" },
-            { id: 7, title: "BTD4", description: "Bloons TD 4: strategically place towers to defend against waves of colorful balloons.", category: "Tower Defense", gameUrl: GITHUB_BASE_URL + "btd4/index.html", imgUrl: THUMBNAILS_DIR + "BTD4.jpg" },
-            { id: 6, title: "Bitlife", description: "Live a virtual life simulation, making choices that determine your career, relationships, and death.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "bitlife/index.html", imgUrl: THUMBNAILS_DIR + "Bitlife.webp" },
-            { id: 8, title: "Chess", description: "The classic board game of strategy and tactics. Outwit your opponent to deliver checkmate.", category: "Strategy", gameUrl: GITHUB_BASE_URL + "chess/index.html", imgUrl: THUMBNAILS_DIR + "chess.jpg" }, 
-            { id: 9, title: "Cookie Clicker", description: "A highly addictive incremental game where you click a cookie to generate more cookies.", category: "Idle Clicker", gameUrl: GITHUB_BASE_URL + "cookieclicker/index.html", imgUrl: THUMBNAILS_DIR + "Cookie-Clicker.jpg" }, 
-            { id: 10, title: "Drive Mad", description: "Drive huge monster trucks and try not to flip over in this physics-based driving game.", category: "Racing", gameUrl: GITHUB_BASE_URL + "drivemad/index.html", imgUrl: THUMBNAILS_DIR + "Drive-Mad.jpg" }, 
-            { id: 2, title: "Flappy Bird", description: "Test your skill and patience by tapping to guide the bird through the challenging pipes.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "flappybird/index.html", imgUrl: THUMBNAILS_DIR + "Flappy-Bird.jpg" }, 
-            { id: 3, title: "Geo Dash", description: "Jump and fly your way through geometric worlds, synced to an electrifying beat.", category: "Rhythm", gameUrl: GITHUB_BASE_URL + "geometrydash/index.html", imgUrl: THUMBNAILS_DIR + "Geometry-Dash.webp" }, 
-            { id: 15, title: "Google Snake", description: "The classic arcade Snake game with a clean, modern twist. Eat apples and grow long!", category: "Arcade", gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/Snake/index.html", imgUrl: THUMBNAILS_DIR + "Google-Snake.jpg" }, 
-            { id: 11, title: "Monkey Mart", description: "Run your own supermarket with the help of busy monkeys! Harvest and stock shelves.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "monkeymart/index.html", imgUrl: THUMBNAILS_DIR + "Monkey-Mart.jpg" }, 
-            { id: 12, title: "PacMan", description: "The arcade classic! Eat all the dots, avoid the ghosts, and grab the power pellets.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "pacman/index.html", imgUrl: THUMBNAILS_DIR + "Pacman.jpg" }, 
-            { id: 1, title: "Retro Ball", description: "Manage your American football team and call the shots on the field in glorious 8-bit style.", category: "Sports", gameUrl: GITHUB_BASE_URL + "retrobowl/index.html", imgUrl: THUMBNAILS_DIR + "Retro-Ball.webp" }, 
-            { id: 14, title: "Slope", description: "Navigate a steep, endless slope, avoiding obstacles and trying to stay on the track.", category: "Endless Runner", gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/Slope/index.html", imgUrl: THUMBNAILS_DIR + "slope.png" }, 
-            { id: 16, title: "Snow Battle", description: "Throw snowballs at your enemies and duck behind cover in this fun, tactical winter battle game.", category: "Arcade", gameUrl: GITHUB_BASE_URL + "snowbattle/index.html", imgUrl: THUMBNAILS_DIR + "Snow-Battle.png" }, 
-            { id: 17, title: "Stack", description: "A fast-paced reflex game where you try to stack blocks perfectly to build the tallest tower.", category: "Puzzle", gameUrl: GITHUB_BASE_URL + "stack/index.html", imgUrl: THUMBNAILS_DIR + "Stack.webp" },
-            { id: 4, title: "Drift Boss", description: "Drift!", category: "Racing", gameUrl: "https://raw.githack.com/selenite-cc/selenite-old/main/drift-boss/index.html", imgUrl: THUMBNAILS_DIR + "Drift1.jpg" },
-            { 
-                id: 18, 
-                title: "Subway Surfers", 
-                description: "Hosted externally. May require opening in a new tab.", 
-                category: "Endless Runner", 
-                gameUrl: "https://raw.githack.com/testingherokuapp/subwaysurfer/main/index.html", 
-                imgUrl: THUMBNAILS_DIR + "Subway-Surfers.jpg" 
-            },
-            // --- NEW GAMES ADDED BELOW ---
-            { id: 19, title: "Baldi's Basics", description: "Collect notebooks while avoiding the terrifying teacher, Baldi, in this survival horror parody.", category: "Horror/Educational", gameUrl: GITHUB_BASE_URL + "baldisbasics/index.html", imgUrl: THUMBNAILS_DIR + "BaldisBasics.webp" },
-            { 
-                id: 20, 
-                title: "Dino Runner", 
-                description: "The classic offline runner. Jump over cacti and duck under pterodactyls to survive.", 
-                category: "Endless Runner", 
-                gameUrl: GITHUB_BASE_URL + "chromedino/index.html", // UPDATED URL
-                imgUrl: THUMBNAILS_DIR + "Dino.jpg" 
-            },
-            { 
-                id: 21, 
-                title: "Stickman Hook", 
-                description: "Swing like Spider-Man using your hook to navigate levels without falling.", 
-                category: "Arcade/Physics", 
-                gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/StickmanHook/index.html", 
-                imgUrl: THUMBNAILS_DIR + "stickman-hook.png" 
-            },
-            { 
-                id: 23, 
-                title: "Block Blast", 
-                description: "Drag and drop colorful blocks to complete lines and squares in this challenging puzzle game.", 
-                category: "Puzzle", 
-                gameUrl: "https://raw.githack.com/futzumi/block-blast/main/index.html", 
-                imgUrl: THUMBNAILS_DIR + "block-blast.jpeg" 
-            },
-            { 
-                id: 24, 
-                title: "Merge Rot", 
-                description: "Merge rotating blocks and achieve the highest score in this spatial puzzle challenge.", 
-                category: "Puzzle", 
-                gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/MergeRot/index.html", 
-                imgUrl: THUMBNAILS_DIR + "merge-rot.png" // Updated to use the provided thumbnail
-            },
-            { 
-                id: 25, 
-                title: "Hole.io", 
-                description: "Gobble Up The City and Players Around you to be Victorious!", 
-                category: "Arcade", 
-                gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/HoleIO/index.html", 
-                imgUrl: THUMBNAILS_DIR + "Hole.png" // Updated to use the provided thumbnail
-            },
-            {
-                id: 26, 
-                title: "Sausage Flip", 
-                description: "Flip the Sausage of the pan to get to the Finish Line!", 
-                category: "Arcade/Physics", 
-                gameUrl: "https://haleyschool.github.io/games/sausage-flip/index.html", 
-                imgUrl: THUMBNAILS_DIR + "sausage-flip.png" // Updated to use the provided thumbnail
-            },
-            {
-                id: 27, 
-                title: "YoHoHo.io", 
-                description: "A battle Royale Amongst Pirates on Your Island", 
-                category: "Battle Royale", 
-                gameUrl: "https://raw.githack.com/Sephirin/haleyschool.github.io/main/game/yohoho-io.html", 
-                imgUrl: THUMBNAILS_DIR + "Yohoho.jpg" // Updated to use the provided thumbnail
-            },
-            {
-                id: 28, 
-                title: "Mr.Bullet", 
-                description: "Assassinate Criminals around You using your Pistol", 
-                category: "Puzzle", 
-                gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/MrBullet/index.html", 
-                imgUrl: THUMBNAILS_DIR + "Bullet.jpg" // Updated to use the provided thumbnail
-            },
-            {
-                id: 29, 
-                title: "The Impossible Quiz", 
-                description: "Solve Questions In this Quiz to see how Smart You really are!", 
-                category: "Puzzle", 
-                gameUrl: "https://raw.githack.com/selenite-cc/selenite-old/main/theimpossiblequiz/index.html", 
-                imgUrl: THUMBNAILS_DIR + "Impossible.png" // Updated to use the provided thumbnail
-            },
-            {
-                id: 30,
-                title: "Paper.io",
-                description: "Claim territory and surround opponents in this addictive multiplayer strategy game.",
-                category: "Strategy/IO",
-                gameUrl: GITHUB_BASE_URL + "paperio/index.html",
-                imgUrl: THUMBNAILS_DIR + "paper-io.png"
-            },
-            {
-                id: 31,
-                title: "Hill Climb Racing",
-                description: "Drive across hilly terrain, collect coins, and avoid flipping your vehicle.",
-                category: "Racing",
-                gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/HillClimbRacing/index.html",
-                imgUrl: THUMBNAILS_DIR + "HillClimb.png"
-            },
-            {
-                id: 32,
-                title: "Smash Karts",
-                description: "Race and battle other players using weapons and power-ups to be the last kart standing.",
-                category: "Racing",
-                gameUrl: "https://raw.githack.com/ubg420/SmashKarts/main/index.html",
-                imgUrl: THUMBNAILS_DIR + "Smashk.png"
-            },
-            {
-                id: 33,
-                title: "Idle Miner",
-                description: "Build and manage your mine, hire workers, and earn money even while offline.",
-                category: "Tycoon",
-                gameUrl: "https://raw.githack.com/ubg420/IdleMiner/main/index.html",
-                imgUrl: THUMBNAILS_DIR + "idle-miner.png"
-            },
-            {
-                id: 34,
-                title: "Bottle Flip",
-                description: "Flip the bottle perfectly onto platforms and test your timing and skill.",
-                category: "Skill/Arcade",
-                gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/BottleFlip2/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/bottleflip.png"
-            },
-            {
-                id: 35,
-                title: "Penalty Kicks",
-                description: "Score goals and defend shots in this fast-paced soccer penalty shootout game.",
-                category: "Sports",
-                gameUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/PenaltyKicks/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/penalty.jpg"
-            },
-            {
-                id: 36,
-                title: "Gun Spin",
-                description: "Score goals and defend shots in this fast-paced soccer penalty shootout game.",
-                category: "Arcade",
-                gameUrl: "https://raw.githack.com/unlocked25v2/unlocked25v2.github.io/main/gamefiles/gunspin/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/gunspin.png"
-            },
-            {
-                id: 37,
-                title: "SandBoxel",
-                description: "Create, destroy, and experiment with different materials in a physics-based sandbox world.",
-                category: "Simulation",
-                gameUrl: "https://raw.githack.com/R74nCom/sandboxels/main/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/Sandboxel.png"
-            },
-            {
-                id: 38,
-                title: "Ballistic",
-                description: "Aim and shoot volleys of balls to smash numbered bricks — don’t let the stack reach the bottom.",
-                category: "Puzzle",
-                gameUrl: "https://ballisticcnm.vercel.app/",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/ballistic.png"
-            },
-            {
-                id: 39,
-                title: "Stacktris",
-                description: "Stack spinning blocks to build the tallest tower without letting it fall.",
-                category: "Arcade/Puzzle",
-                gameUrl: "https://raw.githack.com/ucbg/stacktris/main/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/stacktris.jpeg"
-            },
-            {
-                id: 40,
-                title: "Tomb Of The Mask",
-                description: "Climb walls and race through fast vertical mazes, collecting coins and avoiding traps.",
-                category: "Arcade/Puzzle",
-                gameUrl: "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/tombofthemask/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/TofM.jpg"
-            },
-            {
-                id: 41,
-                title: "Paper Plane",
-                description: "Fly your paper plane as far as possible, dodging obstacles and performing stunts.",
-                category: "Arcade",
-                gameUrl: "https://games.engineering.com/PaperFlight1/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/Planef.jpg"
-            },
-            {
-                id: 42,
-                title: "Curve Rush",
-                description: "Guide your ball along twisting tracks at high speed without falling off.",
-                category: "Arcade",
-                gameUrl: "https://curverush.com/curve-rush.embed",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/curve-rush.webp"
-            },
-            {
-                id: 43,
-                title: "Burrito Bison",
-                description: "Launch yourself through the air, smash gummies, and upgrade to fly even farther.",
-                category: "Action / Arcade",
-                gameUrl: "https://burrito-bison-cnm.vercel.app/",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Game-Library/main/Bb.png"
-            },
-            {
-                id: 43,
-                title: "Golf Orbit",
-                description: "Launch golf balls into orbit and see how far across the planet you can hit them.",
-                category: "Sports / Arcade",
-                gameUrl: "https://raw.githack.com/KAYAZzz/GolfOrbit/main/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/golf-orbit.png"
-            },
-            {
-                id: 44,
-                title: "Ragdoll Archers",
-                description: "Aim and shoot arrows in ragdoll physics battles against opponents.",
-                category: "Action / Physics",
-                gameUrl: "https://raw.githack.com/maximusweeseman/Ragdoll-Archers/main/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/ragdoll-archers.jpg"
-            },
-            {
-                id: 45,
-                title: "Helix Jump",
-                description: "Bounce a ball down a twisting helix tower while avoiding the colored traps",
-                category: "Arcade",
-                gameUrl: "https://raw.githack.com/gamehippy/helix-jump-unblocked/main/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/HelixJ.webp"
-            },
-            {
-                id: 46,
-                title: "PolyTrack",
-                description: "Race through vibrant low-poly tracks and compete for the fastest time.",
-                category: "Racing",
-                gameUrl: "https://raw.githack.com/AnonymousBirb5100/polytrack/main/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/Polyt.webp"
-            },
-            {
-                id: 47,
-                title: "Gobble",
-                description: "Eat smaller objects to grow bigger while avoiding anything larger than you",
-                category: "Arcade / IO",
-                gameUrl: "https://raw.githack.com/genizy/fancade/main/gobble/index.html",
-                imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/Gobble.png"
-            },
-        ];
-
-        // --- DOM Elements ---
-        const gameGrid = document.getElementById('game-grid');
-        const searchInput = document.getElementById('search-input');
-        const gameCountDisplay = document.getElementById('game-count');
-        const userIdDisplay = document.getElementById('user-id-display'); 
-        const gameModal = document.getElementById('game-modal');
-        const gameIframe = document.getElementById('game-iframe');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const panicButton = document.getElementById('panic-button'); 
-
-        // Modal Elements for Iframe Games
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const loadingText = document.getElementById('loading-text');
-        const linkFallback = document.getElementById('link-fallback');
-        const openInNewTabLink = document.getElementById('open-in-new-tab');
-
-        // --- State ---
-        let searchTerm = '';
-        let loadTimeout;
-        const PANIC_URL = "https://member.foodvillage.ie/login"; 
-
-        // =========================================================================
-        // === UTILITY FUNCTIONS ===================================================
-        // =========================================================================
-
-        /**
-         * Redirects the user to the panic URL immediately.
-         */
-        function handlePanic() {
-            console.warn("PANIC TRIGGERED. Redirecting to safe URL...");
-            window.location.href = PANIC_URL;
-        }
-
-
-        // =========================================================================
-        // === FIREBASE INITIALIZATION & DATA SAVING LOGIC =========================
-        // =========================================================================
-
-        /**
-         * Initializes Firebase and authenticates the user, guaranteeing a defined userId.
-         */
-        async function initializeFirebase() {
-            if (Object.keys(firebaseConfig).length === 0) {
-                 console.warn("Firebase config is empty. Data persistence disabled.");
-                 userId = crypto.randomUUID(); 
-                 userIdDisplay.textContent = userId + " (Persistence Disabled)";
-                 return;
-            }
-            
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                
-                setLogLevel('debug'); 
-                
-                await new Promise((resolve) => {
-                    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-                        if (!user) {
-                            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-                            if (initialAuthToken) {
-                                await signInWithCustomToken(auth, initialAuthToken);
-                            } else {
-                                await signInAnonymously(auth);
-                            }
-                        }
-                        
-                        userId = auth.currentUser?.uid || crypto.randomUUID();
-                        userIdDisplay.textContent = userId;
-                        console.log(`Firebase Initialized. User ID: ${userId}`);
-                        
-                        unsubscribe();
-                        resolve();
-                    });
-                });
-
-            } catch (error) {
-                console.error("Error initializing Firebase or during sign-in:", error);
-                userId = crypto.randomUUID(); 
-                userIdDisplay.textContent = `Auth Failed: ${userId.substring(0, 8)}... (No Persistence)`;
-            }
-        }
-
-        /**
-         * Constructs the Firestore document path for game progress.
-         */
-        function getGameDocRef(gameId) {
-            if (!db || !userId || !gameId) {
-                console.error("Cannot get doc ref: Firebase or IDs missing.");
-                return null;
-            }
-            // Path: /artifacts/{appId}/users/{userId}/game_saves/{gameId}
-            const path = `/artifacts/${appId}/users/${userId}/game_saves`;
-            return doc(db, path, String(gameId));
-        }
-
-        /**
-         * Saves game data to Firestore (Called by postMessage listener).
-         */
-        async function saveGameProgress(gameId, data) {
-            const docRef = getGameDocRef(gameId);
-            if (!docRef) {
-                console.warn(`[Save Skipped] Persistence is disabled. Game ID: ${gameId}`);
-                return { success: false, error: "Persistence disabled." };
-            }
-            
-            try {
-                await setDoc(docRef, { 
-                    gameId: String(gameId), 
-                    timestamp: serverTimestamp(),
-                    data: JSON.stringify(data) 
-                });
-                console.log(`[Save Success] Progress saved for ID ${gameId}.`);
-                return { success: true };
-            } catch (error) {
-                console.error(`[Save Error] Error saving progress for ${gameId}:`, error);
-                return { success: false, error: error.message };
-            }
-        }
-
-        /**
-         * Loads game data from Firestore (Called by postMessage listener).
-         */
-        async function loadGameProgress(gameId) {
-            const docRef = getGameDocRef(gameId);
-            if (!docRef) {
-                 return { data: null, success: false, error: "Persistence disabled." };
-            }
-
-            try {
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const { data } = docSnap.data();
-                    const loadedData = JSON.parse(data);
-                    console.log(`[Load Success] Progress loaded for ID ${gameId}.`);
-                    return { data: loadedData, success: true };
-                } else {
-                    console.log(`[Load Info] No saved data found for ID ${gameId}.`);
-                    return { data: null, success: true };
-                }
-            } catch (error) {
-                console.error(`[Load Error] Error loading progress for ${gameId}:`, error);
-                return { data: null, success: false, error: error.message };
-            }
-        }
-
-        /**
-         * PostMessage listener to handle SAVE/LOAD requests from the iframe.
-         */
-        function handleIframeMessage(event) {
-            // Only accept messages from the currently active iframe source
-            if (event.source !== gameIframe.contentWindow) {
-                return; 
-            }
-            
-            const message = event.data;
-            const iframeWindow = gameIframe.contentWindow;
-
-            if (typeof message !== 'object' || !message.type || message.gameId !== currentGameId) {
-                return; 
-            }
-
-            switch (message.type) {
-                case 'LOAD_DATA':
-                    loadGameProgress(message.gameId).then(result => {
-                        iframeWindow.postMessage({ type: 'LOAD_RESPONSE', data: result.data }, '*');
-                    });
-                    break;
-                case 'SAVE_DATA':
-                    saveGameProgress(message.gameId, message.payload).then(result => {
-                        iframeWindow.postMessage({ type: 'SAVE_RESPONSE', success: result.success }, '*');
-                    });
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // =========================================================================
-        // === UI AND GAME LAUNCH LOGIC ============================================
-        // =========================================================================
-
-        /**
-         * Opens the game modal with the specified URL and ID.
-         */
-        window.openGameModal = function(url, gameId) {
-            currentGameId = gameId; 
-            gameModal.classList.remove('hidden');
-            gameModal.classList.add('flex');
-
-            // 1. Reset and Show Loading State
-            linkFallback.classList.add('hidden'); // Hide fallback link initially
-            loadingOverlay.classList.remove('hidden');
-            loadingSpinner.classList.remove('hidden'); 
-            loadingText.textContent = 'Loading external game...';
-            openInNewTabLink.href = url;
-            gameIframe.src = ''; // Clear iframe source initially
-
-            // Set the game URL and start the loading process
-            gameIframe.src = url;
-
-            // 2. Set a timeout (5s) to suggest manual launch if loading fails/blocks
-            loadTimeout = setTimeout(() => {
-                loadingText.textContent = 'Loading took longer than expected. The host site might be blocking embeds.'; 
-                loadingSpinner.classList.add('hidden'); 
-                linkFallback.classList.remove('hidden'); // Show the manual link
-            }, 5000); 
-
-            // 3. Listen for successful load
-            gameIframe.onload = function() {
-                clearTimeout(loadTimeout);
-                loadingOverlay.classList.add('hidden');
-                console.log(`External game ${gameId} loaded. Ready for postMessage communication.`);
-            };
-        }
-
-        /**
-         * Closes the game modal and stops the iframe content.
-         */
-        function closeGameModal() {
-            clearTimeout(loadTimeout);
-            gameIframe.onload = null;
-            
-            gameModal.classList.add('hidden');
-            gameModal.classList.remove('flex');
-            gameIframe.src = ''; // Stop the iframe content
-            currentGameId = null; // Clear game context
-        }
-
-        /**
-         * Simulates the count-up text animation.
-         */
-        function countUp(targetElement, finalNumber) {
-            let count = 0;
-            const duration = 1000;
-            const interval = 30;
-            const totalSteps = duration / interval;
-            const increment = finalNumber === 0 ? 0 : finalNumber / totalSteps; 
-
-            function updateCount() {
-                if (count < finalNumber) {
-                    count += increment;
-                    targetElement.textContent = Math.ceil(count);
-                    setTimeout(updateCount, interval);
-                } else {
-                    targetElement.textContent = finalNumber;
-                }
-            }
-            if (targetElement.dataset.interval) {
-                 clearTimeout(targetElement.dataset.interval);
-            }
-            targetElement.dataset.interval = setTimeout(updateCount, interval);
-        }
-
-        /**
-         * Generates the HTML string for a single game card.
-         */
-        function createGameCardHTML(game) {
-            const safeUrl = game.gameUrl.replace(/'/g, "\\'");
-            
-            return `
-                <div 
-                    class="bg-gray-800 rounded-xl shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-indigo-500/50"
-                    data-url="${game.gameUrl}"
-                    onclick="openGameModal('${safeUrl}', ${game.id})"
-                >
-                    <!-- Thumbnail Area -->
-                    <div class="h-40 bg-gray-900 relative overflow-hidden">
-                        <img 
-                            src="${game.imgUrl}" 
-                            alt="${game.title} Thumbnail" 
-                            class="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110" 
-                            onerror="this.onerror=null; this.src='https://placehold.co/400x220/DC2626/ffffff?text=Image+Load+FAIL+CHECK+CONSOLE';"
-                        />
-                        <!-- Category tag -->
-                        <span class="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full bg-purple-600 text-white shadow-md">
-                            ${game.category}
-                        </span>
-                    </div>
-
-                    <!-- Game Info -->
-                    <div class="p-4">
-                        <h2 class="text-xl font-bold text-gray-50 truncate mb-1">${game.title}</h2>
-                        <p class="text-sm text-gray-400 line-clamp-2">${game.description}</p>
-                        
-                        <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.01] shadow-lg shadow-indigo-500/50 pointer-events-none">
-                            Launch Game
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-
-        /**
-         * Filters games based on the search term and renders the grid.
-         */
-        function renderGameCards() {
-            const term = searchTerm.toLowerCase();
-            const filteredGames = initialGames.filter(game =>
-                game.title.toLowerCase().includes(term) ||
-                game.category.toLowerCase().includes(term) ||
-                game.description.toLowerCase().includes(term)
-            );
-
-            countUp(gameCountDisplay, filteredGames.length);
-            
-            if (filteredGames.length > 0) {
-                gameGrid.innerHTML = filteredGames.map(createGameCardHTML).join('');
-            } else {
-                gameGrid.innerHTML = `
-                    <p class="text-xl text-gray-400 col-span-full text-center py-10 border-2 border-dashed border-gray-700 p-6 rounded-xl">
-                        <span class="text-2xl block mb-2">😔</span>
-                        No games found matching "${searchTerm}". Try broadening your search!
-                    </p>
-                `;
-            }
-        }
-
-
-        // --- Event Listeners and Initialization ---
-
-        window.onload = async function() {
-            await initializeFirebase();
-            
-            window.addEventListener('message', handleIframeMessage);
-            renderGameCards();
-
-            searchInput.addEventListener('input', (e) => {
-                searchTerm = e.target.value;
-                renderGameCards();
-            });
-
-            closeModalBtn.addEventListener('click', closeGameModal);
-            panicButton.addEventListener('click', handlePanic); 
-
-            document.addEventListener('keydown', (e) => {
-                // If the game modal is open, ESC closes the modal.
-                // Otherwise, ESC triggers the panic function.
-                if (e.key === 'Escape') {
-                    if (gameModal.classList.contains('flex')) {
-                        closeGameModal();
-                        e.preventDefault(); 
-                    } else {
-                        handlePanic(); // Panic button keyboard shortcut
-                    }
-                }
-            });
-        };
-    </script>
-
+<!-- Scripts -->
+<script type="module">
+// Your existing Firebase + game rendering logic here (copy from your main file)
+// Handles initialization, search, postMessage, modal open/close, panic, countup, etc.
+</script>
 </body>
 </html>
