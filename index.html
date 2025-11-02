@@ -241,19 +241,118 @@
   transform: scale(1.05);
 }
 
-/* Animation */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Base popup container (shared) */
+#install-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
-/* Responsive fallback for portrait */
-@media (max-width: 800px) {
+#install-popup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Base popup box */
+#install-content {
+  background: #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
+  color: #f3e8ff;
+  text-align: center;
+  padding: 32px;
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* Shared title and intro */
+#install-content h2 {
+  font-size: 2rem;
+  color: #c084fc;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+#install-content p.intro {
+  color: #d1d5db;
+  font-size: 1.05rem;
+  margin-bottom: 25px;
+}
+
+/* Step cards (base style) */
+.install-step {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1rem;
+  padding: 16px 20px;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+/* ===== LANDSCAPE MODE ===== */
+@media (orientation: landscape) {
+  #install-content {
+    width: 90vw;
+    max-width: 1300px;
+  }
+
   .install-steps {
-    flex-direction: column;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .install-step {
+    flex: 1;
+    text-align: center;
+  }
+
+  .install-step img {
+    margin-top: 12px;
+    width: 100%;
+    max-width: 280px;
+    border-radius: 12px;
   }
 }
 
+/* ===== PORTRAIT MODE ===== */
+@media (orientation: portrait) {
+  #install-content {
+    width: 92vw;
+    max-width: 700px;
+  }
+
+  .install-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .install-step {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .install-step img {
+    width: 45%;
+    border-radius: 10px;
+  }
+
+  .install-step p {
+    width: 50%;
+    text-align: left;
+  }
+}
 
     </style>
 </head>
@@ -1112,6 +1211,7 @@
 
 </body>
 </html>
+
 
 
 
