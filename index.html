@@ -117,28 +117,96 @@
     z-index: 5000;
 }
 
-/* Logo breathing + neon glow */
-#splash img {
-    width: 128px;
-    height: 128px;
-    object-fit: contain;
-    animation: breathe 2s ease-in-out infinite;
-    filter: drop-shadow(0 0 10px #8b5cf6) drop-shadow(0 0 20px #a855f7);
+/* ------------------------------
+   Splash: breathing logo + neon outline + chromatic title
+   Paste this at the END of your existing <style> tag
+   (remove any older breathe/textFade keyframes if present)
+   ------------------------------ */
+
+/* Breathing (scale + glow) for the logo */
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35));
+  }
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 28px rgba(168, 85, 247, 0.9));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35));
+  }
 }
 
-@keyframes breathe {
-    0% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 6px #8b5cf6) drop-shadow(0 0 12px #a855f7);
-    }
-    50% {
-        transform: scale(1.1);
-        filter: drop-shadow(0 0 16px #a855f7) drop-shadow(0 0 32px #c084fc);
-    }
-    100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 6px #8b5cf6) drop-shadow(0 0 12px #a855f7);
-    }
+/* Neon outline pulse (uses outline + pseudo-element) */
+.splash-logo {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  will-change: transform, filter;
+  animation: breathe 3.2s ease-in-out infinite;
+}
+
+/* Neon ring using pseudo element for glow outline that 'breathes' */
+.splash-logo::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: -1;
+  box-shadow: 0 0 18px rgba(167,139,250,0.35);
+  transition: box-shadow 1.6s ease-in-out;
+  animation: neonPulse 3.2s ease-in-out infinite;
+  opacity: 0.95;
+}
+
+@keyframes neonPulse {
+  0% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
+  50% { box-shadow: 0 0 40px rgba(167,139,250,0.95); transform: scale(1.02); }
+  100% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
+}
+
+/* Chromatic (shiny) text already exists on site as .shiny-text.
+   We'll add a subtle breathing glow and slight scale so it matches */
+.shiny-text {
+  /* keep your gradient rules; add these extras */
+  transition: text-shadow 0.9s ease, transform 0.9s ease;
+  text-shadow: 0 0 8px rgba(167,139,250,0.25);
+  display: inline-block;
+  animation: textBreathe 3.2s ease-in-out infinite;
+}
+
+@keyframes textBreathe {
+  0% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
+  50% { transform: translateY(-3px) scale(1.02); text-shadow: 0 0 18px rgba(250,130,180,0.35); }
+  100% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
+}
+
+/* Slide + fade-in for splash title text */
+@keyframes textFade {
+  0% { opacity: 0; transform: translateY(18px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-textFade {
+  animation: textFade 1.05s cubic-bezier(.2,.9,.2,1) both;
+  animation-delay: 0.35s; /* logo animates first */
+}
+
+/* Small responsive tweak so the text scales on small screens */
+#splash h1 {
+  font-size: clamp(1.8rem, 4.2vw, 3.6rem);
+  line-height: 1;
+  margin-top: 0.6rem;
+}
+
+/* Hide flash/jank if splash is removed by JS (smooth fade) */
+#splash.fade-out {
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  pointer-events: none;
 }
 
 /* Landscape popup layout */
@@ -358,9 +426,14 @@
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
     
-    <!-- Splash Intro -->
-<div id="splash" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-[5000]">
-    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" alt="CNM Games Logo" class="w-32 h-32 animate-bounce">
+<!-- Splash Intro -->
+<div id="splash" class="fixed inset-0 bg-gray-900 flex flex-col items-center justify-center z-[5000]">
+  <img 
+    src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" 
+    alt="CNM Games Logo" 
+    class="w-32 h-32 animate-breath"
+  >
+  <h1 class="mt-6 text-5xl font-extrabold shiny-text opacity-0 animate-textFade">CNM Games</h1>
 </div>
 
 
@@ -1151,15 +1224,14 @@
         };
     </script>
 
-    <script>
-  // Hide splash after 2.5 seconds
+<script>
   window.addEventListener('load', () => {
-      setTimeout(() => {
-          const splash = document.getElementById('splash');
-          splash.style.transition = 'opacity 0.6s';
-          splash.style.opacity = 0;
-          setTimeout(() => splash.remove(), 800);
-      }, 2500);
+    const splash = document.getElementById('splash');
+    setTimeout(() => {
+      splash.style.opacity = '0';
+      splash.style.transition = 'opacity 0.6s ease';
+      setTimeout(() => splash.remove(), 700);
+    }, 2200); // stays visible for ~2.2 seconds total
   });
 </script>
 
@@ -1211,6 +1283,7 @@
 
 </body>
 </html>
+
 
 
 
