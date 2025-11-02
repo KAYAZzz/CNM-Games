@@ -193,6 +193,73 @@
   padding: 10px 20px;
   border-radius: 0.5rem;
   font-weight: 600;
+/* Add-to-Home popup — responsive landscape fix */
+#install-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+#install-popup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#install-content {
+  background: #1e1b3a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1rem;
+  box-shadow: 0 0 25px rgba(120, 80, 255, 0.4);
+  max-width: 850px;               /* wider for landscape */
+  width: 90%;
+  text-align: center;
+  padding: 24px;
+  color: #f8f8ff;
+  animation: fadeInUp 0.5s ease both;
+}
+
+#install-content h2 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #c084fc;
+  margin-bottom: 8px;
+}
+
+#install-content p {
+  font-size: 0.95rem;
+  color: #d1d5db;
+  margin-bottom: 12px;
+}
+
+/* make tutorial images grid nicely */
+#install-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 10px 0 15px;
+}
+
+#install-images img {
+  width: 100%;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+#install-content button {
+  background: #6d28d9;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 0.5rem;
+  font-weight: 600;
   transition: all 0.3s;
 }
 
@@ -1015,17 +1082,20 @@
   });
 </script>
 
-    <!-- Add-to-Home Popup -->
+<!-- Add-to-Home Popup -->
 <div id="install-popup">
   <div id="install-content">
     <h2>📱 Add CNM Games to Home Screen</h2>
-    <p class="text-sm text-gray-300 mb-2">For the best experience, add CNM Games to your home screen!</p>
-    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1">
-    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2">
-    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3">
+    <p>For the best experience, add CNM Games to your home screen!</p>
+    <div id="install-images">
+      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1">
+      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2">
+      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3">
+    </div>
     <button id="close-popup">Got it!</button>
   </div>
 </div>
+
 
     <script>
   // Show popup 3 seconds after splash disappears
@@ -1046,6 +1116,7 @@
 
 </body>
 </html>
+
 
 
 
