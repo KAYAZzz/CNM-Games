@@ -140,6 +140,71 @@
         filter: drop-shadow(0 0 6px #8b5cf6) drop-shadow(0 0 12px #a855f7);
     }
 }
+        /* Add-to-Home popup */
+#install-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+#install-popup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#install-content {
+  background: #1e1b3a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1rem;
+  box-shadow: 0 0 25px rgba(120, 80, 255, 0.4);
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  padding: 20px;
+  color: #f8f8ff;
+  animation: fadeInUp 0.5s ease both;
+}
+
+#install-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #c084fc;
+  margin-bottom: 10px;
+}
+
+#install-content img {
+  width: 100%;
+  border-radius: 0.5rem;
+  margin: 8px 0;
+}
+
+#install-content button {
+  margin-top: 10px;
+  background: #6d28d9;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+#install-content button:hover {
+  background: #7c3aed;
+  transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
     </style>
 </head>
@@ -950,9 +1015,38 @@
   });
 </script>
 
+    <!-- Add-to-Home Popup -->
+<div id="install-popup">
+  <div id="install-content">
+    <h2>📱 Add CNM Games to Home Screen</h2>
+    <p class="text-sm text-gray-300 mb-2">For the best experience, add CNM Games to your home screen!</p>
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1">
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2">
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3">
+    <button id="close-popup">Got it!</button>
+  </div>
+</div>
+
+    <script>
+  // Show popup 3 seconds after splash disappears
+  window.addEventListener('load', () => {
+      setTimeout(() => {
+          const popup = document.getElementById('install-popup');
+          popup.classList.add('active');
+      }, 3500); // wait 3.5s (after splash)
+  });
+
+  // Close popup
+  document.getElementById('close-popup').addEventListener('click', () => {
+      const popup = document.getElementById('install-popup');
+      popup.classList.remove('active');
+  });
+    </script>
+
 
 </body>
 </html>
+
 
 
 
