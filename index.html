@@ -421,6 +421,13 @@
     text-align: left;
   }
 }
+        /* Make selected icon stand out */
+.select-icon.border-indigo-400 {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 10px rgba(99, 102, 241, 0.4);
+  transform: scale(1.1);
+  transition: all 0.25s ease-in-out;
+}
+
 
     </style>
 </head>
@@ -1290,17 +1297,30 @@
       </div>
     </div>
 
-    <!-- Tips + icon choices (compact) -->
-    <div class="mt-2 border-t border-gray-700 pt-4">
-      <h3 class="text-md font-semibold text-purple-200 mb-2 text-center">🎨 Quick Tips & Icon</h3>
-      <p class="text-sm text-gray-400 text-center mb-3">After adding, press & hold your home screen → Edit Home Screen to rearrange or hide names.</p>
+<!-- Icon selection (more clickable and animated) -->
+<div class="flex justify-center gap-5 mb-5 flex-wrap">
+  <div class="relative group transition-transform transform hover:scale-105 active:scale-95 select-none cursor-pointer select-icon-wrap">
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" 
+         class="select-icon w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-md" 
+         alt="Icon 1">
+    <span class="absolute inset-0 rounded-xl ring-0 ring-indigo-400/50 group-hover:ring-4 transition-all duration-300"></span>
+  </div>
 
-      <div class="flex justify-center gap-3 mb-4 flex-wrap">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" class="w-14 h-14 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Icon 1">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" class="w-14 h-14 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Icon 2">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" class="w-14 h-14 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Icon 3">
-      </div>
-    </div>
+  <div class="relative group transition-transform transform hover:scale-105 active:scale-95 select-none cursor-pointer select-icon-wrap">
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" 
+         class="select-icon w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-md" 
+         alt="Icon 2">
+    <span class="absolute inset-0 rounded-xl ring-0 ring-indigo-400/50 group-hover:ring-4 transition-all duration-300"></span>
+  </div>
+
+  <div class="relative group transition-transform transform hover:scale-105 active:scale-95 select-none cursor-pointer select-icon-wrap">
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" 
+         class="select-icon w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-md" 
+         alt="Icon 3">
+    <span class="absolute inset-0 rounded-xl ring-0 ring-indigo-400/50 group-hover:ring-4 transition-all duration-300"></span>
+  </div>
+</div>
+
 
     <!-- Single button (centered) -->
     <div class="flex justify-center mt-4">
@@ -1415,6 +1435,7 @@
 
 </body>
 </html>
+
 
 
 
