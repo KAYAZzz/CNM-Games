@@ -19,103 +19,108 @@
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Use Inter Font and Custom Styles -->
-    <style>
-          /* Popup fade animation fix */
-  #install-popup {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  #install-popup.active {
-    opacity: 1;
-  }
-        
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a1a2e;
-        }
-        
-        /* Plasma Background Concept */
-        .plasma-background {
-            background: radial-gradient(circle at 10% 20%, rgba(200, 20, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
-                        radial-gradient(circle at 90% 80%, rgba(100, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
-                        #1a1a2e;
-            background-size: 200% 200%;
-            animation: movePlasma 40s ease-in-out infinite alternate;
-        }
+   <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-        @keyframes movePlasma {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #1a1a2e;
+}
 
-        /* Shiny Text Concept */
-        .shiny-text {
-            background-image: linear-gradient(
-                90deg,
-                #6d28d9 0%,
-                #f87171 20%,
-                #a78bfa 40%,
-                #f87171 60%,
-                #6d28d9 80%
-            );
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 4s linear infinite;
-            display: inline-block;
-        }
+/* Plasma Background */
+.plasma-background {
+    background: radial-gradient(circle at 10% 20%, rgba(200, 20, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
+                radial-gradient(circle at 90% 80%, rgba(100, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
+                #1a1a2e;
+    background-size: 200% 200%;
+    animation: movePlasma 40s ease-in-out infinite alternate;
+}
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            -webkit-line-clamp: 2;
-        }
+@keyframes movePlasma {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
 
-        @keyframes fadeIn {
-          from { opacity: 0; transform: scale(0.97); }
-          to { opacity: 1; transform: scale(1); }
-        }
+/* Shiny Text */
+.shiny-text {
+    background-image: linear-gradient(
+        90deg,
+        #6d28d9 0%,
+        #f87171 20%,
+        #a78bfa 40%,
+        #f87171 60%,
+        #6d28d9 80%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shine 4s linear infinite;
+    display: inline-block;
+    transition: text-shadow 0.9s ease, transform 0.9s ease;
+    text-shadow: 0 0 8px rgba(167,139,250,0.25);
+    animation: textBreathe 3.2s ease-in-out infinite;
+}
 
-        .animate-fadeIn {
-          animation: fadeIn 0.45s cubic-bezier(.2,.9,.2,1) both;
-        }
+@keyframes shine {
+    to { background-position: 200% center; }
+}
 
-        /* Intro specific */
-        .intro {
-            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-            border: 1px solid rgba(255,255,255,0.03);
-            box-shadow: 0 8px 30px rgba(20,12,40,0.6);
-        }
+@keyframes textBreathe {
+    0% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
+    50% { transform: translateY(-3px) scale(1.02); text-shadow: 0 0 18px rgba(250,130,180,0.35); }
+    100% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
+}
 
-        .logo-wrap img {
-            width: 64px;
-            height: 64px;
-            object-fit: contain;
-            filter: drop-shadow(0 6px 18px rgba(100, 30, 150, 0.25));
-        }
+/* Line Clamp */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+}
 
-        /* Visible suggestions/updates panel */
-        .side-panel {
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border: 1px solid rgba(255,255,255,0.03);
-        }
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+}
 
-        /* Nice thin scrollbar for game grid */
-        #game-grid::-webkit-scrollbar {
-          height: 10px;
-        }
-        #game-grid::-webkit-scrollbar-thumb {
-          background: rgba(125, 85, 255, 0.18);
-          border-radius: 10px;
-        }
-        /* Splash Intro */
+.animate-fadeIn {
+    animation: fadeIn 0.45s cubic-bezier(.2,.9,.2,1) both;
+}
+
+/* Intro Cards */
+.intro {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(20,12,40,0.6);
+}
+
+/* Logo */
+.logo-wrap img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 18px rgba(100, 30, 150, 0.25));
+}
+
+/* Side Panel */
+.side-panel {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Scrollbar */
+#game-grid::-webkit-scrollbar {
+    height: 10px;
+}
+#game-grid::-webkit-scrollbar-thumb {
+    background: rgba(125, 85, 255, 0.18);
+    border-radius: 10px;
+}
+
+/* Splash */
 #splash {
     background-color: rgba(26, 26, 46, 0.95);
     display: flex;
@@ -126,312 +131,180 @@
     z-index: 5000;
 }
 
-/* ------------------------------
-   Splash: breathing logo + neon outline + chromatic title
-   Paste this at the END of your existing <style> tag
-   (remove any older breathe/textFade keyframes if present)
-   ------------------------------ */
-
-/* Breathing (scale + glow) for the logo */
+/* Breathing Logo */
 @keyframes breathe {
-  0% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35));
-  }
-  50% {
-    transform: scale(1.08);
-    filter: drop-shadow(0 0 28px rgba(168, 85, 247, 0.9));
-  }
-  100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35));
-  }
+    0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35)); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 28px rgba(168, 85, 247, 0.9)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35)); }
 }
 
-/* Neon outline pulse (uses outline + pseudo-element) */
 .splash-logo {
-  position: relative;
-  display: inline-block;
-  border-radius: 8px;
-  will-change: transform, filter;
-  animation: breathe 3.2s ease-in-out infinite;
+    position: relative;
+    display: inline-block;
+    border-radius: 8px;
+    will-change: transform, filter;
+    animation: breathe 3.2s ease-in-out infinite;
 }
 
-/* Neon ring using pseudo element for glow outline that 'breathes' */
 .splash-logo::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  border-radius: 10px;
-  pointer-events: none;
-  z-index: -1;
-  box-shadow: 0 0 18px rgba(167,139,250,0.35);
-  transition: box-shadow 1.6s ease-in-out;
-  animation: neonPulse 3.2s ease-in-out infinite;
-  opacity: 0.95;
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: -1;
+    box-shadow: 0 0 18px rgba(167,139,250,0.35);
+    transition: box-shadow 1.6s ease-in-out;
+    animation: neonPulse 3.2s ease-in-out infinite;
+    opacity: 0.95;
 }
 
 @keyframes neonPulse {
-  0% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
-  50% { box-shadow: 0 0 40px rgba(167,139,250,0.95); transform: scale(1.02); }
-  100% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
+    0% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
+    50% { box-shadow: 0 0 40px rgba(167,139,250,0.95); transform: scale(1.02); }
+    100% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
 }
 
-/* Chromatic (shiny) text already exists on site as .shiny-text.
-   We'll add a subtle breathing glow and slight scale so it matches */
-.shiny-text {
-  /* keep your gradient rules; add these extras */
-  transition: text-shadow 0.9s ease, transform 0.9s ease;
-  text-shadow: 0 0 8px rgba(167,139,250,0.25);
-  display: inline-block;
-  animation: textBreathe 3.2s ease-in-out infinite;
-}
-
-@keyframes textBreathe {
-  0% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
-  50% { transform: translateY(-3px) scale(1.02); text-shadow: 0 0 18px rgba(250,130,180,0.35); }
-  100% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
-}
-
-/* Slide + fade-in for splash title text */
+/* Splash Text */
 @keyframes textFade {
-  0% { opacity: 0; transform: translateY(18px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+    0% { opacity: 0; transform: translateY(18px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .animate-textFade {
-  animation: textFade 1.05s cubic-bezier(.2,.9,.2,1) both;
-  animation-delay: 0.35s; /* logo animates first */
+    animation: textFade 1.05s cubic-bezier(.2,.9,.2,1) both;
+    animation-delay: 0.35s;
 }
 
-/* Small responsive tweak so the text scales on small screens */
 #splash h1 {
-  font-size: clamp(1.8rem, 4.2vw, 3.6rem);
-  line-height: 1;
-  margin-top: 0.6rem;
+    font-size: clamp(1.8rem, 4.2vw, 3.6rem);
+    line-height: 1;
+    margin-top: 0.6rem;
 }
 
-/* Hide flash/jank if splash is removed by JS (smooth fade) */
 #splash.fade-out {
-  opacity: 0;
-  transition: opacity 0.55s ease;
-  pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.55s ease;
+    pointer-events: none;
 }
 
-/* Landscape popup layout */
+/* --------------------
+   Install Popup
+-------------------- */
 #install-popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-
-#install-popup.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#install-content {
-  background: #1a1632;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 1rem;
-  box-shadow: 0 0 30px rgba(120, 80, 255, 0.5);
-  width: 85%;
-  max-width: 1100px;
-  color: #f1f1ff;
-  text-align: center;
-  padding: 24px 36px;
-  animation: fadeInUp 0.5s ease both;
-}
-
-#install-content h2 {
-  font-size: 1.8rem;
-  color: #c084fc;
-  margin-bottom: 8px;
-}
-
-#install-content p.intro {
-  color: #d1d5db;
-  font-size: 1rem;
-  margin-bottom: 24px;
-}
-
-/* Steps horizontal layout */
-.install-steps {
-  display: flex;
-  justify-content: space-around;
-  align-items: start;
-  gap: 28px;
-  flex-wrap: nowrap;
-}
-
-.install-step {
-  flex: 1;
-  background: rgba(255,255,255,0.05);
-  border-radius: 0.75rem;
-  padding: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
-  text-align: center;
-}
-
-.install-step .number {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #a78bfa;
-}
-
-.install-step p {
-  font-size: 1rem;
-  margin: 6px 0 12px 0;
-  color: #d1d5db;
-}
-
-.install-step img {
-  width: 100%;
-  max-width: 240px;
-  height: auto;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255,255,255,0.15);
-  margin: 0 auto;
-}
-
-/* Close button */
-#install-content button {
-  background: #6d28d9;
-  color: white;
-  padding: 10px 24px;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  margin-top: 24px;
-  transition: all 0.3s;
-}
-
-#install-content button:hover {
-  background: #7c3aed;
-  transform: scale(1.05);
-}
-
-/* Base popup container (shared) */
-#install-popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-
-#install-popup.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Base popup box */
-#install-content {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.25rem;
-  box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
-  color: #f3e8ff;
-  text-align: center;
-  padding: 32px;
-  animation: fadeInUp 0.5s ease both;
-}
-
-/* Shared title and intro */
-#install-content h2 {
-  font-size: 2rem;
-  color: #c084fc;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-#install-content p.intro {
-  color: #d1d5db;
-  font-size: 1.05rem;
-  margin-bottom: 25px;
-}
-
-/* Step cards (base style) */
-.install-step {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 1rem;
-  padding: 16px 20px;
-  color: #e0e0e0;
-  font-size: 1rem;
-}
-
-/* ===== LANDSCAPE MODE ===== */
-@media (orientation: landscape) {
-  #install-content {
-    width: 90vw;
-    max-width: 1300px;
-  }
-
-  .install-steps {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
     display: flex;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    gap: 40px;
-  }
-
-  .install-step {
-    flex: 1;
-    text-align: center;
-  }
-
-  .install-step img {
-    margin-top: 12px;
-    width: 100%;
-    max-width: 280px;
-    border-radius: 12px;
-  }
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
 }
 
-/* ===== PORTRAIT MODE ===== */
-@media (orientation: portrait) {
-  #install-content {
+#install-popup.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#install-content {
+    background: #1a1a2e;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1.25rem;
+    box-shadow: 0 0 40px rgba(168,85,247,0.3);
+    color: #f3e8ff;
+    text-align: center;
+    padding: 32px;
+    animation: fadeInUp 0.5s ease both;
     width: 92vw;
     max-width: 700px;
-  }
+}
 
-  .install-steps {
+#install-content h2 {
+    font-size: 2rem;
+    color: #c084fc;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+#install-content p.intro {
+    color: #d1d5db;
+    font-size: 1.05rem;
+    margin-bottom: 25px;
+}
+
+/* Steps Layout */
+.install-steps {
     display: flex;
     flex-direction: column;
     gap: 22px;
-  }
+}
 
-  .install-step {
+.install-step {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 1rem;
+    padding: 16px 20px;
+    color: #e0e0e0;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .install-step img {
-    width: 45%;
-    border-radius: 10px;
-  }
-
-  .install-step p {
-    width: 50%;
-    text-align: left;
-  }
 }
 
-    </style>
+.install-step img {
+    width: 45%;
+    border-radius: 10px;
+}
+
+.install-step p {
+    width: 50%;
+    text-align: left;
+}
+
+/* Buttons */
+#install-content button {
+    background: #6d28d9;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    margin-top: 24px;
+    transition: all 0.3s;
+}
+
+#install-content button:hover {
+    background: #7c3aed;
+    transform: scale(1.05);
+}
+
+/* Landscape adjustments */
+@media (orientation: landscape) {
+    #install-content {
+        width: 90vw;
+        max-width: 1300px;
+    }
+    .install-steps {
+        flex-direction: row;
+        justify-content: space-evenly;
+        gap: 40px;
+    }
+    .install-step img {
+        width: 100%;
+        max-width: 280px;
+        margin-top: 12px;
+        border-radius: 12px;
+    }
+    .install-step p {
+        width: auto;
+        text-align: center;
+    }
+}
+</style>
+
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
     
@@ -1263,24 +1136,27 @@
   });
 </script>
 
-<!-- Add-to-Home Popup -->
-<div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden">
-  <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-lg w-[90%] shadow-2xl animate-fadeIn">
-    
-    <!-- Step 1 -->
-    <div class="install-step" id="step1">
-      <h2 class="text-2xl font-bold text-purple-300 mb-2">📱 Add CNM Games to Your Home Screen</h2>
-      <p class="text-gray-300 mb-4">For the best experience, follow these quick steps:</p>
-      <div class="space-y-3">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" class="rounded-lg shadow-md w-full" alt="Step 1">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" class="rounded-lg shadow-md w-full" alt="Step 2">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" class="rounded-lg shadow-md w-full" alt="Step 3">
-      </div>
-      <div class="flex justify-between mt-5">
-        <button id="skip-popup" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium">No, thanks</button>
-        <button id="next-step" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Next</button>
-      </div>
+<div class="install-step" id="step1">
+  <h2 class="text-2xl font-bold text-purple-300 mb-2">📱 Add CNM Games to Your Home Screen</h2>
+  <p class="text-gray-300 mb-4">For the best experience, follow these quick steps:</p>
+
+  <div class="install-step-content flex flex-col md:flex-row gap-4 items-center">
+    <div class="install-images flex-1 space-y-3">
+      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" class="rounded-lg shadow-md w-full" alt="Step 1">
+      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" class="rounded-lg shadow-md w-full" alt="Step 2">
+      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" class="rounded-lg shadow-md w-full" alt="Step 3">
     </div>
+    <div class="install-text flex-1 text-left">
+      <p>Follow the steps above to add CNM Games to your home screen for the best experience!</p>
+    </div>
+  </div>
+
+  <div class="buttons flex justify-between mt-5">
+    <button id="skip-popup" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium">No, thanks</button>
+    <button id="next-step" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Next</button>
+  </div>
+</div>
+
 
     <!-- Step 2 -->
     <div class="install-step hidden" id="step2">
@@ -1385,5 +1261,6 @@
 
 </body>
 </html>
+
 
 
