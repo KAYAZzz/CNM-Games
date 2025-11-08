@@ -1298,43 +1298,57 @@
   </div>
 </div>
 
-<script>
-  // Show popup automatically (can adjust trigger)
-  window.addEventListener("load", () => {
-    if (!localStorage.getItem("installDismissed")) {
-      document.getElementById("install-popup").classList.remove("hidden");
-    }
-  });
+    <!-- Popup HTML above -->
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const popup = document.getElementById("install-popup");
+        const step1 = document.getElementById("step1");
+        const step2 = document.getElementById("step2");
+        const nextStep = document.getElementById("next-step");
+        const skipPopup = document.getElementById("skip-popup");
+        const closePopup = document.getElementById("close-popup");
+        const icons = document.querySelectorAll(".select-icon");
 
-  // Navigation
-  document.getElementById("next-step").onclick = () => {
-    document.getElementById("step1").classList.add("hidden");
-    document.getElementById("step2").classList.remove("hidden");
-  };
+        if (!popup) return; // safety check
 
-  document.getElementById("skip-popup").onclick = () => {
-    localStorage.setItem("installDismissed", "true");
-    document.getElementById("install-popup").classList.add("hidden");
-  };
+        // Show popup on load if not dismissed
+        if (!localStorage.getItem("installDismissed")) {
+          popup.classList.remove("hidden");
+        }
 
-  document.getElementById("close-popup").onclick = () => {
-    localStorage.setItem("installDismissed", "true");
-    document.getElementById("install-popup").classList.add("hidden");
-  };
+        // Step navigation
+        nextStep.addEventListener("click", () => {
+          step1.classList.add("hidden");
+          step2.classList.remove("hidden");
+        });
 
-  // Icon selection
-  const icons = document.querySelectorAll(".select-icon");
-  icons.forEach(icon => {
-    icon.addEventListener("click", () => {
-      icons.forEach(i => i.classList.remove("border-indigo-400"));
-      icon.classList.add("border-indigo-400");
-      const link = document.querySelector("link[rel='apple-touch-icon']");
-      if (link) link.href = icon.src;
-    });
-  });
-</script>
+        // Skip & Close
+        skipPopup.addEventListener("click", () => {
+          localStorage.setItem("installDismissed", "true");
+          popup.classList.add("hidden");
+        });
+
+        closePopup.addEventListener("click", () => {
+          localStorage.setItem("installDismissed", "true");
+          popup.classList.add("hidden");
+        });
+
+        // Icon selection logic
+        icons.forEach(icon => {
+          icon.addEventListener("click", () => {
+            icons.forEach(i => i.classList.remove("border-indigo-400"));
+            icon.classList.add("border-indigo-400");
+            const link = document.querySelector("link[rel='apple-touch-icon']");
+            if (link) link.href = icon.src;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
 
 
 
 </body>
 </html>
+
