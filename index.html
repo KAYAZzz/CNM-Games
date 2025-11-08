@@ -428,6 +428,17 @@
   transition: all 0.25s ease-in-out;
 }
 
+/* Selected icon glow effect */
+.select-icon.border-indigo-400 {
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.9),
+              0 0 40px rgba(99, 102, 241, 0.6),
+              inset 0 0 10px rgba(99, 102, 241, 0.4);
+  transform: scale(1.1);
+  border-color: #818cf8;
+  transition: all 0.3s ease;
+}
+
+
 
     </style>
 </head>
@@ -1297,27 +1308,27 @@
       </div>
     </div>
 
-<!-- Icon selection (more clickable and animated) -->
+<!-- Icon selection (with glowing backdrop) -->
 <div class="flex justify-center gap-5 mb-5 flex-wrap">
-  <div class="relative group transition-transform transform hover:scale-105 active:scale-95 select-none cursor-pointer select-icon-wrap">
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
     <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" 
-         class="select-icon w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-md" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
          alt="Icon 1">
-    <span class="absolute inset-0 rounded-xl ring-0 ring-purple-400/50 group-hover:ring-4 transition-all duration-300"></span>
   </div>
 
-  <div class="relative group transition-transform transform hover:scale-105 active:scale-95 select-none cursor-pointer select-icon-wrap">
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-purple-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
     <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" 
-         class="select-icon w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-md" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
          alt="Icon 2">
-    <span class="absolute inset-0 rounded-xl ring-0 ring-indigo-400/50 group-hover:ring-4 transition-all duration-300"></span>
   </div>
 
-  <div class="relative group transition-transform transform hover:scale-105 active:scale-95 select-none cursor-pointer select-icon-wrap">
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-pink-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
     <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" 
-         class="select-icon w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-md" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
          alt="Icon 3">
-    <span class="absolute inset-0 rounded-xl ring-0 ring-indigo-400/50 group-hover:ring-4 transition-all duration-300"></span>
   </div>
 </div>
 
@@ -1435,6 +1446,7 @@
 
 </body>
 </html>
+
 
 
 
