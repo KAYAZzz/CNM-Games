@@ -20,15 +20,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Use Inter Font and Custom Styles -->
     <style>
-          /* Popup fade animation fix */
-  #install-popup {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  #install-popup.active {
-    opacity: 1;
-  }
-        
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
@@ -1307,82 +1298,56 @@
   </div>
 </div>
 
+    <!-- Popup HTML above -->
     <script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const popup = document.getElementById("install-popup");
-    const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
-    const nextStep = document.getElementById("next-step");
-    const skipPopup = document.getElementById("skip-popup");
-    const closePopup = document.getElementById("close-popup");
-    const icons = document.querySelectorAll(".select-icon");
+      window.addEventListener("DOMContentLoaded", () => {
+        const popup = document.getElementById("install-popup");
+        const step1 = document.getElementById("step1");
+        const step2 = document.getElementById("step2");
+        const nextStep = document.getElementById("next-step");
+        const skipPopup = document.getElementById("skip-popup");
+        const closePopup = document.getElementById("close-popup");
+        const icons = document.querySelectorAll(".select-icon");
 
-    if (!popup) return; // safety
+        if (!popup) return; // safety check
 
-    // Helper to show/hide with the CSS used in your file
-    function showPopup() {
-      popup.classList.remove("hidden");
-      // Force reflow so CSS transition will run reliably, then add active
-      // (useful if you toggle quickly)
-      void popup.offsetWidth;
-      popup.classList.add("active");
-    }
-    function hidePopup() {
-      popup.classList.remove("active");
-      // after transition, add hidden to fully remove it from flow
-      setTimeout(() => popup.classList.add("hidden"), 420);
-    }
+        // Show popup on load if not dismissed
+        if (!localStorage.getItem("installDismissed")) {
+          popup.classList.remove("hidden");
+        }
 
-    // Show popup on load if not dismissed
-    if (!localStorage.getItem("installDismissed")) {
-      showPopup();
-    }
+        // Step navigation
+        nextStep.addEventListener("click", () => {
+          step1.classList.add("hidden");
+          step2.classList.remove("hidden");
+        });
 
-    // Step navigation
-    nextStep.addEventListener("click", () => {
-      step1.classList.add("hidden");
-      step2.classList.remove("hidden");
-    });
+        // Skip & Close
+        skipPopup.addEventListener("click", () => {
+          localStorage.setItem("installDismissed", "true");
+          popup.classList.add("hidden");
+        });
 
-    // Skip & Close
-    skipPopup.addEventListener("click", () => {
-      localStorage.setItem("installDismissed", "true");
-      hidePopup();
-    });
+        closePopup.addEventListener("click", () => {
+          localStorage.setItem("installDismissed", "true");
+          popup.classList.add("hidden");
+        });
 
-    closePopup.addEventListener("click", () => {
-      localStorage.setItem("installDismissed", "true");
-      hidePopup();
-    });
-
-    // Icon selection logic
-    icons.forEach(icon => {
-      icon.addEventListener("click", () => {
-        icons.forEach(i => i.classList.remove("border-indigo-400"));
-        icon.classList.add("border-indigo-400");
-        const link = document.querySelector("link[rel='apple-touch-icon']");
-        if (link) link.href = icon.src;
+        // Icon selection logic
+        icons.forEach(icon => {
+          icon.addEventListener("click", () => {
+            icons.forEach(i => i.classList.remove("border-indigo-400"));
+            icon.classList.add("border-indigo-400");
+            const link = document.querySelector("link[rel='apple-touch-icon']");
+            if (link) link.href = icon.src;
+          });
+        });
       });
-    });
+    </script>
+  </body>
+</html>
 
-    // Optional: close when clicking outside the content area
-    popup.addEventListener("click", (e) => {
-      if (e.target === popup) {
-        localStorage.setItem("installDismissed", "true");
-        hidePopup();
-      }
-    });
 
-    // Accessibility: allow ESC to close popup
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && popup.classList.contains("active")) {
-        localStorage.setItem("installDismissed", "true");
-        hidePopup();
-      }
-    });
-  });
-</script>
 
 </body>
 </html>
-
