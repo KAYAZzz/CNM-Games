@@ -1264,61 +1264,58 @@
 
 <!-- Add-to-Home Popup -->
 <div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden">
-  <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-lg w-[90%] shadow-2xl animate-fadeIn">
-    
-    <!-- Step 1 -->
-    <div class="install-step" id="step1">
-      <h2 class="text-2xl font-bold text-purple-300 mb-2">📱 Add CNM Games to Your Home Screen</h2>
-      <p class="text-gray-300 mb-4">For the best experience, follow these quick steps:</p>
-      <div class="install-steps">
+  <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-2xl w-[90%] shadow-2xl animate-fadeIn overflow-y-auto max-h-[90vh]">
+
+    <h2 class="text-2xl font-bold text-purple-300 mb-2 text-center">📱 Add CNM Games to Your Home Screen</h2>
+    <p class="text-gray-300 mb-5 text-center">For the best experience, follow these quick steps:</p>
+
+    <!-- Steps section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-center">
       <div class="install-step">
-        <div class="number">1</div>
-        <p>Tap the <strong>Share</strong> icon in Safari.</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">1</div>
+        <p class="text-sm text-gray-300 mb-2">Tap the <strong>Share</strong> icon in Safari.</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1" class="rounded-lg shadow-md w-full object-cover">
       </div>
 
       <div class="install-step">
-        <div class="number">2</div>
-        <p>Scroll down in the menu that appears.</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">2</div>
+        <p class="text-sm text-gray-300 mb-2">Scroll down in the menu that appears.</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2" class="rounded-lg shadow-md w-full object-cover">
       </div>
 
       <div class="install-step">
-        <div class="number">3</div>
-        <p>Tap <strong>Add to Home Screen</strong> — done!</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3">
-      </div>
-    </div>
-      <div class="flex justify-between mt-5">
-        <button id="skip-popup" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium">No, thanks</button>
-        <button id="next-step" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Next</button>
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">3</div>
+        <p class="text-sm text-gray-300 mb-2">Tap <strong>Add to Home Screen</strong> — done!</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3" class="rounded-lg shadow-md w-full object-cover">
       </div>
     </div>
 
-    <!-- Step 2 -->
-    <div class="install-step hidden" id="step2">
-      <h2 class="text-2xl font-bold text-purple-300 mb-2">🎨 Customize Your Setup</h2>
-      <p class="text-gray-300 mb-4">Once it’s on your Home Screen, try these tips:</p>
-      <ul class="list-disc list-inside text-gray-400 mb-4 space-y-1">
+    <!-- Customization Tips -->
+    <div class="mt-4 border-t border-gray-700 pt-4">
+      <h3 class="text-lg font-bold text-purple-300 mb-2 text-center">🎨 Customize Your Setup</h3>
+      <ul class="list-disc list-inside text-gray-400 mb-4 text-sm space-y-1">
         <li>Press and hold your home screen.</li>
         <li>Tap <strong>Edit Home Screen</strong>.</li>
         <li>Drag CNM Games to a good spot.</li>
-        <li>Make icons bigger To Hide App Names.</li>
+        <li>Make icons bigger to hide app names.</li>
       </ul>
 
-      <h3 class="text-lg font-semibold text-purple-200 mb-2">Choose Your Icon:</h3>
-      <div class="grid grid-cols-3 gap-3 mb-5">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" class="w-16 h-16 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Default">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" class="w-16 h-16 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Kahoot Fake">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" class="w-16 h-16 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Alternate">
+      <h3 class="text-md font-semibold text-purple-200 mb-2 text-center">Choose Your Icon:</h3>
+      <div class="flex justify-center gap-4 flex-wrap mb-5">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" class="w-14 h-14 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Default">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" class="w-14 h-14 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Kahoot Fake">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" class="w-14 h-14 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Alternate">
       </div>
+    </div>
 
-      <div class="flex justify-end">
-        <button id="close-popup" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Finish</button>
-      </div>
+    <!-- Buttons -->
+    <div class="flex justify-between mt-6">
+      <button id="skip-popup" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium">No, thanks</button>
+      <button id="close-popup" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Finish</button>
     </div>
   </div>
 </div>
+
 
 <script>
 
@@ -1371,6 +1368,7 @@
 
 </body>
 </html>
+
 
 
 
