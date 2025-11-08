@@ -1255,106 +1255,86 @@
 </script>
 
 <!-- Add-to-Home Popup -->
-<div id="install-popup">
-  <div id="install-content">
-    <h2>📱 Add CNM Games to Your Home Screen</h2>
-    <p class="intro">For the best experience, follow these quick steps:</p>
-
-    <div class="install-steps">
-      <div class="install-step">
-        <div class="number">1</div>
-        <p>Tap the <strong>Share</strong> icon in Safari.</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1">
+<div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden">
+  <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-lg w-[90%] shadow-2xl animate-fadeIn">
+    
+    <!-- Step 1 -->
+    <div class="install-step" id="step1">
+      <h2 class="text-2xl font-bold text-purple-300 mb-2">📱 Add CNM Games to Your Home Screen</h2>
+      <p class="text-gray-300 mb-4">For the best experience, follow these quick steps:</p>
+      <div class="space-y-3">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" class="rounded-lg shadow-md w-full" alt="Step 1">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" class="rounded-lg shadow-md w-full" alt="Step 2">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" class="rounded-lg shadow-md w-full" alt="Step 3">
       </div>
-
-      <div class="install-step">
-        <div class="number">2</div>
-        <p>Scroll down in the menu that appears.</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2">
-      </div>
-
-      <div class="install-step">
-        <div class="number">3</div>
-        <p>Tap <strong>Add to Home Screen</strong> — done!</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3">
+      <div class="flex justify-between mt-5">
+        <button id="skip-popup" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium">No, thanks</button>
+        <button id="next-step" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Next</button>
       </div>
     </div>
 
-    <button id="close-popup">Got it!</button>
+    <!-- Step 2 -->
+    <div class="install-step hidden" id="step2">
+      <h2 class="text-2xl font-bold text-purple-300 mb-2">🎨 Customize Your Setup</h2>
+      <p class="text-gray-300 mb-4">Once it’s on your Home Screen, try these tips:</p>
+      <ul class="list-disc list-inside text-gray-400 mb-4 space-y-1">
+        <li>Press and hold your home screen.</li>
+        <li>Tap <strong>Edit Home Screen</strong>.</li>
+        <li>Drag CNM Games to a good spot.</li>
+        <li>Make icons bigger or hide names for a cleaner look.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-purple-200 mb-2">Choose Your Icon:</h3>
+      <div class="grid grid-cols-3 gap-3 mb-5">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" class="w-16 h-16 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Default">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" class="w-16 h-16 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Kahoot Fake">
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/IconAlt.png" class="w-16 h-16 rounded-xl border-2 border-transparent hover:border-indigo-400 cursor-pointer select-icon" alt="Alternate">
+      </div>
+
+      <div class="flex justify-end">
+        <button id="close-popup" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Finish</button>
+      </div>
+    </div>
   </div>
 </div>
 
-
 <script>
-  // Show popup a few seconds after load
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('install-popup').classList.add('active');
-    }, 3500);
+  // Show popup automatically (can adjust trigger)
+  window.addEventListener("load", () => {
+    if (!localStorage.getItem("installDismissed")) {
+      document.getElementById("install-popup").classList.remove("hidden");
+    }
   });
 
-  // Close it
-  document.getElementById('close-popup').addEventListener('click', () => {
-    document.getElementById('install-popup').classList.remove('active');
+  // Navigation
+  document.getElementById("next-step").onclick = () => {
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+  };
+
+  document.getElementById("skip-popup").onclick = () => {
+    localStorage.setItem("installDismissed", "true");
+    document.getElementById("install-popup").classList.add("hidden");
+  };
+
+  document.getElementById("close-popup").onclick = () => {
+    localStorage.setItem("installDismissed", "true");
+    document.getElementById("install-popup").classList.add("hidden");
+  };
+
+  // Icon selection
+  const icons = document.querySelectorAll(".select-icon");
+  icons.forEach(icon => {
+    icon.addEventListener("click", () => {
+      icons.forEach(i => i.classList.remove("border-indigo-400"));
+      icon.classList.add("border-indigo-400");
+      const link = document.querySelector("link[rel='apple-touch-icon']");
+      if (link) link.href = icon.src;
+    });
   });
 </script>
 
 
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
