@@ -1321,10 +1321,6 @@
     document.getElementById("step2").classList.remove("hidden");
   };
 
-  document.getElementById("skip-popup").onclick = () => {
-    localStorage.setItem("installDismissed", "true");
-    document.getElementById("install-popup").classList.add("hidden");
-  };
 
   document.getElementById("close-popup").onclick = () => {
     localStorage.setItem("installDismissed", "true");
@@ -1357,11 +1353,17 @@
   document.getElementById('close-popup').addEventListener('click', () => {
     document.getElementById('install-popup').classList.remove('active');
   });
+
+    // Close it
+  document.getElementById('skip-popup').addEventListener('click', () => {
+    document.getElementById('install-popup').classList.remove('active');
+  });
 </script>
 
 
 </body>
 </html>
+
 
 
 
