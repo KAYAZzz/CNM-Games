@@ -1254,6 +1254,43 @@
   });
 </script>
 
+    <script>
+  // Show popup automatically (can adjust trigger)
+  window.addEventListener("load", () => {
+    if (!localStorage.getItem("installDismissed")) {
+      document.getElementById("install-popup").classList.remove("hidden");
+    }
+  });
+
+  // Navigation
+  document.getElementById("next-step").onclick = () => {
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+  };
+
+  document.getElementById("skip-popup").onclick = () => {
+    localStorage.setItem("installDismissed", "true");
+    document.getElementById("install-popup").classList.add("hidden");
+  };
+
+  document.getElementById("close-popup").onclick = () => {
+    localStorage.setItem("installDismissed", "true");
+    document.getElementById("install-popup").classList.add("hidden");
+  };
+
+  // Icon selection
+  const icons = document.querySelectorAll(".select-icon");
+  icons.forEach(icon => {
+    icon.addEventListener("click", () => {
+      icons.forEach(i => i.classList.remove("border-indigo-400"));
+      icon.classList.add("border-indigo-400");
+      const link = document.querySelector("link[rel='apple-touch-icon']");
+      if (link) link.href = icon.src;
+    });
+  });
+</script>
+
+
 <!-- Add-to-Home Popup -->
 <div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden">
   <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-lg w-[90%] shadow-2xl animate-fadeIn">
@@ -1298,43 +1335,7 @@
   </div>
 </div>
 
-<script>
-  // Show popup automatically (can adjust trigger)
-  window.addEventListener("load", () => {
-    if (!localStorage.getItem("installDismissed")) {
-      document.getElementById("install-popup").classList.remove("hidden");
-    }
-  });
-
-  // Navigation
-  document.getElementById("next-step").onclick = () => {
-    document.getElementById("step1").classList.add("hidden");
-    document.getElementById("step2").classList.remove("hidden");
-  };
-
-  document.getElementById("skip-popup").onclick = () => {
-    localStorage.setItem("installDismissed", "true");
-    document.getElementById("install-popup").classList.add("hidden");
-  };
-
-  document.getElementById("close-popup").onclick = () => {
-    localStorage.setItem("installDismissed", "true");
-    document.getElementById("install-popup").classList.add("hidden");
-  };
-
-  // Icon selection
-  const icons = document.querySelectorAll(".select-icon");
-  icons.forEach(icon => {
-    icon.addEventListener("click", () => {
-      icons.forEach(i => i.classList.remove("border-indigo-400"));
-      icon.classList.add("border-indigo-400");
-      const link = document.querySelector("link[rel='apple-touch-icon']");
-      if (link) link.href = icon.src;
-    });
-  });
-</script>
-
-
 
 </body>
 </html>
+
