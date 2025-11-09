@@ -438,6 +438,15 @@
   transition: all 0.3s ease;
 }
 
+@keyframes pulseGlow {
+  0%, 100% { text-shadow: 0 0 6px rgba(99,102,241,0.6); }
+  50% { text-shadow: 0 0 14px rgba(139,92,246,1); }
+}
+#clear-search {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+
 
 
     </style>
@@ -490,10 +499,15 @@
     </svg>
 
     <!-- Clear Button (X). Hidden by default. -->
-    <button id="clear-search" aria-label="Clear search"
-      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white hidden text-lg leading-none">
-      &times;
-    </button>
+<button 
+  id="clear-search" 
+  class="absolute right-4 top-1/2 transform -translate-y-1/2 hidden 
+         text-indigo-400 hover:text-white focus:outline-none transition 
+         duration-200 ease-in-out text-lg font-bold drop-shadow-[0_0_6px_rgba(99,102,241,0.8)] 
+         hover:drop-shadow-[0_0_10px_rgba(139,92,246,0.9)]">
+  ✕
+</button>
+
   </div>
 </div>
 
@@ -1530,6 +1544,7 @@
 
 </body>
 </html>
+
 
 
 
