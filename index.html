@@ -1,305 +1,640 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CNM Games</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNM Games</title>
 
-  <!-- Icons -->
-  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png">
-  <link rel="icon" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" type="image/png">
+    <!-- --- Logo and Fullscreen Configuration --- -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CNM Games">
+    
+    <!-- Apple Touch Icon (for Add to Home Screen) -->
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png">
+    <!-- Standard Favicon -->
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logoactual.png">
+    <!-- --- End Logo Configuration --- -->
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter Font and Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e;
+        }
+        
+        /* Plasma Background Concept */
+        .plasma-background {
+            background: radial-gradient(circle at 10% 20%, rgba(200, 20, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
+                        radial-gradient(circle at 90% 80%, rgba(100, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
+                        #1a1a2e;
+            background-size: 200% 200%;
+            animation: movePlasma 40s ease-in-out infinite alternate;
+        }
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-    :root { --bg: #1a1a2e; --muted: #9CA3AF; --accent: #6d28d9; --accent2: #f87171; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #e6edf3; -webkit-font-smoothing:antialiased; }
+        @keyframes movePlasma {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
 
-    /* Plasma background */
-    .plasma-background {
-      background:
-        radial-gradient(circle at 10% 20%, rgba(200,20,255,0.06) 0%, rgba(0,0,0,0) 60%),
-        radial-gradient(circle at 90% 80%, rgba(100,0,255,0.05) 0%, rgba(0,0,0,0) 60%),
-        var(--bg);
-      background-size: 200% 200%;
-      animation: movePlasma 40s ease-in-out infinite alternate;
-    }
-    @keyframes movePlasma { 0%{background-position:0% 0%}100%{background-position:100% 100%} }
+        /* Shiny Text Concept */
+        .shiny-text {
+            background-image: linear-gradient(
+                90deg,
+                #6d28d9 0%,
+                #f87171 20%,
+                #a78bfa 40%,
+                #f87171 60%,
+                #6d28d9 80%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 4s linear infinite;
+            display: inline-block;
+        }
 
-    /* Chromatic / shiny text used across titles */
-    .shiny-text {
-      background-image: linear-gradient(90deg, #6d28d9 0%, #f87171 25%, #a78bfa 50%, #f87171 75%, #6d28d9 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      display:inline-block;
-      /* subtle shimmering */
-      animation: shine 4s linear infinite;
-    }
-    @keyframes shine { to { background-position: 200% center; } }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            -webkit-line-clamp: 2;
+        }
 
-    /* No breathing on splash/logo: we'll not apply scale animation there. */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.97); }
+          to { opacity: 1; transform: scale(1); }
+        }
 
-    /* Intro card / side panels */
-    .intro, .side-panel {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 8px 30px rgba(20,12,40,0.6);
-    }
+        .animate-fadeIn {
+          animation: fadeIn 0.45s cubic-bezier(.2,.9,.2,1) both;
+        }
 
-    /* Splash */
-    #splash { background: rgba(10,8,20,0.95); position: fixed; inset:0; z-index:6000; display:flex; align-items:center; justify-content:center; }
-    #splash .splash-inner { text-align:center; }
-    #splash img { width:128px; height:128px; object-fit:contain; filter: drop-shadow(0 12px 30px rgba(100,30,150,0.25)); }
+        /* Intro specific */
+        .intro {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 8px 30px rgba(20,12,40,0.6);
+        }
 
-    /* popup styles */
-    #install-popup .install-card { max-height: 85vh; overflow:auto; }
-    #install-popup img.tutorial { width:100%; border-radius:12px; display:block; }
+        .logo-wrap img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 18px rgba(100, 30, 150, 0.25));
+        }
 
-    /* Make icons more clickable and glow */
-    .select-icon {
-      width:64px; height:64px; object-fit:cover; border-radius:12px; cursor:pointer; transition: transform .12s ease, box-shadow .12s ease;
-      box-shadow: 0 6px 20px rgba(8,6,20,0.6);
-      border: 2px solid transparent;
-    }
-    .select-icon:active { transform: scale(.98); }
-    .select-icon.selected {
-      box-shadow: 0 12px 30px rgba(110,40,220,0.35), 0 0 18px rgba(110,40,220,0.12) inset;
-      border-color: rgba(110,40,220,0.5);
-    }
+        /* Visible suggestions/updates panel */
+        .side-panel {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.03);
+        }
 
-    /* glow behind icons */
-    .icon-glow {
-      display:inline-flex; align-items:center; justify-content:center; padding:8px; border-radius:14px;
-      background: linear-gradient(180deg, rgba(110,40,220,0.06), rgba(110,40,220,0.02));
-    }
+        /* Nice thin scrollbar for game grid */
+        #game-grid::-webkit-scrollbar {
+          height: 10px;
+        }
+        #game-grid::-webkit-scrollbar-thumb {
+          background: rgba(125, 85, 255, 0.18);
+          border-radius: 10px;
+        }
+        /* Splash Intro */
+#splash {
+    background-color: rgba(26, 26, 46, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+}
 
-    /* responsive layout for tutorial images - landscape vs portrait */
-    .tutorial-row { display:flex; gap:12px; }
-    .tutorial-row img { flex:1; max-height:220px; object-fit:cover; border-radius:10px; }
+/* ------------------------------
+   Splash: breathing logo + neon outline + chromatic title
+   Paste this at the END of your existing <style> tag
+   (remove any older breathe/textFade keyframes if present)
+   ------------------------------ */
 
-    /* small-screen safe: stack vertically */
-    @media (max-width: 860px) {
-      .tutorial-row { flex-direction:column; }
-      .tutorial-row img { max-height:unset; }
-    }
-    /* For landscape iPad: make the popup horizontal */
-    @media (min-width: 900px) and (orientation: landscape) {
-      #install-popup .install-card { display:flex; gap:20px; align-items:flex-start; padding:24px; }
-      #install-popup .left { flex: 1 1 55%; }
-      #install-popup .right { flex: 1 1 45%; display:flex; flex-direction:column; gap:12px; }
-      .tutorial-row img { max-height:280px; }
-    }
+/* Breathing (scale + glow) for the logo */
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35));
+  }
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 28px rgba(168, 85, 247, 0.9));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(120, 80, 255, 0.35));
+  }
+}
 
-    /* clear-search button */
-    #clear-search { display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; background:transparent; }
+/* Neon outline pulse (uses outline + pseudo-element) */
+.splash-logo {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  will-change: transform, filter;
+  animation: breathe 3.2s ease-in-out infinite;
+}
 
-    /* make sure game modal iframe occupies full */
-    #game-modal iframe { width:100%; height:100%; border:0; }
+/* Neon ring using pseudo element for glow outline that 'breathes' */
+.splash-logo::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: -1;
+  box-shadow: 0 0 18px rgba(167,139,250,0.35);
+  transition: box-shadow 1.6s ease-in-out;
+  animation: neonPulse 3.2s ease-in-out infinite;
+  opacity: 0.95;
+}
 
-  </style>
+@keyframes neonPulse {
+  0% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
+  50% { box-shadow: 0 0 40px rgba(167,139,250,0.95); transform: scale(1.02); }
+  100% { box-shadow: 0 0 10px rgba(100,80,255,0.25); transform: scale(1); }
+}
+
+/* Chromatic (shiny) text already exists on site as .shiny-text.
+   We'll add a subtle breathing glow and slight scale so it matches */
+.shiny-text {
+  /* keep your gradient rules; add these extras */
+  transition: text-shadow 0.9s ease, transform 0.9s ease;
+  text-shadow: 0 0 8px rgba(167,139,250,0.25);
+  display: inline-block;
+  animation: textBreathe 3.2s ease-in-out infinite;
+}
+
+@keyframes textBreathe {
+  0% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
+  50% { transform: translateY(-3px) scale(1.02); text-shadow: 0 0 18px rgba(250,130,180,0.35); }
+  100% { transform: translateY(0) scale(1); text-shadow: 0 0 6px rgba(167,139,250,0.18); }
+}
+
+/* Slide + fade-in for splash title text */
+@keyframes textFade {
+  0% { opacity: 0; transform: translateY(18px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-textFade {
+  animation: textFade 1.05s cubic-bezier(.2,.9,.2,1) both;
+  animation-delay: 0.35s; /* logo animates first */
+}
+
+/* Small responsive tweak so the text scales on small screens */
+#splash h1 {
+  font-size: clamp(1.8rem, 4.2vw, 3.6rem);
+  line-height: 1;
+  margin-top: 0.6rem;
+}
+
+/* Hide flash/jank if splash is removed by JS (smooth fade) */
+#splash.fade-out {
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  pointer-events: none;
+}
+
+/* Landscape popup layout */
+#install-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+#install-popup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#install-content {
+  background: #1a1632;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 1rem;
+  box-shadow: 0 0 30px rgba(120, 80, 255, 0.5);
+  width: 85%;
+  max-width: 1100px;
+  color: #f1f1ff;
+  text-align: center;
+  padding: 24px 36px;
+  animation: fadeInUp 0.5s ease both;
+}
+
+#install-content h2 {
+  font-size: 1.8rem;
+  color: #c084fc;
+  margin-bottom: 8px;
+}
+
+#install-content p.intro {
+  color: #d1d5db;
+  font-size: 1rem;
+  margin-bottom: 24px;
+}
+
+/* Steps horizontal layout */
+.install-steps {
+  display: flex;
+  justify-content: space-around;
+  align-items: start;
+  gap: 28px;
+  flex-wrap: nowrap;
+}
+
+.install-step {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border-radius: 0.75rem;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+
+.install-step .number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #a78bfa;
+}
+
+.install-step p {
+  font-size: 1rem;
+  margin: 6px 0 12px 0;
+  color: #d1d5db;
+}
+
+.install-step img {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  margin: 0 auto;
+}
+
+/* Close button */
+#install-content button {
+  background: #6d28d9;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  margin-top: 24px;
+  transition: all 0.3s;
+}
+
+#install-content button:hover {
+  background: #7c3aed;
+  transform: scale(1.05);
+}
+
+/* Base popup container (shared) */
+#install-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+#install-popup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Base popup box */
+#install-content {
+  background: #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
+  color: #f3e8ff;
+  text-align: center;
+  padding: 32px;
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* Shared title and intro */
+#install-content h2 {
+  font-size: 2rem;
+  color: #c084fc;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+#install-content p.intro {
+  color: #d1d5db;
+  font-size: 1.05rem;
+  margin-bottom: 25px;
+}
+
+/* Step cards (base style) */
+.install-step {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1rem;
+  padding: 16px 20px;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+/* ===== LANDSCAPE MODE ===== */
+@media (orientation: landscape) {
+  #install-content {
+    width: 90vw;
+    max-width: 1300px;
+  }
+
+  .install-steps {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .install-step {
+    flex: 1;
+    text-align: center;
+  }
+
+  .install-step img {
+    margin-top: 12px;
+    width: 100%;
+    max-width: 280px;
+    border-radius: 12px;
+  }
+}
+
+/* ===== PORTRAIT MODE ===== */
+@media (orientation: portrait) {
+  #install-content {
+    width: 92vw;
+    max-width: 700px;
+  }
+
+  .install-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .install-step {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .install-step img {
+    width: 45%;
+    border-radius: 10px;
+  }
+
+  .install-step p {
+    width: 50%;
+    text-align: left;
+  }
+}
+        /* Make selected icon stand out */
+.select-icon.border-indigo-400 {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 10px rgba(99, 102, 241, 0.4);
+  transform: scale(1.1);
+  transition: all 0.25s ease-in-out;
+}
+
+/* Selected icon glow effect */
+.select-icon.border-indigo-400 {
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.9),
+              0 0 40px rgba(99, 102, 241, 0.6),
+              inset 0 0 10px rgba(99, 102, 241, 0.4);
+  transform: scale(1.2);
+  border-color: #818cf8;
+  transition: all 0.3s ease;
+}
+
+
+
+    </style>
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
+    
+<!-- Splash Intro -->
+<div id="splash" class="fixed inset-0 bg-gray-900 flex flex-col items-center justify-center z-[5000]">
+  <img 
+    src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logoactual.png" 
+    alt="CNM Games Logo" 
+    class="w-32 h-32 animate-breath"
+  >
+  <h1 class="mt-6 text-5xl font-extrabold shiny-text opacity-0 animate-textFade">CNM Games</h1>
+</div>
 
-  <!-- SPLASH (non-breathing) -->
-  <div id="splash" aria-hidden="true">
-    <div class="splash-inner">
-      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" alt="CNM Games logo">
-      <h2 class="mt-4 text-2xl font-bold shiny-text">CNM Games</h2>
-    </div>
-  </div>
 
-  <!-- Header -->
-  <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl z-50 w-full">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
-      <div class="mb-4 md:mb-0 flex items-center">
-        <svg class="w-10 h-10 mr-3 text-pink-400 transform -rotate-15" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight"><span class="shiny-text">CNM Games</span></h1>
-      </div>
-
-      <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400">Authenticating...</span></p>
-
-      <!-- Search area -->
-      <div class="w-full md:w-80 lg:w-96 mt-4 md:mt-0">
-        <div class="relative">
-          <input id="search-input" type="text" placeholder="Search title or category..."
-                 class="w-full py-3 pl-12 pr-12 border border-indigo-500/50 rounded-full focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-800 text-gray-50 placeholder-gray-400 shadow-xl" />
-          <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-indigo-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-
-          <!-- Clear button -->
-          <button id="clear-search" title="Clear search" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
-
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-    <!-- Intro + side panel (suggestions) -->
-    <section class="intro rounded-2xl p-6 max-w-7xl mx-auto flex flex-col lg:flex-row items-start gap-6">
-      <div class="flex items-center gap-4">
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" alt="logo" class="w-16 h-16 rounded-lg icon-glow">
-        <div>
-          <h2 class="text-2xl font-extrabold"><span class="shiny-text">Welcome to CNM Games</span></h2>
-          <p class="text-gray-300 mt-1 max-w-xl">Our hub for free web games — browse, launch, and save progress. Suggestions are shown on the right so you don't have to click through popups.</p>
-        </div>
-      </div>
-
-      <!-- Suggestions panel (matches updates style) -->
-      <div class="side-panel p-4 rounded-xl w-full md:w-1/3">
-        <h3 class="text-lg font-semibold text-purple-300 mb-2">🎮 Game Suggestions</h3>
-
-        <!-- Text (no bullets) -->
-        <div class="text-gray-300 text-sm space-y-3">
-          <p>Want a game added? Click the button below.</p>
-          <div class="flex items-center gap-3">
-            <div class="icon-glow p-2 rounded-md">
-              <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" class="w-12 h-12 rounded-md select-icon" alt="icon1">
+    <!-- Header/Nav Bar -->
+    <header class="bg-gray-900/80 backdrop-blur-sm shadow-2xl z-50 w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-start md:items-center">
+            
+            <!-- Title -->
+            <div class="mb-4 md:mb-0 flex items-center">
+                <svg class="w-10 h-10 mr-3 text-pink-400 transform -rotate-15" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <circle cx="12" cy="12" r="8" stroke-width="2" />
+                    <line x1="12" y1="8" x2="12" y2="12" stroke-width="2" />
+                    <line x1="12" y1="12" x2="15" y2="15" stroke-width="2" />
+                </svg>
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
+                    <span class="shiny-text">CNM Games</span>
+                </h1>
             </div>
-            <div class="icon-glow p-2 rounded-md">
-              <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" class="w-12 h-12 rounded-md select-icon" alt="icon2">
+
+            <!-- User ID Display -->
+            <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Authenticating...</span></p>
+
+            <!-- Search Input -->
+            <div class="w-full md:w-80 lg:w-96 mt-4 md:mt-0">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="Search title or category..." 
+                        class="w-full py-3 pl-12 pr-4 border border-indigo-500/50 rounded-full focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 bg-gray-800 text-gray-50 placeholder-gray-400 shadow-xl"
+                    />
+                    <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
             </div>
-            <div class="icon-glow p-2 rounded-md">
-              <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/IconAlt.png" class="w-12 h-12 rounded-md select-icon" alt="icon3">
+        </div>
+    </header>
+
+    <!-- Intro + Side panels (Suggestions & Updates) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <!-- Intro -->
+        <section id="intro" class="intro rounded-2xl p-6 animate-fadeIn max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6">
+            <div class="logo-wrap flex items-center gap-4">
+                <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logoactual.png" alt="CNM Games Logo" class="rounded-lg" />
+                <div>
+                    <h2 class="text-3xl font-extrabold text-gray-100"><span class="shiny-text">Welcome to CNM Games</span></h2>
+                    <p class="text-gray-300 mt-1 max-w-2xl">Play free web games, save your progress, and explore new titles. Suggestions and updates are right here, so you don’t have to hunt through popups.</p>
+                </div>
             </div>
-          </div>
 
-          <a id="suggest-btn" class="inline-block w-full text-center bg-indigo-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition transform hover:scale-[1.02] shadow-md mt-2" href="#" role="button">Suggest a Game</a>
+            <!-- Suggestions + Updates side-by-side -->
+
+
+                <div class="side-panel p-4 rounded-xl">
+                    <h3 class="text-lg font-semibold text-purple-300 mb-2">🎮 Game Suggestions</h3>
+                    <div class="text-gray-300 text-sm space-y-1">
+                        <ul class="list-disc list-inside ml-4">
+                            <li>Want a game to be added?</li>
+                            <li>⚠️Niche Poki Games are harder to Pirate⚠️</li>
+                        </ul>
+                        <a href="https://cnm-games.vercel.app/GameDisturtuionrules.md"
+       class="block text-center bg-indigo-600 text-white py-2 px-4 rounded-md font-medium text-xs hover:bg-indigo-700 transition transform hover:scale-[1.03] shadow-sm">
+        Game Suggetion Rules!
+             Read First
+    </a>
+                         <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__TF_CsRUNkFLWEg2QzdFOE5EVVRKU0xaTk5aUlNIUi4u"
+       class="block text-center bg-indigo-600 text-white py-3 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition transform hover:scale-[1.03] shadow-md">
+        Suggest a Game
+    </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+                <div class="side-panel p-4 rounded-xl">
+                    <h3 class="text-lg font-semibold text-purple-300 mb-2">🛠 Latest Updates</h3>
+                    <div class="text-gray-300 text-sm space-y-1">
+                        <p class="font-semibold text-gray-200">November 8, 2025</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>Added Sheep Sheep!🔨</li>
+                            <li>Added Game Inside Game!🔨</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games Counter -->
+        <div class="mb-2 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <h2 class="text-3xl font-bold text-gray-200">Total Games:</h2>
+                <span id="game-count" class="text-pink-400 text-4xl font-extrabold tracking-tight">0</span>
+            </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Counter + grid -->
-    <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-4">
-        <h2 class="text-3xl font-bold text-gray-200">Total Games:</h2>
-        <span id="game-count" class="text-pink-400 text-4xl font-extrabold tracking-tight">0</span>
-      </div>
+        <!-- Game Grid Container -->
+        <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            <!-- Game cards will be inserted here by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Panic Button (Fixed Position) -->
+    <button 
+        id="panic-button"
+        class="fixed bottom-4 right-4 z-[2000] p-4 text-white bg-red-600 rounded-full shadow-2xl hover:bg-red-700 transition transform hover:scale-[1.05] focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-75 flex items-center space-x-2 font-bold text-lg"
+        title="Quick Escape (Press ESC)"
+    >
+        <!-- Lightning Bolt Icon -->
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <span>PANIC</span>
+    </button>
+    
+    <!-- Game Launch Modal (Hidden by default) -->
+    <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center transition-opacity duration-300 hidden z-[1000]">
+        <div id="modal-content" class="w-full h-full relative">
+            <!-- Close Button -->
+            <button 
+                id="close-modal-btn"
+                class="absolute top-0 right-0 z-50 bg-red-600 text-white p-3 m-2 rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:rotate-90"
+                title="Close Game (Esc Key)"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <!-- Loading/Timeout Overlay - Simplified -->
+            <div id="loading-overlay" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center p-8 transition-opacity duration-300 z-40">
+                <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
+                
+                <p id="loading-text" class="text-xl text-gray-400">Loading external game...</p>
+                
+                <!-- Fallback link area, initially hidden on timeout -->
+                <div id="link-fallback" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-gray-800/50 shadow-2xl border-t-4 border-indigo-500">
+                    <p class="text-sm text-gray-300 mb-4 font-semibold">The game didn't load inside the hub. This usually means the host site blocks embedding.</p>
+                    <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-indigo-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-indigo-700 transition transform hover:scale-[1.05] shadow-lg">
+                        Open Game in New Tab
+                    </a>
+                </div>
+            </div>
+
+            <!-- Game Iframe -->
+            <iframe 
+                id="game-iframe"
+                src="" 
+                class="w-full h-full shadow-2xl bg-gray-900" 
+                title="Game Player"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+            ></iframe>
+
+        </div>
     </div>
 
-    <div id="game-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-      <!-- cards inserted by JS -->
-    </div>
-  </main>
+    <!-- NOTE: popup HTML removed because suggestions/updates are visible above -->
 
-  <!-- Panic button -->
-  <button id="panic-button" class="fixed bottom-4 right-4 z-[2000] p-4 text-white bg-red-600 rounded-full shadow-2xl hover:bg-red-700 transition transform hover:scale-[1.05] font-bold text-lg" title="Quick Escape (Esc)">
-    <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-    </svg>
-  </button>
+    <script type="module">
+        // --- Firebase Imports ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, doc, getDoc, setDoc, serverTimestamp, setLogLevel 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-  <!-- Game modal -->
-  <div id="game-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 items-center justify-center hidden z-[1000]">
-    <div class="w-full h-full relative">
-      <button id="close-modal-btn" class="absolute top-2 right-2 z-50 bg-red-600 text-white p-3 m-2 rounded-full">✕</button>
-      <div id="loading-overlay" class="absolute inset-0 flex flex-col items-center justify-center p-8 z-40">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-500 mb-4"></div>
-        <p id="loading-text" class="text-xl text-gray-400">Loading external game...</p>
-        <div id="link-fallback" class="hidden text-center mt-6 p-6 max-w-lg w-full rounded-xl bg-gray-800/50 shadow-2xl border-t-4 border-indigo-500">
-          <p class="text-sm text-gray-300 mb-4">The game didn't load inside the hub. Try opening in a new tab.</p>
-          <a id="open-in-new-tab" href="#" target="_blank" class="inline-block bg-indigo-600 text-white py-3 px-6 rounded-full">Open Game in New Tab</a>
-        </div>
-      </div>
-      <iframe id="game-iframe" src="" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </div>
+        // --- Global Firebase & State Vars ---
+        let db;
+        let auth;
+        let userId = 'loading'; 
+        let currentGameId = null; 
 
-  <!-- Add-to-Home popup (single card) -->
-  <div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden">
-    <div class="install-card bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-4xl w-[94%] shadow-2xl">
-      <div class="left">
-        <h2 class="text-2xl font-bold text-purple-300 mb-2">📱 Add CNM Games to Your Home Screen</h2>
-        <p class="text-gray-300 mb-4">For the best experience, follow these quick visual steps — then click Next.</p>
+        // Environment variables for Firebase config
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
 
-        <div class="tutorial-row mb-4 gap-3">
-          <img class="tutorial rounded-lg" src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1">
-          <img class="tutorial rounded-lg" src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2">
-          <img class="tutorial rounded-lg" src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3">
-        </div>
+        // --- Game Data (FIXED TO USE ABSOLUTE GITHUB RAW PATHS) ---
+        const GITHUB_BASE_URL = "https://raw.githack.com/HTML5GameArchive/gfiles/master/games/";
+        const THUMBNAILS_DIR = "https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Thumbnails/";
 
-        <div class="text-gray-300 text-sm mb-2">
-          <strong>Tip:</strong> Once added, you can edit the home screen to hide labels or make icons larger for a cleaner look.
-        </div>
-
-        <div class="flex justify-between items-center mt-4">
-          <button id="skip-popup" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium">No, thanks</button>
-          <button id="next-step" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-semibold">Next</button>
-        </div>
-      </div>
-
-      <div class="right hidden md:block">
-        <h3 class="text-lg font-semibold text-purple-300 mb-2">Choose Icon</h3>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="icon-glow p-2 flex items-center justify-center">
-            <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Logo.png" class="select-icon" alt="icon A">
-          </div>
-          <div class="icon-glow p-2 flex items-center justify-center">
-            <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" class="select-icon" alt="icon B">
-          </div>
-          <div class="icon-glow p-2 flex items-center justify-center">
-            <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/IconAlt.png" class="select-icon" alt="icon C">
-          </div>
-          <div class="icon-glow p-2 flex items-center justify-center">
-            <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" class="select-icon" alt="icon D">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main module script (games, firebase-safe, search + clear button) -->
-  <script type="module">
-    // minimal safe firebase imports usage (will only run if config present)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // DOM
-    const gameGrid = document.getElementById('game-grid');
-    const searchInput = document.getElementById('search-input');
-    const clearBtn = document.getElementById('clear-search');
-    const gameCountDisplay = document.getElementById('game-count');
-    const userIdDisplay = document.getElementById('user-id-display');
-    const gameModal = document.getElementById('game-modal');
-    const gameIframe = document.getElementById('game-iframe');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const panicButton = document.getElementById('panic-button');
-    const loadingOverlay = document.getElementById('loading-overlay');
-    const linkFallback = document.getElementById('link-fallback');
-    const openInNewTabLink = document.getElementById('open-in-new-tab');
-
-    // install popup elements
-    const installPopup = document.getElementById('install-popup');
-    const nextStepBtn = document.getElementById('next-step');
-    const skipBtn = document.getElementById('skip-popup');
-    const selectIcons = Array.from(document.querySelectorAll('.select-icon'));
-    let selectedIcon = null;
-
-    // state
-    let searchTerm = '';
-    let loadTimeout;
-    let db, auth;
-    let userId = 'loading';
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? (typeof __firebase_config === 'string' ? JSON.parse(__firebase_config||'{}') : __firebase_config) : {};
-
-    // games array trimmed for brevity - **replace or append** with your full set as needed
-    const initialGames = [
-      { id: 5, title: "2048", description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", category: "Puzzle", gameUrl: "https://cnm-game-library.vercel.app/2048/index.html", imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/2048.png" },
-      { id: 7, title: "BTD4", description: "Bloons TD 4", category: "Tower Defense", gameUrl: "https://cnm-game-library.vercel.app/btd4/index.html", imgUrl: "https://raw.githack.com/KAYAZzz/CNM-Games/main/Thumbnails/BTD4.jpg" },
+        const initialGames = [
+            { id: 5, title: "2048", description: "Slide and merge numbered tiles on a grid to create the 2048 tile.", category: "Puzzle", gameUrl: "https://cnm-game-library.vercel.app/2048/index.html", imgUrl: THUMBNAILS_DIR + "2048.png" },
+            { id: 7, title: "BTD4", description: "Bloons TD 4: strategically place towers to defend against waves of colorful balloons.", category: "Tower Defense", gameUrl: "https://cnm-game-library.vercel.app/btd4/index.html", imgUrl: THUMBNAILS_DIR + "BTD4.jpg" },
             { id: 6, title: "Bitlife", description: "Live a virtual life simulation, making choices that determine your career, relationships, and death.", category: "Simulation", gameUrl: GITHUB_BASE_URL + "bitlife/index.html", imgUrl: THUMBNAILS_DIR + "Bitlife.webp" },
             { id: 8, title: "Chess", description: "The classic board game of strategy and tactics. Outwit your opponent to deliver checkmate.", category: "Strategy", gameUrl: GITHUB_BASE_URL + "chess/index.html", imgUrl: THUMBNAILS_DIR + "chess.jpg" }, 
             { id: 9, title: "Cookie Clicker", description: "A highly addictive incremental game where you click a cookie to generate more cookies.", category: "Idle Clicker", gameUrl: GITHUB_BASE_URL + "cookieclicker/index.html", imgUrl: THUMBNAILS_DIR + "Cookie-Clicker.jpg" }, 
@@ -580,197 +915,537 @@
                 gameUrl: "https://cnm-game-library.vercel.app/game-inside/index.html",
                 imgUrl: "https://raw.githack.com/KAYAZzz/cnm-games/main/Thumbnails/GameInsideGame.png"
             },
-    ];
+        ];
 
-    // safety init firebase if config present
-    async function initializeFirebase() {
-      if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
-        userId = crypto.randomUUID();
-        userIdDisplay.textContent = `${userId} (No persistence)`;
-        return;
-      }
-      try {
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
-        setLogLevel('debug');
-        await new Promise((resolve) => {
-          const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-              const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-              if (token) await signInWithCustomToken(auth, token);
-              else await signInAnonymously(auth);
+        // --- DOM Elements ---
+        const gameGrid = document.getElementById('game-grid');
+        const searchInput = document.getElementById('search-input');
+        const gameCountDisplay = document.getElementById('game-count');
+        const userIdDisplay = document.getElementById('user-id-display'); 
+        const gameModal = document.getElementById('game-modal');
+        const gameIframe = document.getElementById('game-iframe');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const panicButton = document.getElementById('panic-button'); 
+
+        // Modal Elements for Iframe Games
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const loadingText = document.getElementById('loading-text');
+        const linkFallback = document.getElementById('link-fallback');
+        const openInNewTabLink = document.getElementById('open-in-new-tab');
+
+        // --- State ---
+        let searchTerm = '';
+        let loadTimeout;
+        const PANIC_URL = "https://member.foodvillage.ie/login"; 
+
+        // =========================================================================
+        // === UTILITY FUNCTIONS ===================================================
+        // =========================================================================
+
+        /**
+         * Redirects the user to the panic URL immediately.
+         */
+        function handlePanic() {
+            console.warn("PANIC TRIGGERED. Redirecting to safe URL...");
+            window.location.href = PANIC_URL;
+        }
+
+
+        // =========================================================================
+        // === FIREBASE INITIALIZATION & DATA SAVING LOGIC =========================
+        // =========================================================================
+
+        /**
+         * Initializes Firebase and authenticates the user, guaranteeing a defined userId.
+         */
+        async function initializeFirebase() {
+            if (Object.keys(firebaseConfig).length === 0) {
+                 console.warn("Firebase config is empty. Data persistence disabled.");
+                 userId = crypto.randomUUID(); 
+                 userIdDisplay.textContent = userId + " (Persistence Disabled)";
+                 return;
             }
-            userId = auth.currentUser?.uid || crypto.randomUUID();
-            userIdDisplay.textContent = userId;
-            unsubscribe();
-            resolve();
-          });
-        });
-      } catch (err) {
-        console.warn('Firebase init failed', err);
-        userId = crypto.randomUUID();
-        userIdDisplay.textContent = `${userId} (Auth failed)`;
-      }
-    }
+            
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                setLogLevel('debug'); 
+                
+                await new Promise((resolve) => {
+                    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                        if (!user) {
+                            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        }
+                        
+                        userId = auth.currentUser?.uid || crypto.randomUUID();
+                        userIdDisplay.textContent = userId;
+                        console.log(`Firebase Initialized. User ID: ${userId}`);
+                        
+                        unsubscribe();
+                        resolve();
+                    });
+                });
 
-    // open modal
-    window.openGameModal = function(url, gameId) {
-      gameIframe.src = '';
-      openInNewTabLink.href = url;
-      gameModal.classList.remove('hidden');
-      gameModal.classList.add('flex');
-      loadingOverlay.style.display = 'flex';
-      gameIframe.src = url;
-      clearTimeout(loadTimeout);
-      loadTimeout = setTimeout(() => {
-        loadingOverlay.style.display = 'flex';
-        linkFallback.classList.remove('hidden');
-      }, 5000);
-      gameIframe.onload = () => {
-        clearTimeout(loadTimeout);
-        loadingOverlay.style.display = 'none';
-      };
-    };
+            } catch (error) {
+                console.error("Error initializing Firebase or during sign-in:", error);
+                userId = crypto.randomUUID(); 
+                userIdDisplay.textContent = `Auth Failed: ${userId.substring(0, 8)}... (No Persistence)`;
+            }
+        }
 
-    function closeGameModal() {
-      clearTimeout(loadTimeout);
-      gameIframe.onload = null;
-      gameIframe.src = '';
-      gameModal.classList.add('hidden');
-      gameModal.classList.remove('flex');
-    }
+        /**
+         * Constructs the Firestore document path for game progress.
+         */
+        function getGameDocRef(gameId) {
+            if (!db || !userId || !gameId) {
+                console.error("Cannot get doc ref: Firebase or IDs missing.");
+                return null;
+            }
+            // Path: /artifacts/{appId}/users/{userId}/game_saves/{gameId}
+            const path = `/artifacts/${appId}/users/${userId}/game_saves`;
+            return doc(db, path, String(gameId));
+        }
 
-    // create card HTML
-    function createGameCardHTML(game) {
-      const safeUrl = game.gameUrl.replace(/'/g, "\\'");
-      return `
-        <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03]" data-url="${game.gameUrl}" onclick="openGameModal('${safeUrl}', ${game.id})">
-          <div class="h-40 bg-gray-900 relative overflow-hidden">
-            <img src="${game.imgUrl}" alt="${game.title} Thumbnail" class="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110" onerror="this.onerror=null;this.src='https://placehold.co/400x220/DC2626/ffffff?text=Image+Load+FAIL';">
-            <span class="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full bg-purple-600 text-white shadow-md">${game.category}</span>
-          </div>
-          <div class="p-4">
-            <h2 class="text-xl font-bold text-gray-50 truncate mb-1">${game.title}</h2>
-            <p class="text-sm text-gray-400 line-clamp-2">${game.description}</p>
-            <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition duration-150 pointer-events-none">Launch Game</button>
-          </div>
-        </div>`;
-    }
+        /**
+         * Saves game data to Firestore (Called by postMessage listener).
+         */
+        async function saveGameProgress(gameId, data) {
+            const docRef = getGameDocRef(gameId);
+            if (!docRef) {
+                console.warn(`[Save Skipped] Persistence is disabled. Game ID: ${gameId}`);
+                return { success: false, error: "Persistence disabled." };
+            }
+            
+            try {
+                await setDoc(docRef, { 
+                    gameId: String(gameId), 
+                    timestamp: serverTimestamp(),
+                    data: JSON.stringify(data) 
+                });
+                console.log(`[Save Success] Progress saved for ID ${gameId}.`);
+                return { success: true };
+            } catch (error) {
+                console.error(`[Save Error] Error saving progress for ${gameId}:`, error);
+                return { success: false, error: error.message };
+            }
+        }
 
-    function renderGameCards() {
-      const term = searchTerm.trim().toLowerCase();
-      const filtered = initialGames.filter(g =>
-        g.title.toLowerCase().includes(term) ||
-        g.category.toLowerCase().includes(term) ||
-        g.description.toLowerCase().includes(term)
-      );
-      gameCountDisplay.textContent = filtered.length;
-      gameGrid.innerHTML = filtered.length ? filtered.map(createGameCardHTML).join('') : `<p class="text-xl text-gray-400 col-span-full text-center py-10 border-2 border-dashed border-gray-700 p-6 rounded-xl"><span class="text-2xl block mb-2">😔</span>No games found matching "${searchTerm}".</p>`;
-    }
+        /**
+         * Loads game data from Firestore (Called by postMessage listener).
+         */
+        async function loadGameProgress(gameId) {
+            const docRef = getGameDocRef(gameId);
+            if (!docRef) {
+                 return { data: null, success: false, error: "Persistence disabled." };
+            }
 
-    // search + clear button wiring
-    searchInput.addEventListener('input', (e) => {
-      searchTerm = e.target.value;
-      renderGameCards();
-      clearBtn.classList.toggle('hidden', searchInput.value === '');
-    });
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchTerm = '';
-      renderGameCards();
-      clearBtn.classList.add('hidden');
-      searchInput.focus();
-    });
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const { data } = docSnap.data();
+                    const loadedData = JSON.parse(data);
+                    console.log(`[Load Success] Progress loaded for ID ${gameId}.`);
+                    return { data: loadedData, success: true };
+                } else {
+                    console.log(`[Load Info] No saved data found for ID ${gameId}.`);
+                    return { data: null, success: true };
+                }
+            } catch (error) {
+                console.error(`[Load Error] Error loading progress for ${gameId}:`, error);
+                return { data: null, success: false, error: error.message };
+            }
+        }
 
-    // basic event bindings
-    closeModalBtn?.addEventListener('click', closeGameModal);
-    panicButton.addEventListener('click', () => window.location.href = "https://member.foodvillage.ie/login");
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (!gameModal.classList.contains('hidden')) closeGameModal();
-        else window.location.href = "https://member.foodvillage.ie/login";
-      }
-    });
+        /**
+         * PostMessage listener to handle SAVE/LOAD requests from the iframe.
+         */
+        function handleIframeMessage(event) {
+            // Only accept messages from the currently active iframe source
+            if (event.source !== gameIframe.contentWindow) {
+                return; 
+            }
+            
+            const message = event.data;
+            const iframeWindow = gameIframe.contentWindow;
 
-    // install popup logic (single-card flow)
-    function showInstallPopup() {
-      if (!localStorage.getItem('installDismissed')) {
-        installPopup.classList.remove('hidden');
-      }
-    }
-    nextStepBtn?.addEventListener('click', () => {
-      // In this simplified single-card flow, Next just advances UI focus to icon selection on small screens:
-      // On MD+ the icon area is already visible; For small screens we scroll to bottom to show icons.
-      const icons = installPopup.querySelectorAll('.select-icon');
-      if (icons.length) {
-        icons[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        // finish if none
-        localStorage.setItem('installDismissed', 'true');
-        installPopup.classList.add('hidden');
-      }
-    });
-    skipBtn?.addEventListener('click', () => {
-      localStorage.setItem('installDismissed', 'true');
-      installPopup.classList.add('hidden');
-    });
+            if (typeof message !== 'object' || !message.type || message.gameId !== currentGameId) {
+                return; 
+            }
 
-    // icon selection
-    selectIcons.forEach(ic => {
-      ic.addEventListener('click', () => {
-        selectIcons.forEach(el => el.classList.remove('selected'));
-        ic.classList.add('selected');
-        selectedIcon = ic.src;
-        // update apple-touch-icon link dynamically for preview
-        const link = document.querySelector("link[rel='apple-touch-icon']");
-        if (link) link.href = selectedIcon;
-      });
-    });
+            switch (message.type) {
+                case 'LOAD_DATA':
+                    loadGameProgress(message.gameId).then(result => {
+                        iframeWindow.postMessage({ type: 'LOAD_RESPONSE', data: result.data }, '*');
+                    });
+                    break;
+                case 'SAVE_DATA':
+                    saveGameProgress(message.gameId, message.payload).then(result => {
+                        iframeWindow.postMessage({ type: 'SAVE_RESPONSE', success: result.success }, '*');
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
 
-    // startup
-    window.addEventListener('load', async () => {
-      await initializeFirebase();
-      renderGameCards();
-      // show install popup (delay so it doesn't flash)
-      setTimeout(showInstallPopup, 700);
-    });
+        // =========================================================================
+        // === UI AND GAME LAUNCH LOGIC ============================================
+        // =========================================================================
 
-    // expose small API for debug
-    window._cnm = { renderGameCards, initialGames };
+        /**
+         * Opens the game modal with the specified URL and ID.
+         */
+        window.openGameModal = function(url, gameId) {
+            currentGameId = gameId; 
+            gameModal.classList.remove('hidden');
+            gameModal.classList.add('flex');
 
-  </script>
+            // 1. Reset and Show Loading State
+            linkFallback.classList.add('hidden'); // Hide fallback link initially
+            loadingOverlay.classList.remove('hidden');
+            loadingSpinner.classList.remove('hidden'); 
+            loadingText.textContent = 'Loading external game...';
+            openInNewTabLink.href = url;
+            gameIframe.src = ''; // Clear iframe source initially
 
-  <!-- splash fade script & popup close on outside clicks -->
-  <script>
-    window.addEventListener('load', () => {
-      const splash = document.getElementById('splash');
-      setTimeout(() => {
-        splash.style.transition = 'opacity .6s ease';
-        splash.style.opacity = '0';
-        setTimeout(() => splash.remove(), 700);
-      }, 1600);
+            // Set the game URL and start the loading process
+            gameIframe.src = url;
 
-      // close install popup when clicking outside (safely)
+            // 2. Set a timeout (5s) to suggest manual launch if loading fails/blocks
+            loadTimeout = setTimeout(() => {
+                loadingText.textContent = 'Loading took longer than expected. The host site might be blocking embeds.'; 
+                loadingSpinner.classList.add('hidden'); 
+                linkFallback.classList.remove('hidden'); // Show the manual link
+            }, 5000); 
+
+            // 3. Listen for successful load
+            gameIframe.onload = function() {
+                clearTimeout(loadTimeout);
+                loadingOverlay.classList.add('hidden');
+                console.log(`External game ${gameId} loaded. Ready for postMessage communication.`);
+            };
+        }
+
+        /**
+         * Closes the game modal and stops the iframe content.
+         */
+        function closeGameModal() {
+            clearTimeout(loadTimeout);
+            gameIframe.onload = null;
+            
+            gameModal.classList.add('hidden');
+            gameModal.classList.remove('flex');
+            gameIframe.src = ''; // Stop the iframe content
+            currentGameId = null; // Clear game context
+        }
+
+        /**
+         * Simulates the count-up text animation.
+         */
+        function countUp(targetElement, finalNumber) {
+            let count = 0;
+            const duration = 1000;
+            const interval = 30;
+            const totalSteps = duration / interval;
+            const increment = finalNumber === 0 ? 0 : finalNumber / totalSteps; 
+
+            function updateCount() {
+                if (count < finalNumber) {
+                    count += increment;
+                    targetElement.textContent = Math.ceil(count);
+                    setTimeout(updateCount, interval);
+                } else {
+                    targetElement.textContent = finalNumber;
+                }
+            }
+            if (targetElement.dataset.interval) {
+                 clearTimeout(targetElement.dataset.interval);
+            }
+            targetElement.dataset.interval = setTimeout(updateCount, interval);
+        }
+
+        /**
+         * Generates the HTML string for a single game card.
+         */
+        function createGameCardHTML(game) {
+            const safeUrl = game.gameUrl.replace(/'/g, "\\'");
+            
+            return `
+                <div 
+                    class="bg-gray-800 rounded-xl shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-indigo-500/50"
+                    data-url="${game.gameUrl}"
+                    onclick="openGameModal('${safeUrl}', ${game.id})"
+                >
+                    <!-- Thumbnail Area -->
+                    <div class="h-40 bg-gray-900 relative overflow-hidden">
+                        <img 
+                            src="${game.imgUrl}" 
+                            alt="${game.title} Thumbnail" 
+                            class="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110" 
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x220/DC2626/ffffff?text=Image+Load+FAIL+CHECK+CONSOLE';"
+                        />
+                        <!-- Category tag -->
+                        <span class="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full bg-purple-600 text-white shadow-md">
+                            ${game.category}
+                        </span>
+                    </div>
+
+                    <!-- Game Info -->
+                    <div class="p-4">
+                        <h2 class="text-xl font-bold text-gray-50 truncate mb-1">${game.title}</h2>
+                        <p class="text-sm text-gray-400 line-clamp-2">${game.description}</p>
+                        
+                        <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.01] shadow-lg shadow-indigo-500/50 pointer-events-none">
+                            Launch Game
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        /**
+         * Filters games based on the search term and renders the grid.
+         */
+        function renderGameCards() {
+            const term = searchTerm.toLowerCase();
+            const filteredGames = initialGames.filter(game =>
+                game.title.toLowerCase().includes(term) ||
+                game.category.toLowerCase().includes(term) ||
+                game.description.toLowerCase().includes(term)
+            );
+
+            countUp(gameCountDisplay, filteredGames.length);
+            
+            if (filteredGames.length > 0) {
+                gameGrid.innerHTML = filteredGames.map(createGameCardHTML).join('');
+            } else {
+                gameGrid.innerHTML = `
+                    <p class="text-xl text-gray-400 col-span-full text-center py-10 border-2 border-dashed border-gray-700 p-6 rounded-xl">
+                        <span class="text-2xl block mb-2">😔</span>
+                        No games found matching "${searchTerm}". Try broadening your search!
+                    </p>
+                `;
+            }
+        }
+
+
+        // --- Event Listeners and Initialization ---
+
+        window.onload = async function() {
+            await initializeFirebase();
+            
+            window.addEventListener('message', handleIframeMessage);
+            renderGameCards();
+
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                renderGameCards();
+            });
+
+            closeModalBtn.addEventListener('click', closeGameModal);
+            panicButton.addEventListener('click', handlePanic); 
+
+            document.addEventListener('keydown', (e) => {
+                // If the game modal is open, ESC closes the modal.
+                // Otherwise, ESC triggers the panic function.
+                if (e.key === 'Escape') {
+                    if (gameModal.classList.contains('flex')) {
+                        closeGameModal();
+                        e.preventDefault(); 
+                    } else {
+                        handlePanic(); // Panic button keyboard shortcut
+                    }
+                }
+            });
+        };
+    </script>
+
+<script>
+  window.addEventListener('load', () => {
+    const splash = document.getElementById('splash');
+    setTimeout(() => {
+      splash.style.opacity = '0';
+      splash.style.transition = 'opacity 0.6s ease';
+      setTimeout(() => splash.remove(), 700);
+    }, 2200); // stays visible for ~2.2 seconds total
+  });
+</script>
+
+<!-- Add-to-Home Popup (REPLACE your current popup block with this) -->
+<div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden" aria-hidden="true">
+  <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-2xl w-[92%] shadow-2xl animate-fadeIn overflow-y-auto max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="install-title">
+
+    <h2 id="install-title" class="text-2xl font-bold text-purple-300 mb-2 text-center">📱 Add CNM Games to Your Home Screen</h2>
+    <p class="text-gray-300 mb-4 text-center">For the best experience, follow these quick steps:</p>
+      <h2 class="text-2xl font-bold text-purple-300 mb-2">🎨 Customize Your Icon</h2>
+      <!-- Icon selection (with glowing backdrop) -->
+<div class="flex justify-center gap-5 mb-5 flex-wrap">
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+         alt="Icon 1">
+  </div>
+
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-purple-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+         alt="Icon 2">
+  </div>
+
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-pink-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+         alt="Icon 3">
+  </div>
+</div>
+
+    <!-- Steps (compact grid so it fits landscape) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 text-center">
+      <div class="install-step">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">1</div>
+        <p class="text-sm text-gray-300 mb-2">Tap the <strong>Share</strong> icon in Safari.</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1" class="rounded-lg shadow-md w-full object-cover">
+      </div>
+
+      <div class="install-step">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">2</div>
+        <p class="text-sm text-gray-300 mb-2">Scroll down in the menu that appears.</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2" class="rounded-lg shadow-md w-full object-cover">
+      </div>
+
+      <div class="install-step">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">3</div>
+        <p class="text-sm text-gray-300 mb-2">Tap <strong>Add to Home Screen</strong> — done!</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3" class="rounded-lg shadow-md w-full object-cover">
+      </div>
+    </div>
+
+
+
+    <!-- Single button (centered) -->
+    <div class="flex justify-center mt-4">
+      <button id="close-popup" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-md text-sm font-semibold">Got it — Finish</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    // Defensive: only run once DOM is ready
+    function initInstallPopup() {
       const popup = document.getElementById('install-popup');
-      if (popup) {
-        popup.addEventListener('click', (e) => {
-          if (e.target === popup) {
-            localStorage.setItem('installDismissed', 'true');
-            popup.classList.add('hidden');
-          }
-        });
+      const closeBtn = document.getElementById('close-popup');
+      const icons = document.querySelectorAll('.select-icon');
+
+      if (!popup || !closeBtn) return;
+
+      const LS_KEY = 'installDismissedV2';
+
+      // Show popup function (removes hidden)
+      function showPopup() {
+        if (!popup.classList.contains('hidden')) return;
+        popup.classList.remove('hidden');
+        popup.setAttribute('aria-hidden', 'false');
+        // focus button for keyboard users
+        closeBtn.focus({ preventScroll: true });
       }
 
-      // make select icons easier to tap: increase hit area
-      document.querySelectorAll('.select-icon').forEach(img => {
-        const wrapper = img.closest('.icon-glow') || img.parentElement;
-        if (wrapper) {
-          wrapper.addEventListener('click', () => img.click());
-          wrapper.style.cursor = 'pointer';
+      // Hide popup function (adds hidden)
+      function hidePopup() {
+        if (popup.classList.contains('hidden')) return;
+        popup.classList.add('hidden');
+        popup.setAttribute('aria-hidden', 'true');
+      }
+
+      // Only show if not dismissed
+      try {
+        if (!localStorage.getItem(LS_KEY)) {
+          showPopup();
+        }
+      } catch (e) {
+        // localStorage could be unavailable in some browsers; still show popup
+        showPopup();
+      }
+
+      // Closing
+      closeBtn.addEventListener('click', () => {
+        try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+        hidePopup();
+      });
+
+      // click outside content closes
+      popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+          hidePopup();
         }
       });
-    });
-  </script>
+
+      // ESC closes
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+          hidePopup();
+        }
+      });
+
+      // Icon selection behavior (update apple-touch-icon link if present)
+      if (icons && icons.length) {
+        icons.forEach(icon => {
+          icon.addEventListener('click', () => {
+            icons.forEach(i => i.classList.remove('border-indigo-400'));
+            icon.classList.add('border-indigo-400');
+            const link = document.querySelector("link[rel='apple-touch-icon']");
+            if (link) link.href = icon.src;
+          });
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initInstallPopup);
+    } else {
+      initInstallPopup();
+    }
+  })();
+</script>
+
+
+
+
+<script>
+  // Show popup a few seconds after load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('install-popup').classList.add('active');
+    }, 3500);
+  });
+
+  // Close it
+  document.getElementById('close-popup').addEventListener('click', () => {
+    document.getElementById('install-popup').classList.remove('active');
+  });
+
+    // Close it
+  document.getElementById('skip-popup').addEventListener('click', () => {
+    document.getElementById('install-popup').classList.remove('active');
+  });
+</script>
+
+
 </body>
 </html>
+
+
