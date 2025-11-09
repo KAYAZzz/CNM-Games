@@ -1458,9 +1458,18 @@
   });
 
   clearButton.addEventListener('click', () => {
+    // Clear the input visually
     searchInput.value = '';
+
+    // Hide the clear button
     clearButton.classList.add('hidden');
-    // Optional: re-render games if your site filters dynamically
+
+    // Reset the search term variable used by your main script
+    if (typeof searchTerm !== 'undefined') {
+      searchTerm = '';
+    }
+
+    // Re-render the full game list
     if (typeof renderGameCards === 'function') {
       renderGameCards();
     }
@@ -1471,6 +1480,7 @@
 
 </body>
 </html>
+
 
 
 
