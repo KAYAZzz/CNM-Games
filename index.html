@@ -1311,6 +1311,36 @@
   });
 </script>
 
+
+
+
+<script>
+  const searchInput = document.getElementById('search-input');
+  const clearButton = document.getElementById('clear-search');
+
+  // Show/hide the X icon when user types
+  searchInput.addEventListener('input', () => {
+    clearButton.classList.toggle('hidden', searchInput.value.trim() === '');
+  });
+
+  // Clear search + reset results
+  clearButton.addEventListener('click', () => {
+    // Clear the input box
+    searchInput.value = '';
+
+    // Hide the clear (X) button
+    clearButton.classList.add('hidden');
+
+    // Reset the searchTerm used by main game script
+    window.searchTerm = '';
+
+    // Re-render the full game grid
+    if (typeof renderGameCards === 'function') {
+      renderGameCards();
+    }
+  });
+</script>
+
 <!-- Add-to-Home Popup (Full HTML + JS) -->
 <div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden" aria-hidden="true">
   <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-2xl w-[92%] shadow-2xl animate-fadeIn overflow-y-auto max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="install-title">
@@ -1441,38 +1471,10 @@
 
 
 
-<script>
-  const searchInput = document.getElementById('search-input');
-  const clearButton = document.getElementById('clear-search');
-
-  // Show/hide the X icon when user types
-  searchInput.addEventListener('input', () => {
-    clearButton.classList.toggle('hidden', searchInput.value.trim() === '');
-  });
-
-  // Clear search + reset results
-  clearButton.addEventListener('click', () => {
-    // Clear the input box
-    searchInput.value = '';
-
-    // Hide the clear (X) button
-    clearButton.classList.add('hidden');
-
-    // Reset the searchTerm used by main game script
-    window.searchTerm = '';
-
-    // Re-render the full game grid
-    if (typeof renderGameCards === 'function') {
-      renderGameCards();
-    }
-  });
-</script>
-
-
-
 
 </body>
 </html>
+
 
 
 
