@@ -1453,23 +1453,23 @@
   const searchInput = document.getElementById('search-input');
   const clearButton = document.getElementById('clear-search');
 
+  // Show/hide the X icon when user types
   searchInput.addEventListener('input', () => {
     clearButton.classList.toggle('hidden', searchInput.value.trim() === '');
   });
 
+  // Clear search + reset results
   clearButton.addEventListener('click', () => {
-    // Clear the input visually
+    // Clear the input box
     searchInput.value = '';
 
-    // Hide the clear button
+    // Hide the clear (X) button
     clearButton.classList.add('hidden');
 
-    // Reset the search term variable used by your main script
-    if (typeof searchTerm !== 'undefined') {
-      searchTerm = '';
-    }
+    // Reset the searchTerm used by main game script
+    window.searchTerm = '';
 
-    // Re-render the full game list
+    // Re-render the full game grid
     if (typeof renderGameCards === 'function') {
       renderGameCards();
     }
@@ -1480,6 +1480,7 @@
 
 </body>
 </html>
+
 
 
 
