@@ -475,6 +475,7 @@
             <!-- User ID Display -->
             <p class="text-xs text-gray-400 mt-2 md:mt-0">User ID: <span id="user-id-display" class="font-mono text-purple-400 break-all">Authenticating...</span></p>
 
+<!-- Search Input (replace existing block) -->
 <div class="w-full md:w-80 lg:w-96 mt-4 md:mt-0">
   <div class="relative">
     <input 
@@ -488,12 +489,14 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
     </svg>
 
-    <!-- Clear (X) Button -->
-    <button id="clear-search" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200 hidden">
-      ✕
+    <!-- Clear Button (X). Hidden by default. -->
+    <button id="clear-search" aria-label="Clear search"
+      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white hidden text-lg leading-none">
+      &times;
     </button>
   </div>
 </div>
+
 
     </header>
 
@@ -1272,6 +1275,14 @@
                 }
             });
         };
+
+                // === Expose helper functions so external scripts can reset search ===
+        window.renderGameCards = renderGameCards;
+        window.setSearchTerm = (val) => {
+            searchTerm = String(val || '');
+            renderGameCards();
+        };
+
     </script>
 
 <script>
@@ -1476,10 +1487,50 @@
   });
 </script>
 
+    <script>
+  (function(){
+    const input = document.getElementById('search-input');
+    const clearBtn = document.getElementById('clear-search');
+
+    if (!input || !clearBtn) return;
+
+    // show/hide X while typing (trimmed check)
+    input.addEventListener('input', () => {
+      clearBtn.classList.toggle('hidden', input.value.trim() === '');
+    });
+
+    // Clear + reset module searchTerm + re-render
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      clearBtn.classList.add('hidden');
+
+      // Use helper exposed by module. If not present, fallback to rerender via global function
+      if (typeof window.setSearchTerm === 'function') {
+        window.setSearchTerm('');
+      } else if (typeof window.renderGameCards === 'function') {
+        window.searchTerm = '';
+        window.renderGameCards();
+      } else {
+        // last resort: trigger input event so whatever listener runs
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
+
+    // optional: clear on Escape key when input focused
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        clearBtn.click();
+      }
+    });
+  })();
+</script>
+
+
 
 
 </body>
 </html>
+
 
 
 
