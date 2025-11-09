@@ -1457,25 +1457,20 @@
 
 
 <script>
+  // Show popup a few seconds after load
   window.addEventListener('load', () => {
-    // --- Detect if on iOS Safari ---
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isStandalone = window.navigator.standalone === true;
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-    // Only show popup if:
-    // 1. On iOS device
-    // 2. Using Safari browser
-    // 3. NOT already in standalone mode (added to Home Screen)
-    if (isIOS && isSafari && !isStandalone) {
-      setTimeout(() => {
-        document.getElementById('install-popup').classList.add('active');
-      }, 3500);
-    }
+    setTimeout(() => {
+      document.getElementById('install-popup').classList.add('active');
+    }, 3500);
   });
 
-  // Close button logic
+  // Close it
   document.getElementById('close-popup').addEventListener('click', () => {
+    document.getElementById('install-popup').classList.remove('active');
+  });
+
+    // Close it
+  document.getElementById('skip-popup').addEventListener('click', () => {
     document.getElementById('install-popup').classList.remove('active');
   });
 </script>
@@ -1550,8 +1545,6 @@
 
 </body>
 </html>
-
-
 
 
 
