@@ -1372,6 +1372,42 @@
   </div>
 </div>
 
+    <script>
+  window.addEventListener('load', () => {
+    const popup = document.getElementById('install-popup');
+    const closeBtn = document.getElementById('close-popup');
+    const skipBtn = document.getElementById('skip-popup');
+
+    // --- Detect if user is on iOS Safari and not standalone mode ---
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone === true;
+
+    console.log({ isIOS, isSafari, isStandalone });
+
+    // Only show popup if:
+    // 1. On iOS device
+    // 2. In Safari
+    // 3. NOT running from Home Screen (standalone)
+    if (isIOS && isSafari && !isStandalone) {
+      setTimeout(() => {
+        popup.classList.add('active');
+      }, 3500);
+    } else {
+      console.log("Popup hidden: Not in Safari browser or already standalone.");
+    }
+
+    // Close button events
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => popup.classList.remove('active'));
+    }
+    if (skipBtn) {
+      skipBtn.addEventListener('click', () => popup.classList.remove('active'));
+    }
+  });
+</script>
+
+
 <script>
   (function () {
     // Defensive: only run once DOM is ready
@@ -1455,26 +1491,6 @@
 
 
 
-
-<script>
-  // Show popup a few seconds after load
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('install-popup').classList.add('active');
-    }, 3500);
-  });
-
-  // Close it
-  document.getElementById('close-popup').addEventListener('click', () => {
-    document.getElementById('install-popup').classList.remove('active');
-  });
-
-    // Close it
-  document.getElementById('skip-popup').addEventListener('click', () => {
-    document.getElementById('install-popup').classList.remove('active');
-  });
-</script>
-
 <script>
   const searchInput = document.getElementById('search-input');
   const clearButton = document.getElementById('clear-search');
@@ -1545,6 +1561,7 @@
 
 </body>
 </html>
+
 
 
 
