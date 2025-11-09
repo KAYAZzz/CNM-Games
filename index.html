@@ -1311,51 +1311,48 @@
   });
 </script>
 
-<!-- Add-to-Home Popup (REPLACE your current popup block with this) -->
+<!-- Add-to-Home Popup (Full HTML + JS) -->
 <div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden" aria-hidden="true">
   <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-2xl w-[92%] shadow-2xl animate-fadeIn overflow-y-auto max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="install-title">
-
+    
     <h2 id="install-title" class="text-2xl font-bold text-purple-300 mb-2 text-center">📱 Add CNM Games to Your Home Screen</h2>
     <p class="text-gray-300 mb-4 text-center">For the best experience, follow these quick steps:</p>
-      <h2 class="text-2xl font-bold text-purple-300 mb-2">🎨 Customize Your Icon</h2>
-      <!-- Icon selection (with glowing backdrop) -->
-<div class="flex justify-center gap-5 mb-5 flex-wrap">
-  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-    <div class="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
-    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" 
-         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
-         alt="Icon 1">
-  </div>
 
-  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-    <div class="absolute inset-0 rounded-2xl bg-purple-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
-    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" 
-         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
-         alt="Icon 2">
-  </div>
+    <h2 class="text-2xl font-bold text-purple-300 mb-2">🎨 Customize Your Icon</h2>
+    <!-- Icon selection -->
+    <div class="flex justify-center gap-5 mb-5 flex-wrap">
+      <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+        <div class="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" 
+             class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+             alt="Icon 1">
+      </div>
+      <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+        <div class="absolute inset-0 rounded-2xl bg-purple-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" 
+             class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+             alt="Icon 2">
+      </div>
+      <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+        <div class="absolute inset-0 rounded-2xl bg-pink-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" 
+             class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+             alt="Icon 3">
+      </div>
+    </div>
 
-  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-    <div class="absolute inset-0 rounded-2xl bg-pink-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
-    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" 
-         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
-         alt="Icon 3">
-  </div>
-</div>
-
-    <!-- Steps (compact grid so it fits landscape) -->
+    <!-- Steps -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 text-center">
       <div class="install-step">
         <div class="number text-lg font-semibold mb-1 text-indigo-400">1</div>
         <p class="text-sm text-gray-300 mb-2">Tap the <strong>Share</strong> icon in Safari.</p>
         <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1" class="rounded-lg shadow-md w-full object-cover">
       </div>
-
       <div class="install-step">
         <div class="number text-lg font-semibold mb-1 text-indigo-400">2</div>
         <p class="text-sm text-gray-300 mb-2">Scroll down in the menu that appears.</p>
         <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2" class="rounded-lg shadow-md w-full object-cover">
       </div>
-
       <div class="install-step">
         <div class="number text-lg font-semibold mb-1 text-indigo-400">3</div>
         <p class="text-sm text-gray-300 mb-2">Tap <strong>Add to Home Screen</strong> — done!</p>
@@ -1363,117 +1360,91 @@
       </div>
     </div>
 
-
-
-    <!-- Single button (centered) -->
+    <!-- Close button -->
     <div class="flex justify-center mt-4">
       <button id="close-popup" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-md text-sm font-semibold">Got it — Finish</button>
     </div>
+
   </div>
 </div>
 
 <script>
-  (function () {
-    // Defensive: only run once DOM is ready
-    function initInstallPopup() {
-      const popup = document.getElementById('install-popup');
-      const closeBtn = document.getElementById('close-popup');
-      const icons = document.querySelectorAll('.select-icon');
+(function() {
+  const LS_KEY = 'installDismissedV2';
 
-      if (!popup || !closeBtn) return;
+  // Detect home-screen / standalone
+  function isInStandaloneMode() {
+    return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+  }
 
-      const LS_KEY = 'installDismissedV2';
+  function showPopup() {
+    const popup = document.getElementById('install-popup');
+    if (!popup) return;
+    popup.classList.remove('hidden');
+    popup.setAttribute('aria-hidden', 'false');
+  }
 
-      // Show popup function (removes hidden)
-      function showPopup() {
-        if (!popup.classList.contains('hidden')) return;
-        popup.classList.remove('hidden');
-        popup.setAttribute('aria-hidden', 'false');
-        // focus button for keyboard users
-        closeBtn.focus({ preventScroll: true });
-      }
+  function hidePopup() {
+    const popup = document.getElementById('install-popup');
+    if (!popup) return;
+    popup.classList.add('hidden');
+    popup.setAttribute('aria-hidden', 'true');
+  }
 
-      // Hide popup function (adds hidden)
-      function hidePopup() {
-        if (popup.classList.contains('hidden')) return;
-        popup.classList.add('hidden');
-        popup.setAttribute('aria-hidden', 'true');
-      }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Exit if running from home-screen
+    if (isInStandaloneMode()) return;
 
-      // Only show if not dismissed
-      try {
-        if (!localStorage.getItem(LS_KEY)) {
-          showPopup();
-        }
-      } catch (e) {
-        // localStorage could be unavailable in some browsers; still show popup
-        showPopup();
-      }
+    try { if (localStorage.getItem(LS_KEY)) return; } catch(e){}
 
-      // Closing
+    // Show after delay
+    setTimeout(showPopup, 3500);
+
+    const popup = document.getElementById('install-popup');
+    const closeBtn = document.getElementById('close-popup');
+
+    // Close button
+    if (closeBtn) {
       closeBtn.addEventListener('click', () => {
-        try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+        try { localStorage.setItem(LS_KEY, 'true'); } catch(e){}
         hidePopup();
       });
+    }
 
-      // click outside content closes
-      popup.addEventListener('click', (e) => {
+    // Click outside content closes popup
+    if (popup) {
+      popup.addEventListener('click', e => {
         if (e.target === popup) {
-          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+          try { localStorage.setItem(LS_KEY, 'true'); } catch(e){}
           hidePopup();
         }
       });
+    }
 
-      // ESC closes
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
-          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
-          hidePopup();
-        }
-      });
-
-      // Icon selection behavior (update apple-touch-icon link if present)
-      if (icons && icons.length) {
-        icons.forEach(icon => {
-          icon.addEventListener('click', () => {
-            icons.forEach(i => i.classList.remove('border-indigo-400'));
-            icon.classList.add('border-indigo-400');
-            const link = document.querySelector("link[rel='apple-touch-icon']");
-            if (link) link.href = icon.src;
-          });
-        });
+    // ESC key closes popup
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && popup && !popup.classList.contains('hidden')) {
+        try { localStorage.setItem(LS_KEY, 'true'); } catch(e){}
+        hidePopup();
       }
-    }
+    });
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initInstallPopup);
-    } else {
-      initInstallPopup();
+    // Icon selection behavior (optional: update apple-touch-icon dynamically)
+    const icons = document.querySelectorAll('.select-icon');
+    if (icons && icons.length) {
+      icons.forEach(icon => {
+        icon.addEventListener('click', () => {
+          icons.forEach(i => i.classList.remove('border-indigo-400'));
+          icon.classList.add('border-indigo-400');
+          const link = document.querySelector("link[rel='apple-touch-icon']");
+          if (link) link.href = icon.src;
+        });
+      });
     }
-  })();
+  });
+})();
 </script>
 
-
-
-
-<script>
-  // Show popup a few seconds after load
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('install-popup').classList.add('active');
-    }, 3500);
-  });
-
-  // Close it
-  document.getElementById('close-popup').addEventListener('click', () => {
-    document.getElementById('install-popup').classList.remove('active');
-  });
-
-    // Close it
-  document.getElementById('skip-popup').addEventListener('click', () => {
-    document.getElementById('install-popup').classList.remove('active');
-  });
-</script>
 
 <script>
   const searchInput = document.getElementById('search-input');
@@ -1502,75 +1473,12 @@
   });
 </script>
 
-    <script>
-  (function(){
-    const input = document.getElementById('search-input');
-    const clearBtn = document.getElementById('clear-search');
-
-    if (!input || !clearBtn) return;
-
-    // show/hide X while typing (trimmed check)
-    input.addEventListener('input', () => {
-      clearBtn.classList.toggle('hidden', input.value.trim() === '');
-    });
-
-    // Clear + reset module searchTerm + re-render
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      clearBtn.classList.add('hidden');
-
-      // Use helper exposed by module. If not present, fallback to rerender via global function
-      if (typeof window.setSearchTerm === 'function') {
-        window.setSearchTerm('');
-      } else if (typeof window.renderGameCards === 'function') {
-        window.searchTerm = '';
-        window.renderGameCards();
-      } else {
-        // last resort: trigger input event so whatever listener runs
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-    });
-
-    // optional: clear on Escape key when input focused
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        clearBtn.click();
-      }
-    });
-  })();
-</script>
-
-<script>
-  function isInStandaloneMode() {
-    // iOS Safari
-    if (window.navigator.standalone === true) return true;
-    // Android / modern browsers (PWAs)
-    if (window.matchMedia('(display-mode: standalone)').matches) return true;
-    return false;
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const popup = document.getElementById('install-popup');
-    const closeBtn = document.getElementById('close-popup');
-
-    // Only show pop-up if NOT in standalone mode
-    if (!isInStandaloneMode()) {
-      popup.classList.remove('hidden');
-    } else {
-      console.log("Running in home-screen/standalone mode — pop-up hidden");
-    }
-
-    // Close button logic
-    closeBtn.addEventListener('click', function() {
-      popup.classList.add('hidden');
-    });
-  });
-</script>
 
 
 
 </body>
 </html>
+
 
 
 
