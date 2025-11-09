@@ -1541,27 +1541,29 @@
 </script>
 
 <script>
-  // Function to detect if the site is running as a home-screen app
   function isInStandaloneMode() {
-    // iOS check
+    // iOS Safari
     if (window.navigator.standalone === true) return true;
-    // Other browsers / PWA check
+    // Android / modern browsers (PWAs)
     if (window.matchMedia('(display-mode: standalone)').matches) return true;
     return false;
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    // Only show the pop-up if NOT in standalone/home-screen mode
-    if (!isInStandaloneMode()) {
-      const popup = document.getElementById('install-popup');
-      popup.classList.remove('hidden');
+    const popup = document.getElementById('install-popup');
+    const closeBtn = document.getElementById('close-popup');
 
-      // Optional: Close button
-      const closeBtn = document.getElementById('close-popup');
-      closeBtn.addEventListener('click', () => {
-        popup.classList.add('hidden');
-      });
+    // Only show pop-up if NOT in standalone mode
+    if (!isInStandaloneMode()) {
+      popup.classList.remove('hidden');
+    } else {
+      console.log("Running in home-screen/standalone mode — pop-up hidden");
     }
+
+    // Close button logic
+    closeBtn.addEventListener('click', function() {
+      popup.classList.add('hidden');
+    });
   });
 </script>
 
@@ -1569,6 +1571,7 @@
 
 </body>
 </html>
+
 
 
 
