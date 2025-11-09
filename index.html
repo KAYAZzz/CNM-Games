@@ -1365,129 +1365,61 @@
 
 
 
-    <!-- Single button (centered) -->
-    <div class="flex justify-center mt-4">
-      <button id="close-popup" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-md text-sm font-semibold">Got it — Finish</button>
-    </div>
-  </div>
-</div>
-
-    <script>
+<script>
   window.addEventListener('load', () => {
     const popup = document.getElementById('install-popup');
     const closeBtn = document.getElementById('close-popup');
-    const skipBtn = document.getElementById('skip-popup');
+    const icons = document.querySelectorAll('.select-icon');
+    const LS_KEY = 'installDismissedV2';
 
-    // --- Detect if user is on iOS Safari and not standalone mode ---
+    // Detect iOS Safari and standalone mode
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const isStandalone = window.navigator.standalone === true;
 
     console.log({ isIOS, isSafari, isStandalone });
 
-    // Only show popup if:
-    // 1. On iOS device
-    // 2. In Safari
-    // 3. NOT running from Home Screen (standalone)
-    if (isIOS && isSafari && !isStandalone) {
+    // Show popup only if on Safari + not standalone + not previously dismissed
+    if (isIOS && isSafari && !isStandalone && !localStorage.getItem(LS_KEY)) {
       setTimeout(() => {
-        popup.classList.add('active');
+        popup.classList.remove('hidden');
+        popup.setAttribute('aria-hidden', 'false');
       }, 3500);
     } else {
-      console.log("Popup hidden: Not in Safari browser or already standalone.");
+      console.log('Popup not shown — not Safari, already standalone, or previously dismissed.');
     }
 
-    // Close button events
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => popup.classList.remove('active'));
-    }
-    if (skipBtn) {
-      skipBtn.addEventListener('click', () => popup.classList.remove('active'));
-    }
+    // Close popup
+    const hidePopup = () => {
+      popup.classList.add('hidden');
+      popup.setAttribute('aria-hidden', 'true');
+      localStorage.setItem(LS_KEY, 'true');
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', hidePopup);
+
+    // Click outside closes popup
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) hidePopup();
+    });
+
+    // ESC key closes popup
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hidePopup();
+    });
+
+    // Icon selection
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        icons.forEach(i => i.classList.remove('border-indigo-400'));
+        icon.classList.add('border-indigo-400');
+        const link = document.querySelector("link[rel='apple-touch-icon']");
+        if (link) link.href = icon.src;
+      });
+    });
   });
 </script>
 
-
-<script>
-  (function () {
-    // Defensive: only run once DOM is ready
-    function initInstallPopup() {
-      const popup = document.getElementById('install-popup');
-      const closeBtn = document.getElementById('close-popup');
-      const icons = document.querySelectorAll('.select-icon');
-
-      if (!popup || !closeBtn) return;
-
-      const LS_KEY = 'installDismissedV2';
-
-      // Show popup function (removes hidden)
-      function showPopup() {
-        if (!popup.classList.contains('hidden')) return;
-        popup.classList.remove('hidden');
-        popup.setAttribute('aria-hidden', 'false');
-        // focus button for keyboard users
-        closeBtn.focus({ preventScroll: true });
-      }
-
-      // Hide popup function (adds hidden)
-      function hidePopup() {
-        if (popup.classList.contains('hidden')) return;
-        popup.classList.add('hidden');
-        popup.setAttribute('aria-hidden', 'true');
-      }
-
-      // Only show if not dismissed
-      try {
-        if (!localStorage.getItem(LS_KEY)) {
-          showPopup();
-        }
-      } catch (e) {
-        // localStorage could be unavailable in some browsers; still show popup
-        showPopup();
-      }
-
-      // Closing
-      closeBtn.addEventListener('click', () => {
-        try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
-        hidePopup();
-      });
-
-      // click outside content closes
-      popup.addEventListener('click', (e) => {
-        if (e.target === popup) {
-          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
-          hidePopup();
-        }
-      });
-
-      // ESC closes
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
-          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
-          hidePopup();
-        }
-      });
-
-      // Icon selection behavior (update apple-touch-icon link if present)
-      if (icons && icons.length) {
-        icons.forEach(icon => {
-          icon.addEventListener('click', () => {
-            icons.forEach(i => i.classList.remove('border-indigo-400'));
-            icon.classList.add('border-indigo-400');
-            const link = document.querySelector("link[rel='apple-touch-icon']");
-            if (link) link.href = icon.src;
-          });
-        });
-      }
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initInstallPopup);
-    } else {
-      initInstallPopup();
-    }
-  })();
-</script>
 
 
 
@@ -1561,6 +1493,7 @@
 
 </body>
 </html>
+
 
 
 
