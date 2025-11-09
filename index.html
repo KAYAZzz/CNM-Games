@@ -6,7 +6,6 @@
     <title>CNM Games</title>
 
     <!-- --- Logo and Fullscreen Configuration --- -->
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="CNM Games">
@@ -1314,6 +1313,108 @@
 
 
 
+<script>
+  (function () {
+    // Defensive: only run once DOM is ready
+    function initInstallPopup() {
+      const popup = document.getElementById('install-popup');
+      const closeBtn = document.getElementById('close-popup');
+      const icons = document.querySelectorAll('.select-icon');
+
+      if (!popup || !closeBtn) return;
+
+      const LS_KEY = 'installDismissedV2';
+
+      // Show popup function (removes hidden)
+      function showPopup() {
+        if (!popup.classList.contains('hidden')) return;
+        popup.classList.remove('hidden');
+        popup.setAttribute('aria-hidden', 'false');
+        // focus button for keyboard users
+        closeBtn.focus({ preventScroll: true });
+      }
+
+      // Hide popup function (adds hidden)
+      function hidePopup() {
+        if (popup.classList.contains('hidden')) return;
+        popup.classList.add('hidden');
+        popup.setAttribute('aria-hidden', 'true');
+      }
+
+      // Only show if not dismissed
+      try {
+        if (!localStorage.getItem(LS_KEY)) {
+          showPopup();
+        }
+      } catch (e) {
+        // localStorage could be unavailable in some browsers; still show popup
+        showPopup();
+      }
+
+      // Closing
+      closeBtn.addEventListener('click', () => {
+        try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+        hidePopup();
+      });
+
+      // click outside content closes
+      popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+          hidePopup();
+        }
+      });
+
+      // ESC closes
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+          hidePopup();
+        }
+      });
+
+      // Icon selection behavior (update apple-touch-icon link if present)
+      if (icons && icons.length) {
+        icons.forEach(icon => {
+          icon.addEventListener('click', () => {
+            icons.forEach(i => i.classList.remove('border-indigo-400'));
+            icon.classList.add('border-indigo-400');
+            const link = document.querySelector("link[rel='apple-touch-icon']");
+            if (link) link.href = icon.src;
+          });
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initInstallPopup);
+    } else {
+      initInstallPopup();
+    }
+  })();
+</script>
+
+
+
+
+<script>
+  // Show popup a few seconds after load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('install-popup').classList.add('active');
+    }, 3500);
+  });
+
+  // Close it
+  document.getElementById('close-popup').addEventListener('click', () => {
+    document.getElementById('install-popup').classList.remove('active');
+  });
+
+    // Close it
+  document.getElementById('skip-popup').addEventListener('click', () => {
+    document.getElementById('install-popup').classList.remove('active');
+  });
+</script>
 
 <script>
   const searchInput = document.getElementById('search-input');
@@ -1380,132 +1481,63 @@
   })();
 </script>
 
-    <!-- Install popup (place this just before </body> and remove other install-popup bits) -->
-<div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden" aria-hidden="true">
-  <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-2xl w-[92%] shadow-2xl animate-fadeIn overflow-y-auto max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="install-title">
-
-    <div class="flex justify-between items-start mb-3">
-      <div>
-        <h2 id="install-title" class="text-2xl font-bold text-purple-300">📱 Add CNM Games to Your Home Screen</h2>
-        <p class="text-gray-300 text-sm mt-1">For the best experience, follow these quick steps:</p>
-      </div>
-      <button id="close-popup" aria-label="Close" class="ml-4 bg-red-600 hover:bg-red-700 text-white rounded-full p-2 shadow">✕</button>
-    </div>
-
-    <h3 class="text-lg font-semibold text-purple-300 mb-3">🎨 Choose an icon (tap to select)</h3>
-    <div class="flex justify-center gap-5 mb-5 flex-wrap">
-      <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-        <div class="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png"
-             class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg"
-             alt="Icon 1">
-      </div>
-      <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-        <div class="absolute inset-0 rounded-2xl bg-purple-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png"
-             class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg"
-             alt="Icon 2">
-      </div>
-      <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
-        <div class="absolute inset-0 rounded-2xl bg-pink-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png"
-             class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg"
-             alt="Icon 3">
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 text-center">
-      <div class="install-step">
-        <div class="number text-lg font-semibold mb-1 text-indigo-400">1</div>
-        <p class="text-sm text-gray-300 mb-2">Tap the <strong>Share</strong> icon in Safari.</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1" class="rounded-lg shadow-md w-full object-cover">
-      </div>
-      <div class="install-step">
-        <div class="number text-lg font-semibold mb-1 text-indigo-400">2</div>
-        <p class="text-sm text-gray-300 mb-2">Scroll down in the menu that appears.</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2" class="rounded-lg shadow-md w-full object-cover">
-      </div>
-      <div class="install-step">
-        <div class="number text-lg font-semibold mb-1 text-indigo-400">3</div>
-        <p class="text-sm text-gray-300 mb-2">Tap <strong>Add to Home Screen</strong> — done!</p>
-        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3" class="rounded-lg shadow-md w-full object-cover">
-      </div>
-    </div>
-
-    <div class="flex justify-center mt-3">
-      <button id="finish-popup" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-md text-sm font-semibold">Got it — Finish</button>
-    </div>
-  </div>
-</div>
-
 <script>
-  // Popup script (debug-friendly). Keep only one copy of this in your page.
-  window.addEventListener('load', () => {
-    const popup = document.getElementById('install-popup');
-    const closeBtn = document.getElementById('close-popup');
-    const finishBtn = document.getElementById('finish-popup');
-    const icons = document.querySelectorAll('.select-icon');
-    const LS_KEY = 'installDismissedV2';
+  // Function to detect if the site is running as a home-screen app
+  function isInStandaloneMode() {
+    // iOS check
+    if (window.navigator.standalone === true) return true;
+    // Other browsers / PWA check
+    if (window.matchMedia('(display-mode: standalone)').matches) return true;
+    return false;
+  }
 
-    if (!popup) { console.error('install-popup element missing'); return; }
-
-    const ua = navigator.userAgent || '';
-    const isTouchyMac = (navigator.maxTouchPoints && navigator.maxTouchPoints > 1 && /MacIntel/.test(navigator.platform));
-    const isIOS = /iPad|iPhone|iPod/.test(ua) || isTouchyMac;
-    const isSafari = (/Safari/.test(ua) && !/Chrome|CriOS|FxiOS|Edg|OPR/.test(ua)) || (('safari' in window) && !/Chrome|CriOS|FxiOS/.test(ua));
-    const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-
-    console.log('Install popup detect:', { ua, isIOS, isSafari, isStandalone, dismissed: !!localStorage.getItem(LS_KEY) });
-
-    // Allow forcing the popup for debugging/testing:
-    const forceShow = location.search.indexOf('showInstall=1') !== -1 || window.forceShowInstallPopup === true;
-
-    if ((isIOS && isSafari && !isStandalone && !localStorage.getItem(LS_KEY)) || forceShow) {
-      setTimeout(() => {
-        popup.classList.remove('hidden');
-        popup.setAttribute('aria-hidden','false');
-        console.log('Install popup shown');
-      }, 800);
-    } else {
-      console.log('Install popup suppressed');
-    }
-
-    function hide(remember = true) {
-      popup.classList.add('hidden');
-      popup.setAttribute('aria-hidden','true');
-      if (remember) try { localStorage.setItem(LS_KEY, 'true'); } catch(e) {}
-    }
-
-    if (closeBtn) closeBtn.addEventListener('click', () => hide(true));
-    if (finishBtn) finishBtn.addEventListener('click', () => hide(true));
-    popup.addEventListener('click', e => { if (e.target === popup) hide(true); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !popup.classList.contains('hidden')) hide(true); });
-
-    icons.forEach(icon => {
-      icon.style.cursor = 'pointer';
-      icon.addEventListener('click', () => {
-        icons.forEach(i => i.classList.remove('border-indigo-400'));
-        icon.classList.add('border-indigo-400');
-        const link = document.querySelector("link[rel='apple-touch-icon']");
-        if (link) link.href = icon.src;
-      });
-    });
-
-    // Expose debug helper:
-    window.forceShowInstallPopup = () => {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Only show the pop-up if NOT in standalone/home-screen mode
+    if (!isInStandaloneMode()) {
+      const popup = document.getElementById('install-popup');
       popup.classList.remove('hidden');
-      popup.setAttribute('aria-hidden','false');
-      console.log('forceShowInstallPopup called');
-    };
+
+      // Optional: Close button
+      const closeBtn = document.getElementById('close-popup');
+      closeBtn.addEventListener('click', () => {
+        popup.classList.add('hidden');
+      });
+    }
+  });
+</script>
+
+    <script>
+  // Function to detect if the site is running as a home-screen app
+  function isInStandaloneMode() {
+    // iOS check
+    if (window.navigator.standalone === true) return true;
+    // Other browsers / PWA check
+    if (window.matchMedia('(display-mode: standalone)').matches) return true;
+    return false;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Only show the pop-up if NOT in standalone/home-screen mode
+    if (!isInStandaloneMode()) {
+      const popup = document.getElementById('install-popup');
+      popup.classList.remove('hidden');
+
+      // Optional: Close button
+      const closeBtn = document.getElementById('close-popup');
+      closeBtn.addEventListener('click', () => {
+        popup.classList.add('hidden');
+      });
+    }
   });
 </script>
 
 
+
+
+
+
 </body>
 </html>
-
-
-
 
 
 
