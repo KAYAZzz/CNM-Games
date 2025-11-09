@@ -1371,37 +1371,35 @@
 <script>
 (function() {
   const LS_KEY = 'installDismissedV2';
+  const popup = document.getElementById('install-popup');
+  const closeBtn = document.getElementById('close-popup');
 
-  // Detect home-screen / standalone
+  // Detect standalone/home-screen
   function isInStandaloneMode() {
     return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
   }
 
   function showPopup() {
-    const popup = document.getElementById('install-popup');
     if (!popup) return;
     popup.classList.remove('hidden');
     popup.setAttribute('aria-hidden', 'false');
   }
 
   function hidePopup() {
-    const popup = document.getElementById('install-popup');
     if (!popup) return;
     popup.classList.add('hidden');
     popup.setAttribute('aria-hidden', 'true');
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    // Exit if running from home-screen
-    if (isInStandaloneMode()) return;
+  window.addEventListener('load', () => {
+    if (!popup || isInStandaloneMode()) return;
 
-    try { if (localStorage.getItem(LS_KEY)) return; } catch(e){}
+    try {
+      if (localStorage.getItem(LS_KEY)) return;
+    } catch(e){}
 
-    // Show after delay
-    setTimeout(showPopup, 3500);
-
-    const popup = document.getElementById('install-popup');
-    const closeBtn = document.getElementById('close-popup');
+    // Show popup after short delay
+    setTimeout(showPopup, 1000);
 
     // Close button
     if (closeBtn) {
@@ -1411,39 +1409,36 @@
       });
     }
 
-    // Click outside content closes popup
-    if (popup) {
-      popup.addEventListener('click', e => {
-        if (e.target === popup) {
-          try { localStorage.setItem(LS_KEY, 'true'); } catch(e){}
-          hidePopup();
-        }
-      });
-    }
-
-    // ESC key closes popup
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && popup && !popup.classList.contains('hidden')) {
+    // Click outside content
+    popup.addEventListener('click', e => {
+      if (e.target === popup) {
         try { localStorage.setItem(LS_KEY, 'true'); } catch(e){}
         hidePopup();
       }
     });
 
-    // Icon selection behavior (optional: update apple-touch-icon dynamically)
+    // ESC closes popup
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+        try { localStorage.setItem(LS_KEY, 'true'); } catch(e){}
+        hidePopup();
+      }
+    });
+
+    // Icon selection behavior (update apple-touch-icon dynamically)
     const icons = document.querySelectorAll('.select-icon');
-    if (icons && icons.length) {
-      icons.forEach(icon => {
-        icon.addEventListener('click', () => {
-          icons.forEach(i => i.classList.remove('border-indigo-400'));
-          icon.classList.add('border-indigo-400');
-          const link = document.querySelector("link[rel='apple-touch-icon']");
-          if (link) link.href = icon.src;
-        });
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        icons.forEach(i => i.classList.remove('border-indigo-400'));
+        icon.classList.add('border-indigo-400');
+        const link = document.querySelector("link[rel='apple-touch-icon']");
+        if (link) link.href = icon.src;
       });
-    }
+    });
   });
 })();
 </script>
+
 
 
 <script>
@@ -1478,6 +1473,7 @@
 
 </body>
 </html>
+
 
 
 
