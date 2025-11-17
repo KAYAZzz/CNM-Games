@@ -1340,7 +1340,7 @@
                 <div 
                     class="bg-gray-800 rounded-xl shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-indigo-500/50"
                     data-url="${game.gameUrl}"
-                    onclick="openGameModal('${safeUrl}', ${game.id})"
+                    onclick="showAdThenPlay('${safeUrl}')"
                 >
                     <!-- Thumbnail Area -->
                     <div class="h-40 bg-gray-900 relative overflow-hidden">
@@ -1744,6 +1744,7 @@ function showAdThenPlay(gameUrl) {
 	
 </body>
 </html>
+
 
 
 
