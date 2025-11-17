@@ -480,20 +480,22 @@
     display: flex;
 }
 
-/* Styling for the white content box */
+/* Update the content box to be wider for a better interstitial feel */
 .ad-popup-content {
-    background: white;
+    background: purple;
     padding: 20px;
     border-radius: 10px;
-    max-width: 400px;
+    /* Increase max-width to allow a larger ad to fit */
+    max-width: 900px; /* NEW: Allow it to take up most of the screen */
     width: 90%;
     text-align: center;
 }
 
-/* Container for the 300x250 ad banner */
+/* Update the ad container dimensions */
 #ad-container {
-    width: 300px; 
-    height: 250px; 
+    /* Use dimensions from the ad network or aim for a large interstitial size (e.g., 728x90 or 300x600) */
+    width: 728px; /* Example: Use a common large banner size */
+    height: 300px; /* Example height */
     margin: 10px auto 0; 
     overflow: hidden; 
 }
@@ -1677,13 +1679,13 @@
 
 	<script>
 // Store your ad script as a constant string
-const AD_SCRIPT = `
+const AD_SCRIPT_HTML = `
     <script type="text/javascript">
         atOptions = {
             'key' : '568ecccfdab4fe7219cbc43b33184c71',
             'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
+            'height' : 300,    /* ADJUSTED HEIGHT */
+            'width' : 728,     /* ADJUSTED WIDTH */
             'params' : {}
         };
     </\script>
@@ -1693,20 +1695,20 @@ const AD_SCRIPT = `
 function showAdThenPlay(gameUrl) {
     const adOverlay = document.getElementById("ad-overlay");
     const adContainer = document.getElementById("ad-container");
-    const AD_DURATION_MS = 5000; // 5 seconds
+    const AD_DURATION_MS = 5000; 
 
-    // 1. Clear previous ad content and inject the new script
-    adContainer.innerHTML = AD_SCRIPT; 
+    // 1. Clear container and inject the script HTML (This forces the browser to re-evaluate it)
+    adContainer.innerHTML = AD_SCRIPT_HTML; 
 
-    // 2. Show the ad overlay using the visibility class
+    // 2. SHOW the ad overlay
     adOverlay.classList.add("ad-overlay--visible");
 
-    // 3. Set the timer to run after 5 seconds
+    // 3. Set the timer
     setTimeout(() => {
         // 4. Hide the ad overlay
         adOverlay.classList.remove("ad-overlay--visible");
-
-        // 5. Load the game (This is your existing function)
+        
+        // 5. Load the game
         openGameModal(gameUrl); 
         
     }, AD_DURATION_MS);
@@ -1732,9 +1734,9 @@ function showAdThenPlay(gameUrl) {
 
 	<link rel="stylesheet" href="style.css">
 
-<div id="ad-overlay" class="ad-overlay">
+	<div id="ad-overlay" class="ad-overlay">
     <div class="ad-popup-content">
-        <p>Ad playing… please wait</p>
+        <p>Ad playing… please wait. (Screen will return in 5 seconds)</p>
         
         <div id="ad-container"></div>
     </div>
@@ -1744,6 +1746,7 @@ function showAdThenPlay(gameUrl) {
 	
 </body>
 </html>
+
 
 
 
