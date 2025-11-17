@@ -458,6 +458,46 @@
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
 
+<style>
+/* Styling for the full-screen ad overlay */
+.ad-overlay {
+    /* Initially hidden */
+    display: none; 
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75); /* Dark, transparent background */
+    backdrop-filter: blur(4px);
+    z-index: 99999; /* Ensures it's on top of everything */
+    /* Centering content using Flexbox */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Class to make the overlay visible (toggled by JavaScript) */
+.ad-overlay--visible {
+    display: flex;
+}
+
+/* Styling for the white content box */
+.ad-popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+/* Container for the 300x250 ad banner */
+#ad-container {
+    width: 300px; 
+    height: 250px; 
+    margin: 10px auto 0; 
+    overflow: hidden; 
+}
+</style>
 
     
 <!-- Splash Intro -->
@@ -1635,6 +1675,44 @@
   })();
 </script>
 
+	<script>
+// Store your ad script as a constant string
+const AD_SCRIPT = `
+    <script type="text/javascript">
+        atOptions = {
+            'key' : '568ecccfdab4fe7219cbc43b33184c71',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+        };
+    </\script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/568ecccfdab4fe7219cbc43b33184c71/invoke.js"></\script>
+`;
+
+function showAdThenPlay(gameUrl) {
+    const adOverlay = document.getElementById("ad-overlay");
+    const adContainer = document.getElementById("ad-container");
+    const AD_DURATION_MS = 5000; // 5 seconds
+
+    // 1. Clear previous ad content and inject the new script
+    adContainer.innerHTML = AD_SCRIPT; 
+
+    // 2. Show the ad overlay using the visibility class
+    adOverlay.classList.add("ad-overlay--visible");
+
+    // 3. Set the timer to run after 5 seconds
+    setTimeout(() => {
+        // 4. Hide the ad overlay
+        adOverlay.classList.remove("ad-overlay--visible");
+
+        // 5. Load the game (This is your existing function)
+        openGameModal(gameUrl); 
+        
+    }, AD_DURATION_MS);
+}
+</script>
+
 
 
     <script async="async" data-cfasync="false" src="//pl28076500.effectivegatecpm.com/3b09fa0ca6ef0eb7fbefbc62da5ec4e5/invoke.js"></script>
@@ -1651,8 +1729,22 @@
 </script>
 <script type="text/javascript" src="//www.highperformanceformat.com/5538ab9c19a849d31af6519022f09e40/invoke.js"></script>
 
+
+	<link rel="stylesheet" href="style.css">
+
+<div id="ad-overlay" class="ad-overlay">
+    <div class="ad-popup-content">
+        <p>Ad playing… please wait</p>
+        
+        <div id="ad-container"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+	
 </body>
 </html>
+
 
 
 
