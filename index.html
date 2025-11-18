@@ -1695,7 +1695,7 @@ const AD_SCRIPT_HTML = `
 function showAdThenPlay(gameUrl) {
     const adOverlay = document.getElementById("ad-overlay");
     const adContainer = document.getElementById("ad-container");
-    const AD_DURATION_MS = 1000; 
+    const AD_DURATION_MS = 5000; 
 
     // 1. Clear container and inject the script HTML (This forces the browser to re-evaluate it)
     adContainer.innerHTML = AD_SCRIPT_HTML; 
@@ -1746,9 +1746,6 @@ function showAdThenPlay(gameUrl) {
 	
 </body>
 </html>
-
-
-
 
 
 
