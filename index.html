@@ -458,6 +458,48 @@
 </head>
 <body class="plasma-background min-h-screen text-gray-100 antialiased">
 
+<style>
+/* Styling for the full-screen ad overlay */
+.ad-overlay {
+    /* Initially hidden */
+    display: none; 
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75); /* Dark, transparent background */
+    backdrop-filter: blur(4px);
+    z-index: 99999; /* Ensures it's on top of everything */
+    /* Centering content using Flexbox */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Class to make the overlay visible (toggled by JavaScript) */
+.ad-overlay--visible {
+    display: flex;
+}
+
+/* Update the content box to be wider for a better interstitial feel */
+.ad-popup-content {
+    background: purple;
+    padding: 20px;
+    border-radius: 10px;
+    /* Increase max-width to allow a larger ad to fit */
+    max-width: 900px; /* NEW: Allow it to take up most of the screen */
+    width: 90%;
+    text-align: center;
+}
+
+/* Update the ad container dimensions */
+#ad-container {
+    /* Use dimensions from the ad network or aim for a large interstitial size (e.g., 728x90 or 300x600) */
+    width: 728px; /* Example: Use a common large banner size */
+    height: 300px; /* Example height */
+    margin: 10px auto 0; 
+    overflow: hidden; 
+}
+</style>
 
     
 <!-- Splash Intro -->
@@ -520,21 +562,6 @@
 
     </header>
 
-    <!-- AdSense Top Banner -->
-<div style="margin: 20px auto; text-align:center;">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8524021281977248"
-     crossorigin="anonymous"></script>
-<!-- Top-Banner -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8524021281977248"
-     data-ad-slot="7032611547"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
 
     <!-- Intro + Side panels (Suggestions & Updates) -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -1315,7 +1342,7 @@
                 <div 
                     class="bg-gray-800 rounded-xl shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-indigo-500/50"
                     data-url="${game.gameUrl}"
-                    onclick="openGameModal('${safeUrl}', ${game.id})"
+                    onclick="showAdThenPlay('${safeUrl}')"
                 >
                     <!-- Thumbnail Area -->
                     <div class="h-40 bg-gray-900 relative overflow-hidden">
@@ -1650,10 +1677,83 @@
   })();
 </script>
 
+	<script>
+// Store your ad script as a constant string
+const AD_SCRIPT_HTML = `
+    <script type="text/javascript">
+        atOptions = {
+            'key' : '568ecccfdab4fe7219cbc43b33184c71',
+            'format' : 'iframe',
+            'height' : 300,    /* ADJUSTED HEIGHT */
+            'width' : 728,     /* ADJUSTED WIDTH */
+            'params' : {}
+        };
+    </\script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/568ecccfdab4fe7219cbc43b33184c71/invoke.js"></\script>
+`;
+
+function showAdThenPlay(gameUrl) {
+    const adOverlay = document.getElementById("ad-overlay");
+    const adContainer = document.getElementById("ad-container");
+    const AD_DURATION_MS = 1000; 
+
+    // 1. Clear container and inject the script HTML (This forces the browser to re-evaluate it)
+    adContainer.innerHTML = AD_SCRIPT_HTML; 
+
+    // 2. SHOW the ad overlay
+    adOverlay.classList.add("ad-overlay--visible");
+
+    // 3. Set the timer
+    setTimeout(() => {
+        // 4. Hide the ad overlay
+        adOverlay.classList.remove("ad-overlay--visible");
+        
+        // 5. Load the game
+        openGameModal(gameUrl); 
+        
+    }, AD_DURATION_MS);
+}
+</script>
 
 
+
+    <script async="async" data-cfasync="false" src="//pl28076500.effectivegatecpm.com/3b09fa0ca6ef0eb7fbefbc62da5ec4e5/invoke.js"></script>
+<div id="container-3b09fa0ca6ef0eb7fbefbc62da5ec4e5"></div>
+
+    <script type="text/javascript">
+	atOptions = {
+		'key' : '5538ab9c19a849d31af6519022f09e40',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/5538ab9c19a849d31af6519022f09e40/invoke.js"></script>
+
+
+	<link rel="stylesheet" href="style.css">
+
+	<div id="ad-overlay" class="ad-overlay">
+    <div class="ad-popup-content">
+        <p>Ad playing… please wait. (Screen will return in 5 seconds)</p>
+        
+        <div id="ad-container"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+	
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
