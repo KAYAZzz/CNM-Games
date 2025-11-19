@@ -1278,44 +1278,13 @@
         /**
          * Opens the game modal with the specified URL and ID.
          */
-        window.openGameModal = function(url, gameId) {
-    // Open game in a new tab or window (NOT inside your website)
+// 🚀 OPEN GAME IN NEW WEBSITE — NO MODAL, NO IFRAME
+window.openGameModal = function (url, gameId) {
+    // Ignore modal completely — just redirect
     window.location.href = url;
 };
 
-            currentGameId = gameId; 
-            gameModal.classList.remove('hidden');
-            gameModal.classList.add('flex');
 
-            // 1. Reset and Show Loading State
-            linkFallback.classList.add('hidden'); // Hide fallback link initially
-            loadingOverlay.classList.remove('hidden');
-            loadingSpinner.classList.remove('hidden'); 
-            loadingText.textContent = 'Loading external game...';
-            openInNewTabLink.href = url;
-            gameIframe.src = ''; // Clear iframe source initially
-
-            // Set the game URL and start the loading process
-            gameIframe.src = url;
-
-            // 2. Set a timeout (5s) to suggest manual launch if loading fails/blocks
-            loadTimeout = setTimeout(() => {
-                loadingText.textContent = 'Loading took longer than expected. The host site might be blocking embeds.'; 
-                loadingSpinner.classList.add('hidden'); 
-                linkFallback.classList.remove('hidden'); // Show the manual link
-            }, 5000); 
-
-            // 3. Listen for successful load
-            gameIframe.onload = function() {
-                clearTimeout(loadTimeout);
-                loadingOverlay.classList.add('hidden');
-                console.log(`External game ${gameId} loaded. Ready for postMessage communication.`);
-            };
-        }
-
-        /**
-         * Closes the game modal and stops the iframe content.
-         */
         function closeGameModal() {
             clearTimeout(loadTimeout);
             gameIframe.onload = null;
