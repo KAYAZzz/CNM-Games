@@ -1279,6 +1279,10 @@
          * Opens the game modal with the specified URL and ID.
          */
         window.openGameModal = function(url, gameId) {
+    // Open game in a new tab or window (NOT inside your website)
+    window.location.href = url;
+};
+
             currentGameId = gameId; 
             gameModal.classList.remove('hidden');
             gameModal.classList.add('flex');
