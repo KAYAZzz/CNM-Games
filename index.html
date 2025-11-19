@@ -1693,72 +1693,7 @@
   })();
 </script>
 
-	<script>
-// Store your ad script as a constant string
-const AD_SCRIPT_HTML = `
-    <script type="text/javascript">
-        atOptions = {
-            'key' : '568ecccfdab4fe7219cbc43b33184c71',
-            'format' : 'iframe',
-            'height' : 300,    /* ADJUSTED HEIGHT */
-            'width' : 728,     /* ADJUSTED WIDTH */
-            'params' : {}
-        };
-    </\script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/568ecccfdab4fe7219cbc43b33184c71/invoke.js"></\script>
-`;
 
-function showAdThenPlay(gameUrl) {
-    const adOverlay = document.getElementById("ad-overlay");
-    const adContainer = document.getElementById("ad-container");
-    const AD_DURATION_MS = 1000; 
-
-    // 1. Clear container and inject the script HTML (This forces the browser to re-evaluate it)
-    adContainer.innerHTML = AD_SCRIPT_HTML; 
-
-    // 2. SHOW the ad overlay
-    adOverlay.classList.add("ad-overlay--visible");
-
-    // 3. Set the timer
-    setTimeout(() => {
-        // 4. Hide the ad overlay
-        adOverlay.classList.remove("ad-overlay--visible");
-        
-        // 5. Load the game
-        openGameModal(gameUrl); 
-        
-    }, AD_DURATION_MS);
-}
-</script>
-
-
-
-    <script async="async" data-cfasync="false" src="//pl28076500.effectivegatecpm.com/3b09fa0ca6ef0eb7fbefbc62da5ec4e5/invoke.js"></script>
-<div id="container-3b09fa0ca6ef0eb7fbefbc62da5ec4e5"></div>
-
-    <script type="text/javascript">
-	atOptions = {
-		'key' : '5538ab9c19a849d31af6519022f09e40',
-		'format' : 'iframe',
-		'height' : 60,
-		'width' : 468,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/5538ab9c19a849d31af6519022f09e40/invoke.js"></script>
-
-
-	<link rel="stylesheet" href="style.css">
-
-	<div id="ad-overlay" class="ad-overlay">
-    <div class="ad-popup-content">
-        <p>Ad playing… please wait. (Screen will return in 5 seconds)</p>
-        
-        <div id="ad-container"></div>
-    </div>
-</div>
-
-<script src="script.js"></script>
 	
 </body>
 </html>
