@@ -1525,14 +1525,7 @@ window.openGameModal = function (url, gameId) {
 
       const LS_KEY = 'installDismissedV2';
 
-      // Show popup function (removes hidden)
-      function showPopup() {
-        if (!popup.classList.contains('hidden')) return;
-        popup.classList.remove('hidden');
-        popup.setAttribute('aria-hidden', 'false');
-        // focus button for keyboard users
-        closeBtn.focus({ preventScroll: true });
-      }
+
 
       // Hide popup function (adds hidden)
       function hidePopup() {
@@ -1543,27 +1536,7 @@ window.openGameModal = function (url, gameId) {
 
 
 
-      // Closing
-      closeBtn.addEventListener('click', () => {
-        try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
-        hidePopup();
-      });
 
-      // click outside content closes
-      popup.addEventListener('click', (e) => {
-        if (e.target === popup) {
-          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
-          hidePopup();
-        }
-      });
-
-      // ESC closes
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
-          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
-          hidePopup();
-        }
-      });
 
       // Icon selection behavior (update apple-touch-icon link if present)
       if (icons && icons.length) {
@@ -1715,9 +1688,10 @@ function showAdThenPlay(gameUrl) {
 </script>
 
 <button id="open-install-popup"
-        class="fixed bottom-4 left-4 bg-indigo-600 text-white px-4 py-2 rounded-lg">
-    Add to Home Screen
+class="fixed bottom-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg">
+  Add to Home Screen
 </button>
+
 
 
 
