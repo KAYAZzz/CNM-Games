@@ -1452,41 +1452,63 @@ window.openGameModal = function (url, gameId) {
   });
 </script>
 
-<!-- Add-to-Home Popup -->
-<div id="install-popup" 
-     class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden"
-     aria-hidden="true">
+<!-- Add-to-Home Popup (REPLACE your current popup block with this) -->
+<div id="install-popup" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[4000] hidden" aria-hidden="true">
+  <div id="install-content" class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-2xl w-[92%] shadow-2xl animate-fadeIn overflow-y-auto max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="install-title">
 
-  <div id="install-content"
-       class="bg-gray-900 text-gray-100 rounded-2xl p-6 max-w-2xl w-[92%] shadow-2xl animate-fadeIn overflow-y-auto max-h-[90vh]">
+    <h2 id="install-title" class="text-2xl font-bold text-purple-300 mb-2 text-center">📱 Add Kivro Games to Your Home Screen</h2>
+    <p class="text-gray-300 mb-4 text-center">For the best experience, follow these quick steps:</p>
+      <h2 class="text-2xl font-bold text-purple-300 mb-2">🎨 Customize Your Icon</h2>
+      <!-- Icon selection (with glowing backdrop) -->
+<div class="flex justify-center gap-5 mb-5 flex-wrap">
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+         alt="Icon 1">
+  </div>
 
-    <div class="flex justify-between items-start mb-3">
-      <h2 class="text-2xl font-bold text-purple-300">📱 Add CNM Games to Your Home Screen</h2>
-      <button id="close-popup" class="ml-4 bg-red-600 hover:bg-red-700 text-white rounded-full p-2">✕</button>
-    </div>
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-purple-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+         alt="Icon 2">
+  </div>
 
-    <h3 class="text-lg font-semibold text-purple-300 mb-3">Choose an Icon</h3>
+  <div class="relative group select-icon-wrap cursor-pointer transition-transform transform hover:scale-105 active:scale-95">
+    <div class="absolute inset-0 rounded-2xl bg-pink-500/20 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-300"></div>
+    <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png" 
+         class="select-icon relative w-16 h-16 rounded-xl border-2 border-transparent transition-all duration-300 group-hover:border-indigo-400 group-active:scale-95 shadow-lg" 
+         alt="Icon 3">
+  </div>
+</div>
 
-    <div class="flex justify-center gap-5 mb-5 flex-wrap">
-      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/teamsfake.png"
-           class="select-icon w-16 h-16 rounded-xl border-2 border-transparent cursor-pointer shadow-lg">
-      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Kahoot%20fake.png"
-           class="select-icon w-16 h-16 rounded-xl border-2 border-transparent cursor-pointer shadow-lg">
-      <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/onsigma67.png"
-           class="select-icon w-16 h-16 rounded-xl border-2 border-transparent cursor-pointer shadow-lg">
-    </div>
-
+    <!-- Steps (compact grid so it fits landscape) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 text-center">
-      <div><p class="text-sm">1. Tap <strong>Share</strong></p><img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg"></div>
-      <div><p class="text-sm">2. Scroll down</p><img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg"></div>
-      <div><p class="text-sm">3. Add to Home Screen</p><img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg"></div>
+      <div class="install-step">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">1</div>
+        <p class="text-sm text-gray-300 mb-2">Tap the <strong>Share</strong> icon in Safari.</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut1.jpg" alt="Step 1" class="rounded-lg shadow-md w-full object-cover">
+      </div>
+
+      <div class="install-step">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">2</div>
+        <p class="text-sm text-gray-300 mb-2">Scroll down in the menu that appears.</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut2.jpeg" alt="Step 2" class="rounded-lg shadow-md w-full object-cover">
+      </div>
+
+      <div class="install-step">
+        <div class="number text-lg font-semibold mb-1 text-indigo-400">3</div>
+        <p class="text-sm text-gray-300 mb-2">Tap <strong>Add to Home Screen</strong> — done!</p>
+        <img src="https://raw.githubusercontent.com/KAYAZzz/CNM-Games/main/Tut3.jpeg" alt="Step 3" class="rounded-lg shadow-md w-full object-cover">
+      </div>
     </div>
 
-    <div class="flex justify-center mt-3">
-      <button id="finish-popup"
-              class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-md text-sm">
-        Got it — Finish
-      </button>
+
+
+    <!-- Single button (centered) -->
+    <div class="flex justify-center mt-4">
+      <button id="close-popup" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-md text-sm font-semibold">Got it — Finish</button>
     </div>
   </div>
 </div>
@@ -1503,7 +1525,14 @@ window.openGameModal = function (url, gameId) {
 
       const LS_KEY = 'installDismissedV2';
 
-
+      // Show popup function (removes hidden)
+      function showPopup() {
+        if (!popup.classList.contains('hidden')) return;
+        popup.classList.remove('hidden');
+        popup.setAttribute('aria-hidden', 'false');
+        // focus button for keyboard users
+        closeBtn.focus({ preventScroll: true });
+      }
 
       // Hide popup function (adds hidden)
       function hidePopup() {
@@ -1512,9 +1541,37 @@ window.openGameModal = function (url, gameId) {
         popup.setAttribute('aria-hidden', 'true');
       }
 
+      // Only show if not dismissed
+      try {
+        if (!localStorage.getItem(LS_KEY)) {
+          showPopup();
+        }
+      } catch (e) {
+        // localStorage could be unavailable in some browsers; still show popup
+        showPopup();
+      }
 
+      // Closing
+      closeBtn.addEventListener('click', () => {
+        try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+        hidePopup();
+      });
 
+      // click outside content closes
+      popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+          hidePopup();
+        }
+      });
 
+      // ESC closes
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+          try { localStorage.setItem(LS_KEY, 'true'); } catch (e) {}
+          hidePopup();
+        }
+      });
 
       // Icon selection behavior (update apple-touch-icon link if present)
       if (icons && icons.length) {
@@ -1541,24 +1598,12 @@ window.openGameModal = function (url, gameId) {
 
 
 <script>
-// Get elements
-const popup = document.getElementById("install-popup");
-const openBtn = document.getElementById("open-install-popup");
-const closeBtn = document.getElementById("close-popup");
-
-// Make sure popup starts hidden
-popup.classList.add("hidden");
-
-// Button to manually open popup
-openBtn.addEventListener("click", () => {
-    popup.classList.remove("hidden");
-});
-
-// Button to close popup
-closeBtn.addEventListener("click", () => {
-    popup.classList.add("hidden");
-});
-
+  // Show popup a few seconds after load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('install-popup').classList.add('active');
+    }, 3500);
+  });
 
   // Close it
   document.getElementById('close-popup').addEventListener('click', () => {
@@ -1665,81 +1710,9 @@ function showAdThenPlay(gameUrl) {
 }
 </script>
 
-
-
-	<!-- Floating button to open the Add-to-Home popup -->
-<button 
-  id="open-install-popup"
-  class="fixed bottom-5 right-5 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full shadow-lg z-[5000]"
->
-  Add to Home Screen
-</button>
-
-
-
-
-
-
-<script>
-window.addEventListener("load", () => {
-  const popup = document.getElementById("install-popup");
-  const openBtn = document.getElementById("open-install-popup");
-  const closeBtn = document.getElementById("close-popup");
-  const finishBtn = document.getElementById("finish-popup");
-  const icons = document.querySelectorAll(".select-icon");
-  const LS_KEY = "installDismissedV2";
-
-  if (!popup || !openBtn) {
-    console.error("Popup or open button missing");
-    return;
-  }
-
-  // --- no auto-open at all ---
-  function showPopup() {
-    popup.classList.remove("hidden");
-    popup.setAttribute("aria-hidden", "false");
-  }
-
-  function hidePopup() {
-    popup.classList.add("hidden");
-    popup.setAttribute("aria-hidden", "true");
-    try { localStorage.setItem(LS_KEY, "true"); } catch (e) {}
-  }
-
-  // User clicks “Add to Home Screen”
-  openBtn.addEventListener("click", showPopup);
-
-  // Closing controls
-  closeBtn.addEventListener("click", hidePopup);
-  finishBtn.addEventListener("click", hidePopup);
-
-  popup.addEventListener("click", (e) => {
-    if (e.target === popup) hidePopup();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") hidePopup();
-  });
-
-  // Icon selection
-  icons.forEach((icon) => {
-    icon.addEventListener("click", () => {
-      icons.forEach(i => i.classList.remove("border-indigo-400"));
-      icon.classList.add("border-indigo-400");
-
-      const link = document.querySelector("link[rel='apple-touch-icon']");
-      if (link) link.href = icon.src;
-    });
-  });
-});
-</script>
-
-
-
 	
 </body>
 </html>
-
 
 
 
