@@ -1541,15 +1541,7 @@ window.openGameModal = function (url, gameId) {
         popup.setAttribute('aria-hidden', 'true');
       }
 
-      // Only show if not dismissed
-      try {
-        if (!localStorage.getItem(LS_KEY)) {
-          showPopup();
-        }
-      } catch (e) {
-        // localStorage could be unavailable in some browsers; still show popup
-        showPopup();
-      }
+
 
       // Closing
       closeBtn.addEventListener('click', () => {
@@ -1709,6 +1701,28 @@ function showAdThenPlay(gameUrl) {
     }, AD_DURATION_MS);
 }
 </script>
+
+<!-- Add-to-Home floating flag button -->
+<div id="open-install-flag"
+     class="fixed right-3 top-1/2 -translate-y-1/2 bg-purple-600 text-white px-3 py-2 rounded-l-xl shadow-lg cursor-pointer z-[5000] hover:bg-purple-700 transition">
+  Add to Home
+</div>
+
+
+<script>
+  const flagBtn = document.getElementById('open-install-flag');
+  const popup = document.getElementById('install-popup');
+
+  flagBtn.addEventListener('click', () => {
+    popup.classList.remove('hidden');
+    popup.setAttribute('aria-hidden', 'false');
+
+    // Focus the close button
+    const closeBtn = document.getElementById('close-popup');
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
+  });
+</script>
+
 
 	
 </body>
