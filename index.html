@@ -1702,24 +1702,71 @@ function showAdThenPlay(gameUrl) {
 }
 </script>
 
-<!-- Add-to-Home floating flag button -->
-<div id="open-install-flag"
-     class="fixed right-3 top-1/2 -translate-y-1/2 bg-purple-600 text-white px-3 py-2 rounded-l-xl shadow-lg cursor-pointer z-[5000] hover:bg-purple-700 transition">
-  Add to Home
-</div>
+<!-- Floating Add-to-Home Button -->
+<button id="open-install-popup"
+        class="fixed bottom-5 right-5 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-700 z-[5000]">
+  📱 Add to Home Screen
+</button>
+
 
 
 <script>
-  const flagBtn = document.getElementById('open-install-flag');
-  const popup = document.getElementById('install-popup');
-
-  flagBtn.addEventListener('click', () => {
-    popup.classList.remove('hidden');
-    popup.setAttribute('aria-hidden', 'false');
-
-    // Focus the close button
+  window.addEventListener('load', () => {
+    const popup = document.getElementById('install-popup');
+    const openBtn = document.getElementById('open-install-popup');
     const closeBtn = document.getElementById('close-popup');
-    if (closeBtn) closeBtn.focus({ preventScroll: true });
+    const finishBtn = document.getElementById('finish-popup');
+    const icons = document.querySelectorAll('.select-icon');
+    const LS_KEY = 'installDismissedV2';
+
+    if (!popup) { 
+      console.error('install-popup element missing'); 
+      return; 
+    }
+
+    // --- IMPORTANT: NO AUTO POPUP ---
+    // Popup ONLY opens when button is clicked now.
+    function showPopup() {
+      popup.classList.remove('hidden');
+      popup.setAttribute('aria-hidden','false');
+    }
+
+    function hidePopup() {
+      popup.classList.add('hidden');
+      popup.setAttribute('aria-hidden','true');
+      try { localStorage.setItem(LS_KEY, 'true'); } catch(e) {}
+    }
+
+    // Button that OPENS the popup
+    openBtn.addEventListener('click', () => {
+      showPopup();
+    });
+
+    // Close buttons
+    if (closeBtn) closeBtn.addEventListener('click', hidePopup);
+    if (finishBtn) finishBtn.addEventListener('click', hidePopup);
+
+    // Click outside popup closes it
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) hidePopup();
+    });
+
+    // ESC closes popup
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hidePopup();
+    });
+
+    // Icon selector logic
+    icons.forEach(icon => {
+      icon.style.cursor = 'pointer';
+      icon.addEventListener('click', () => {
+        icons.forEach(i => i.classList.remove('border-indigo-400'));
+        icon.classList.add('border-indigo-400');
+
+        const link = document.querySelector("link[rel='apple-touch-icon']");
+        if (link) link.href = icon.src;
+      });
+    });
   });
 </script>
 
