@@ -1590,12 +1590,24 @@ window.openGameModal = function (url, gameId) {
 
 
 <script>
-  // Show popup a few seconds after load
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('install-popup').classList.add('active');
-    }, 3500);
-  });
+// Get elements
+const popup = document.getElementById("install-popup");
+const openBtn = document.getElementById("open-install-popup");
+const closeBtn = document.getElementById("close-popup");
+
+// Make sure popup starts hidden
+popup.classList.add("hidden");
+
+// Button to manually open popup
+openBtn.addEventListener("click", () => {
+    popup.classList.remove("hidden");
+});
+
+// Button to close popup
+closeBtn.addEventListener("click", () => {
+    popup.classList.add("hidden");
+});
+
 
   // Close it
   document.getElementById('close-popup').addEventListener('click', () => {
@@ -1702,11 +1714,11 @@ function showAdThenPlay(gameUrl) {
 }
 </script>
 
-<!-- Floating Add-to-Home Button -->
 <button id="open-install-popup"
-        class="fixed bottom-5 right-5 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-700 z-[5000]">
-  📱 Add to Home Screen
+        class="fixed bottom-4 left-4 bg-indigo-600 text-white px-4 py-2 rounded-lg">
+    Add to Home Screen
 </button>
+
 
 
 
